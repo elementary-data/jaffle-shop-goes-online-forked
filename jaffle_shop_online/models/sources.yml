@@ -5,3 +5,13 @@ sources:
     schema: jaffle_shop_elementary
     tables:
       - name: elementary_exposures
+        columns:
+          - name: unique_id
+            data_tests:
+              - unique:
+                  config:
+                    tags:
+                      - staging
+                      - marketing
+                  meta:
+                    description: The column should contain only unique values
