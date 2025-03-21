@@ -5,3 +5,15 @@ sources:
     schema: jaffle_shop_elementary
     tables:
       - name: elementary_exposures
+        columns:
+          - name: unique_id
+            data_tests:
+              - unique:
+                  description: The column should contain only unique values
+                  config:
+                    tags:
+                      - elementary-tests
+                    error_if: '>500'
+                  meta:
+                    owner:
+                      - joost@elementary-data.com
