@@ -5,7 +5,11 @@ models:
     meta:
       owner: "Idan"
     config:
-      tags: ["staging", "pii"]
+      tags:
+        - marketing
+        - pii
+        - sales
+        - staging
     columns:
       - name: customer_id
         tests:
@@ -20,9 +24,13 @@ models:
     meta:
       owner: "Idan"
     config:
-      tags: ["staging", "finance", "sales"]
       elementary:
         timestamp_column: "order_date"
+      tags:
+        - finance
+        - marketing
+        - sales
+        - staging
     columns:
       - name: order_id
         tests:
@@ -34,18 +42,20 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
     meta:
       owner: "Idan"
     config:
-      tags: ["staging", "finance"]
+      tags:
+        - finance
+        - marketing
+        - sales
+        - staging
     columns:
       - name: payment_id
         tests:
@@ -63,9 +73,13 @@ models:
     meta:
       owner: "Idan"
     config:
-      tags: ["staging", "pii"]
       elementary:
         timestamp_column: "signup_date"
+      tags:
+        - marketing
+        - pii
+        - sales
+        - staging
     columns:
       - name: signup_id
         tests:
