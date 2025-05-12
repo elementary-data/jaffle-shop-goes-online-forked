@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: order_items
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "1=1"
+          config:
+            severity: error
+            owner: ["@data-ops"]
+      - dbt_utils.equality:
+          compare_model: ref('orders')
+          config:
+            severity: error
+            owner: ["@data-ops"]
+      - elementary.volume_anomalies:
+          column_anomalies:
+            - row_count
+          config:
+            severity: error
+            owner: ["@data-ops"]
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+        config:
+          severity: error
+          owner: ["@data-ops"]
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('customers')
+              field: customer_id
+        config:
+          severity: error
+          owner: ["@data-ops"]
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+        config:
+          severity: warn
+          owner: ["@data-ops"]
+      - name: amount
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: true
+        config:
+          severity: error
+          owner: ["@data-ops"]
+      - name: credit_card_amount
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        config:
+          severity: warn
+          owner: ["@finance-team"]
+      - name: coupon_amount
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        config:
+          severity: warn
+          owner: ["@finance-team"]
+      - name: bank_transfer_amount
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        config:
+          severity: warn
+          owner: ["@finance-team"]
+      - name: gift_card_amount
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        config:
+          severity: warn
+          owner: ["@finance-team"]
+      - name: order_date
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2020-01-01'
+              max_value: '{{ dbt_date.today() }}'
+        config:
+          severity: warn
+          owner: ["@data-ops"]
