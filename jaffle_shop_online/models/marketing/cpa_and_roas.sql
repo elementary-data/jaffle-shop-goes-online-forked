@@ -50,8 +50,8 @@ joined as (
 
     select
         *,
-        1.0 * nullif(total_spend, 0) / attribution_points as cost_per_acquisition,
-        1.0 * attribution_revenue / nullif(total_spend, 0) as return_on_advertising_spend
+        1.0 * nullif(total_spend, 0) / nullif(attribution_points, 0) as cost_per_acquisition,
+        1.0 * coalesce(attribution_revenue, 0) / nullif(total_spend, 0) as return_on_advertising_spend
 
     from attribution_aggregated
 
