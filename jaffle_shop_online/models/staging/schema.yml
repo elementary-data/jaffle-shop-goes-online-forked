@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model represents a staging table for customer data, which contains
+      the customer's unique identifier, first name, and last name. It serves as a
+      intermediate layer between the raw customer data and the downstream analytical
+      models, providing a consistent and clean representation of the customer data
+      for data consumers. The model performs a simple renaming transformation, mapping
+      the raw data columns to more intuitive column names.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +23,11 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model represents the staging table for orders data in the finance
+      and sales domain. It extracts and renames the relevant columns from the raw
+      `raw_orders_validation` table, including the order ID, customer ID, order date,
+      and order status. This staging table serves as an intermediate layer, preparing
+      the data for further downstream processing and analysis by data consumers.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +45,18 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This model, `stg_payments`, is a staging table that contains clean
+      and transformed payment data from the `raw_payments_validation` source table.
+      It serves the finance domain by storing payment information, including the payment
+      ID, order ID, and payment method. The model performs a key transformation by
+      converting the payment amount from cents to dollars, making the data more meaningful
+      and easier to work with for data consumers.
     meta:
       owner: "Idan"
     config:
