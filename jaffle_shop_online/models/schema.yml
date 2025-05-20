@@ -248,3 +248,22 @@ models:
 
       - name: gift_card_amount
         description: Amount of the order (AUD) paid for by gift card
+
+  - name: order_items
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "1=1"
+          config:
+            severity: error
+            store_failures: true
+          description: "Validate that the SQL syntax is correct and the model compiles successfully"
+      - dbt_utils.equality:
+          compare_model: ref('orders')
+          config:
+            severity: warn
+          description: "Ensure order_items data matches the orders table"
+      - dbt_expectations.expect_table_row_count_to_be_greater_than:
+          value: 0
+          config:
+            severity: warn
+          description: "Ensure the order_items table is not empty"
