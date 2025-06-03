@@ -69,9 +69,18 @@ models:
           config:
             owner: ["@data-ops"]
             tags: ["stability"]
+      - dbt_utils.expression_is_true:
+          expression: "coalesce(credit_card_amount, 0) + coalesce(coupon_amount, 0) + coalesce(bank_transfer_amount, 0) + coalesce(gift_card_amount, 0) = amount"
+          description: "Ensure that the sum of individual payment method amounts equals the total amount"
+      - relationships:
+          to: ref('stg_orders')
+          field: order_id
     columns:
       - name: order_id
         description: This is a unique identifier for an order
+        tests:
+          - unique
+          - not_null
 
       - name: customer_id
         description: Foreign key to the customers table
