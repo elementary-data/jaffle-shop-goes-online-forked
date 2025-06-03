@@ -2,6 +2,13 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model, `stg_customers`, represents the staging table for customer
+      data in the Jaffle Shop ecommerce application. It extracts and renames the key
+      customer attributes, such as `customer_id`, `first_name`, and `last_name`, from
+      the raw `raw_customers_validation` table. This staging model serves as a centralized
+      and curated source of customer information, which can be used by downstream
+      data models and reporting tools to gain insights into customer behavior and
+      demographics.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +24,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model, `stg_orders`, represents a staging table for order data
+      from the `jaffle_shop` dataset. It serves the finance and sales domains by providing
+      a clean, standardized version of the raw order data, with key fields such as
+      `order_id`, `customer_id`, `order_date`, and `status`. The model performs a
+      simple renaming of the source columns to more business-friendly names, making
+      the data more accessible and easier to understand for downstream data consumers.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +47,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
