@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: returned_orders
+    description: This table contains all of the returned orders
+    columns:
+      - name: order_id
+        description: This is a unique identifier for an order
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to the customers table
+        tests:
+          - not_null
+      - name: order_date
+        description: Date (UTC) that the order was placed
+      - name: status
+        description: |
+          Orders can be one of the following statuses:
+
+          | status         | description                                                                                                            |
+          |----------------|------------------------------------------------------------------------------------------------------------------------|
+          | placed         | The order has been placed but has not yet left the warehouse                                                           |
+          | shipped        | The order has ben shipped to the customer and is currently in transit                                                  |
+          | completed      | The order has been received by the customer                                                                            |
+          | return_pending | The customer has indicated that they would like to return the order, but it has not yet been received at the warehouse |
+          | returned       | The order has been returned by the customer and received at the warehouse                                              |
+        tests:
+          - accepted_values:
+              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+      - name: amount
+        description: Total amount (AUD) of the order
+      - name: bank_transfer_amount
+        description: Amount of the order (AUD) paid for by bank transfer
+      - name: coupon_amount
+        description: Amount of the order (AUD) paid for by coupon
+      - name: credit_card_amount
+        description: Amount of the order (AUD) paid for by credit card
+      - name: gift_card_amount
+        description: Amount of the order (AUD) paid for by gift card
+    tests:
+      - dbt_utils.expression_is_true:
+          name: positive_amounts
+          expression: "amount >= 0 and bank_transfer_amount >= 0 and coupon_amount >= 0 and credit_card_amount >= 0 and gift_card_amount >= 0"
+          severity: error
+      - dbt_utils.expression_is_true:
+          name: payment_method_sum_equals_total
+          expression: "round(bank_transfer_amount + coupon_amount + credit_card_amount + gift_card_amount, 2) = round(amount, 2)"
+          severity: error
+      - dbt_utils.expression_is_true:
+          name: valid_order_dates
+          expression: "order_date <= current_timestamp"
+          severity: error
