@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: customer_conversions
+    description: This table contains information on the conversions of all the customers
+    columns:
+      - name: converted_at
+        description: Time (UTC) when the conversion happened
+        tests:
+          - dbt_utils.expression_is_true:
+              severity: error
+              expression: "converted_at <= current_timestamp"
+      - name: customer_id
+        description: Unique identifier for a customer
+        tests:
+          - not_null:
+              severity: error
+          - accepted_values:
+              severity: error
+              values: [{{ dbt_utils.get_column_values(ref('customers'), 'customer_id') }}]
+          - relationships:
+              severity: error
+              to: ref('customers')
+              field: customer_id
+      - name: revenue
+        description: Total revenue amount (USD) of the conversion
+        tests:
+          - positive_value:
+              severity: error
+    tests:
+      - schema_changes_from_baseline
+      - unique:
+          severity: error
+          column_name: 
+            - customer_id
+            - converted_at
+      - elementary.volume_anomalies:
+          severity: warn
+          timestamp_column: converted_at
+          group_by: [date_trunc('day', converted_at)]
+      - elementary.metric_anomalies:
+          severity: warn
+          timestamp_column: converted_at
+          aggregation: sum
+          metric: revenue
+          group_by: [date_trunc('day', converted_at)]
