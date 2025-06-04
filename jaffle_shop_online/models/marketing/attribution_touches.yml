@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: attribution_touches
+    description: 'This is a table that contains all the touch points, by session, with the utm_source, utm_medium and utm_campaign'
+    columns:
+      - name: session_id
+        tests:
+          - unique:
+              severity: error
+
+      - name: customer_id
+        tests:
+          - not_null
+
+      - name: revenue
+        tests:
+          - accepted_values:
+              values: ['>0']
+              severity: warning
+
+      - name: utm_source
+        tests:
+          - accepted_values:
+              values: ['google', 'facebook', 'twitter', 'newsletter', null]
+
+      - name: utm_medium
+        tests:
+          - accepted_values:
+              values: ['cpc', 'social', 'email', 'organic', null]
+
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "started_at <= ended_at"
+          severity: error
+          name: chronological_session_dates
+
+      - dbt_utils.expression_is_true:
+          expression: "first_touch_points + last_touch_points + linear_points + forty_twenty_forty_points = 1"
+          severity: warning
+          name: consistent_attribution_points
+
+      - dbt_utils.expression_is_true:
+          expression: "abs(revenue - (first_touch_revenue + last_touch_revenue + linear_revenue + forty_twenty_forty_revenue)) < 0.01"
+          severity: warning
+          name: revenue_consistency
+
+      - dbt_utils.expression_is_true:
+          expression: "session_index <= total_sessions"
+          severity: error
+          name: valid_session_index
