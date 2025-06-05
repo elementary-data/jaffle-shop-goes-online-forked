@@ -221,6 +221,34 @@ models:
       - name: platform
         data_type: varchar
         description: "Platform where the session was made. For example, website, iOS app, Android app, etc."
+    tests:
+      - unique:
+          column_name: session_id
+      - dbt_utils.expression_is_true:
+          expression: "started_at <= ended_at"
+          config:
+            severity: error
+      - dbt_utils.expression_is_true:
+          expression: "datediff('second', started_at, ended_at) >= 0"
+      - dbt_utils.expression_is_true:
+          expression: "ad_id IS NULL OR utm_source IS NOT NULL"
+      - dbt_utils.recency:
+          datepart: hour
+          field: started_at
+          interval: 24
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+      - name: platform
+        tests:
+          - accepted_values:
+              values: ['app', 'website']
+      - name: ad_id
+        tests:
+          - relationships:
+              to: ref('marketing_ads')
+              field: ad_id
 
   - name: customer_conversions
     description: "This table contains information on the conversions of all the customers"
