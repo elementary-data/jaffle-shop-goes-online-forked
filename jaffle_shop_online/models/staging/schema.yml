@@ -15,6 +15,35 @@ models:
           - relationships:
               to: ref('stg_signups')
               field: customer_id
+          - not_null:
+              config:
+                severity: error
+      - name: first_name
+        tests:
+          - accepted_values:
+              config:
+                severity: error
+                values: ['[A-Za-z\-\'\s]+']
+                quote: false
+                is_regex: true
+          - string_length:
+              config:
+                severity: warning
+                min: 2
+                max: 50
+      - name: last_name
+        tests:
+          - accepted_values:
+              config:
+                severity: error
+                values: ['[A-Za-z\-\'\s]+']
+                quote: false
+                is_regex: true
+          - string_length:
+              config:
+                severity: warning
+                min: 2
+                max: 50
 
   - name: stg_orders
     meta:
