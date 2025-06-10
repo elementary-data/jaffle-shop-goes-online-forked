@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model ingests raw customer data from the `raw_customers_validation`
+      table in the `jaffle_shop` schema of the `ELEMENTARY_TESTS` database. It renames
+      the `id` column to `customer_id` and includes the `first_name` and `last_name`
+      columns. This model serves as a centralized and cleaned representation of customer
+      data, which is critical for downstream data analysis and reporting. The transformations
+      performed in this model ensure data quality and consistency for data consumers.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +23,13 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model, `stg_orders`, represents the staging table for the orders
+      data in the finance and sales domain. It serves as the foundation for downstream
+      data models by extracting and transforming the raw orders data from the `ELEMENTARY_TESTS.jaffle_shop.raw_orders_validation`
+      source. The key transformations performed include renaming the columns to more
+      intuitive names, such as `order_id`, `customer_id`, `order_date`, and `status`,
+      providing a clean and structured representation of the orders data for further
+      analysis.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +47,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
