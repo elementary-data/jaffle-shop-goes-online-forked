@@ -2,6 +2,13 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model, `stg_customers`, represents the staging table for customer
+      data in the `jaffle_shop` dataset. It serves as an intermediate step in the
+      data transformation process, preparing and standardizing the raw customer data
+      for further downstream analysis and reporting. The model extracts the `customer_id`,
+      `first_name`, and `last_name` columns from the `raw_customers_validation` table,
+      providing a clean and consistent customer data source for other models in the
+      dbt project.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +24,13 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model, `stg_orders`, represents the staging table for the orders
+      data in the Jaffle Shop finance and sales domain. It serves as an intermediate
+      step in the data transformation pipeline, preparing the raw orders data for
+      use in downstream analytical models. The model performs basic transformations,
+      renaming the source columns to more business-friendly names (e.g., `id` to `order_id`,
+      `user_id` to `customer_id`) and ensuring the data is in the correct format and
+      structure for further analysis.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +48,17 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: 'This model represents the staging table for the payments data in
+      the jaffle_shop database. It is used to prepare the raw payments data for further
+      analysis and reporting in the finance domain. The model performs the following
+      key transformations: it renames the columns to more descriptive names, and it
+      converts the `amount` column from cents to dollars to make it more human-readable.'
     meta:
       owner: "Idan"
     config:
