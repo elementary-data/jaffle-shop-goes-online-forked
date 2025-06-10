@@ -73,6 +73,28 @@ models:
           config:
             owner: ["@data-ops"]
             tags: ["stability"]
+      - unique_order_id:
+          test: unique
+          column_name: order_id
+          config:
+            severity: error
+            where: "status != 'returned'"  # Exclude returned orders if they can be re-used
+      - positive_amounts:
+          test: dbt_utils.expression_is_true
+          config:
+            severity: error
+            expression: "amount >= 0 AND credit_card_amount >= 0 AND coupon_amount >= 0 AND bank_transfer_amount >= 0 AND gift_card_amount >= 0"
+      - total_amount_equals_sum_of_payments:
+          test: dbt_utils.expression_is_true
+          config:
+            severity: error
+            expression: "amount = credit_card_amount + coupon_amount + bank_transfer_amount + gift_card_amount"
+      - valid_order_dates:
+          test: dbt_utils.expression_is_true
+          column_name: order_date
+          config:
+            severity: error
+            expression: "order_date <= current_date()"
     columns:
       - name: order_id
         description: This is a unique identifier for an order
@@ -86,6 +108,12 @@ models:
                 owner: ["@data-ops"]
               to: ref('customers')
               field: customer_id
+          - valid_customer_id:
+              test: relationships
+              config:
+                severity: error
+                to: ref('customers')
+                field: customer_id
 
       - name: order_date
         description: Date (UTC) that the order was placed
