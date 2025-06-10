@@ -22,15 +22,50 @@ models:
                 owner: ["@data-ops"]
               to: ref('stg_signups')
               field: customer_id
+          - not_null:
+              config:
+                severity: error
+                owner: ["@data-ops"]
+          - unique:
+              config:
+                severity: error
+                owner: ["@data-ops"]
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+              config:
+                severity: error
+                owner: ["@data-ops"]
 
       - name: first_name
         description: Customer's first name. PII.
+        tests:
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: '^[A-Za-z ]+$'
+              config:
+                severity: warn
+                owner: ["@data-ops"]
 
       - name: last_name
         description: Customer's last name. PII.
+        tests:
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: '^[A-Za-z ]+$'
+              config:
+                severity: warn
+                owner: ["@data-ops"]
 
       - name: first_order
         description: Date (UTC) of a customer's first order
+        tests:
+          - dbt_expectations.expect_column_pair_values_to_be_in_set:
+              column_b: most_recent_order
+              value_pairs_set:
+                - [<, >]  # first_order < most_recent_order
+                - [=, =]  # first_order = most_recent_order (for customers with only one order)
+              config:
+                severity: error
+                owner: ["@data-ops"]
 
       - name: most_recent_order
         description: Date (UTC) of a customer's most recent order
@@ -40,6 +75,12 @@ models:
 
       - name: customer_lifetime_value
         description: Total value (AUD) of a customer's orders
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              config:
+                severity: error
+                owner: ["@finance-team"]
 
       - name: customer_email
         description: Customer's email. PII.
@@ -55,6 +96,18 @@ models:
 
       - name: signup_date
         description: Date (UTC) of a customer's signup to the online shop.
+
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "number_of_orders = (SELECT COUNT(DISTINCT order_id) FROM {{ ref('stg_orders') }} WHERE customer_id = customers.customer_id)"
+          config:
+            severity: error
+            owner: ["@data-ops"]
+      - dbt_utils.expression_is_true:
+          expression: "customer_lifetime_value = (SELECT COALESCE(SUM(amount), 0) FROM {{ ref('stg_payments') }} JOIN {{ ref('stg_orders') }} USING (order_id) WHERE customer_id = customers.customer_id)"
+          config:
+            severity: error
+            owner: ["@finance-team"]
 
   - name: orders
     description: This table has basic information about orders, as well as some derived
