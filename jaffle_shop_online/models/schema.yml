@@ -22,6 +22,9 @@ models:
                 owner: ["@data-ops"]
               to: ref('stg_signups')
               field: customer_id
+          - not_null:
+              name: not_null_customer_id
+              description: Ensures that every record has a valid customer_id
 
       - name: first_name
         description: Customer's first name. PII.
@@ -40,6 +43,11 @@ models:
 
       - name: customer_lifetime_value
         description: Total value (AUD) of a customer's orders
+        tests:
+          - accepted_values:
+              name: positive_customer_lifetime_value
+              description: Ensures that customer_lifetime_value is always positive
+              values: ['> 0']
 
       - name: customer_email
         description: Customer's email. PII.
@@ -52,9 +60,34 @@ models:
                 owner: ["@data-ops"]
               column_anomalies:
                 - missing_count
+          - dbt_utils.expression_is_true:
+              name: valid_customer_email
+              description: Ensures that customer_email follows a valid email format
+              expression: "regexp_like(customer_email, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$')"
 
       - name: signup_date
         description: Date (UTC) of a customer's signup to the online shop.
+
+    tests:
+      - dbt_utils.expression_is_true:
+          name: first_order_before_most_recent
+          description: Ensures that first_order is always earlier than or equal to most_recent_order
+          expression: "first_order <= most_recent_order OR (first_order IS NULL AND most_recent_order IS NULL)"
+      
+      - dbt_utils.expression_is_true:
+          name: consistent_customer_names
+          description: Ensures that customer first and last names are not null and contain only alphabetic characters
+          expression: "regexp_like(first_name, '^[A-Za-z]+$') AND regexp_like(last_name, '^[A-Za-z]+$')"
+      
+      - dbt_utils.expression_is_true:
+          name: number_of_orders_consistency
+          description: Ensures that number_of_orders is consistent with the presence of first_order and most_recent_order
+          expression: "(number_of_orders > 0 AND first_order IS NOT NULL AND most_recent_order IS NOT NULL) OR (number_of_orders = 0 AND first_order IS NULL AND most_recent_order IS NULL)"
+      
+      - dbt_utils.expression_is_true:
+          name: signup_before_first_order
+          description: Ensures that the signup_date is always earlier than or equal to the first_order date
+          expression: "signup_date <= first_order OR (signup_date IS NOT NULL AND first_order IS NULL)"
 
   - name: orders
     description: This table has basic information about orders, as well as some derived
