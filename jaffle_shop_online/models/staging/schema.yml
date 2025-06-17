@@ -2,6 +2,10 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model represents the staging table for customer data. It serves
+      as a centralized and curated source of customer information, including customer
+      ID, first name, and last name. The model performs a simple renaming and restructuring
+      of the raw customer data, preparing it for use in downstream analytical models.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +21,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model, `stg_orders`, is a staging table that stores the raw
+      order data from the `raw_orders_validation` view in the `jaffle_shop` schema.
+      It renames and selects the relevant columns, including `order_id`, `customer_id`,
+      `order_date`, and `status`. This model serves the finance and sales teams by
+      providing a clean and consistent data source for downstream analysis on orders
+      and customer behavior.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +44,18 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging table, `stg_payments`, contains the raw payments data
+      from the `jaffle_shop` data source. It is used to transform the raw data into
+      a format that is more suitable for analysis by data consumers. The `amount`
+      column is converted from cents to dollars, and the table includes the payment
+      ID, order ID, and payment method. This model serves the finance domain and is
+      owned by Idan.
     meta:
       owner: "Idan"
     config:
