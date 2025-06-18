@@ -255,27 +255,63 @@ models:
       - name: session_id
         data_type: varchar
         description: "Unique identifier for a session"
+        tests:
+          - unique
+          - not_null
 
       - name: customer_id
         data_type: number
         description: "Unique identifier for a customer"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('customers')
+              field: customer_id
 
       - name: started_at
         data_type: timestamp_ntz
         description: "Time (UTC) when the session started"
+        tests:
+          - not_null
 
       - name: ended_at
         data_type: timestamp_ntz
         description: "Time (UTC) when the session ended"
+        tests:
+          - not_null
 
       - name: utm_source
         data_type: varchar
         description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
+        tests:
+          - not_null
 
       - name: utm_medium
         data_type: varchar
         description: "The advertising or marketing medium. The medium can be social media, banners, CPC, third-party blogs, etc."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['social media', 'banners', 'CPC', 'third-party blogs']
 
       - name: utm_campain
         data_type: varchar
         description: "The name of the advertising campaign"
+        tests:
+          - not_null
+
+    tests:
+      - relationships:
+          to: ref('agg_sessions')
+          field: session_id
+      - dbt_utils.expression_is_true:
+          expression: "ended_at > started_at"
+      - dbt_utils.equality:
+          compare_model: ref('marketing_ads')
+          compare_columns:
+            - utm_source
+          join_columns:
+            - utm_medium
+            - utm_campain
+      - dbt_utils.expression_is_true:
+          expression: "datediff('second', started_at, ended_at) >= 0"
