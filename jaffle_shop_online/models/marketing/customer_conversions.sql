@@ -28,5 +28,5 @@ customer_orders as (
 select
     customer.customer_id,
     customer_orders.first_order as converted_at,
-    case when customer_orders.revenue is not null then customer_orders.revenue else 0 end as revenue 
+    customer_orders.revenue
 from customer left join customer_orders on customer.customer_id = customer_orders.customer_id
