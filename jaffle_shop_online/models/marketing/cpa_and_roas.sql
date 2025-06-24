@@ -1,3 +1,5 @@
+-- Owner: @marketing-team
+
 {{
     config(
         materialized = "table",
