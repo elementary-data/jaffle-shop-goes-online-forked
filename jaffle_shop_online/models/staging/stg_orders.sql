@@ -16,7 +16,7 @@ renamed as (
     select
         id as order_id,
         user_id as customer_id,
-        order_date,
+        try_cast(order_date as timestamp) as order_date,  -- Added cast to timestamp
         status
 
     from source
