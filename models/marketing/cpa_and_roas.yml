@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: cpa_and_roas
+    tests:
+      - elementary.expression_is_true:
+          expression: "return_on_advertising_spend IS NULL OR (total_spend > 0 AND return_on_advertising_spend = attribution_revenue / total_spend)"
+          name: roas_calculation_check
+      - accepted_values:
+          values: ['google', 'facebook', 'twitter', 'linkedin', 'other']
+          column_name: utm_source
+          name: valid_utm_sources
+      - elementary.expression_is_true:
+          expression: "cost_per_acquisition IS NULL OR (attribution_points > 0 AND cost_per_acquisition = total_spend / attribution_points)"
+          name: cpa_calculation_check
