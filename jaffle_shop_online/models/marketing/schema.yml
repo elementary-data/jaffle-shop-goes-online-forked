@@ -123,6 +123,29 @@ models:
       tags: ["marketing", "finance", "finance-data-product"]
       elementary:
         timestamp_column: "date_month"
+    tests:
+      - unique:
+          columns: ['date_month', 'utm_source']
+      - not_null:
+          column_name: date_month
+      - not_null:
+          column_name: utm_source
+      - not_null:
+          column_name: attribution_points
+      - not_null:
+          column_name: attribution_revenue
+      - not_null:
+          column_name: total_spend
+      - not_null:
+          column_name: cost_per_acquisition
+      - not_null:
+          column_name: return_on_advertising_spend
+      - accepted_values:
+          column_name: utm_source
+          values: ['google', 'facebook', 'instagram', 'twitter']
+      - elementary.volume_anomalies:
+          min_rows: 20
+          max_rows: 100
     columns:
       - name: date_month
         data_type: timestamp_ntz
@@ -143,7 +166,7 @@ models:
       - name: total_spend
         data_type: number
         description: "Total spend amount (USD)"
-        data_tests:
+        tests:
           - elementary.column_anomalies:
               anomaly_direction: both
               anomaly_sensitivity: 3
@@ -156,14 +179,28 @@ models:
               training_period:
                 count: 12
                 period: month
+          - positive_value
 
       - name: cost_per_acquisition
         data_type: number
         description: "Cost (USD) per acquisition, calculated as total_spend / attribution_points"
+        tests:
+          - positive_value
 
       - name: return_on_advertising_spend
         data_type: number
         description: "The ROI of the ad spend, calculated as attribution_revenue / total_spend"
+        tests:
+          - elementary.column_anomalies:
+              anomaly_direction: both
+              anomaly_sensitivity: 3
+              timestamp_column: date_month
+              training_period:
+                count: 12
+                period: month
+          - range:
+              min_value: 0
+              max_value: 100
 
   - name: marketing_ads
     description: "This table contains information on the ad spend, by source, medium and campaign"
