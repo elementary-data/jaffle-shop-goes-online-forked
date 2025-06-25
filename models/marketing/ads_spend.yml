@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: ads_spend
+    columns:
+      - name: date_day
+        tests:
+          - not_null
+          - dbt_utils.date_spine:
+              datepart: day
+              start_date: '2010-01-01'
+              end_date: '{{ dbt.current_timestamp() }}'
+      - name: utm_source
+        tests:
+          - not_null
+      - name: utm_medium
+        tests:
+          - not_null
+      - name: utm_campain
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['%_campaign', '%_promo']
+              match_like: true
+      - name: spend
+        tests:
+          - accepted_values:
+              values: ['>0']
+              quote: false
+    tests:
+      - unique:
+          combination_of_columns:
+            - date_day
+            - utm_source
+            - utm_medium
+            - utm_campain
+      - relationships:
+          to: ref('marketing_channels')
+          field: utm_source
+      - dbt_utils.expression_is_true:
+          expression: "sum(spend) between 1000 and 1000000"
