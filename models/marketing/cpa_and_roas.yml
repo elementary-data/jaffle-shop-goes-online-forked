@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: cpa_and_roas
+    columns:
+      - name: date_month
+      - name: utm_source
+      - name: total_spend
+      - name: attribution_points
+      - name: attribution_revenue
+      - name: cost_per_acquisition
+      - name: return_on_advertising_spend
+    tests:
+      - not_null:
+          column_name: total_spend
+          severity: error
+      - not_null:
+          column_name: attribution_revenue
+          severity: error
+      - not_null:
+          column_name: cost_per_acquisition
+          severity: error
+      - not_null:
+          column_name: return_on_advertising_spend
+          severity: error
+      - accepted_values:
+          column_name: total_spend
+          values: ['> 0']
+          severity: error
+      - accepted_values:
+          column_name: attribution_revenue
+          values: ['> 0']
+          severity: error
+      - relationships:
+          column_name: [date_month, utm_source]
+          to: ref('ads_spend')
+          field: [date_month, utm_source]
+          severity: error
+      - relationships:
+          column_name: [date_month, utm_source]
+          to: ref('attribution_touches')
+          field: [date_month, utm_source]
+          severity: error
+      - custom_generic:
+          name: roas_calculation_check
+          test_name: roas_calculation_check
+          test_params:
+            sql: >
+              SELECT COUNT(*) 
+              FROM {{ model }} 
+              WHERE (return_on_advertising_spend < 0 OR return_on_advertising_spend > 100)
+                AND total_spend > 0
+            threshold: 0
+          severity: error
+      - accepted_values:
+          column_name: utm_source
+          values: ['google', 'facebook', 'twitter', 'linkedin', 'bing', 'other']
+          severity: warning
