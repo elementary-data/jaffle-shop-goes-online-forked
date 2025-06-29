@@ -119,6 +119,7 @@ models:
     description: "This table contains the cost per acquisition and return on ad spend, by source, and per month"
     meta:
       owner: "Noa"
+      subscribers: ["USER"]
     config:
       tags: ["marketing", "finance", "finance-data-product"]
       elementary:
