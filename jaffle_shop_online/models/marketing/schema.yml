@@ -2,7 +2,6 @@ version: 2
 
 models:
   - name: ads_spend
-    description: "This table contains the daily ad spend, by source, medium and campaign"
     meta:
       owner: "Noa"
     config:
@@ -16,11 +15,13 @@ models:
 
       - name: utm_source
         data_type: varchar
-        description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
+        description: "Source where the ad was displayed. For example, Google, Facebook,
+          Twitter, Newsletter, etc."
 
       - name: utm_medium
         data_type: varchar
-        description: "The advertising or marketing medium. The medium can be social media, banners, CPC, third-party blogs, etc."
+        description: "The advertising or marketing medium. The medium can be social
+          media, banners, CPC, third-party blogs, etc."
 
       - name: utm_campain
         data_type: varchar
@@ -30,8 +31,12 @@ models:
         data_type: number
         description: "The USD amount of money spent"
 
+    description: This table aggregates daily advertising spend data by marketing campaign
+      dimensions. It summarizes costs across utm_source, utm_medium, and utm_campaign,
+      providing finance and marketing teams with detailed spend visibility. The model
+      performs sum aggregations on cost data to calculate total spend for each unique
+      combination of date and campaign attributes.
   - name: attribution_touches
-    description: "This is a table that contains all the touch points, by session, with the utm_source, utm_medium and utm_campaign"
     meta:
       owner: "Noa"
     config:
@@ -57,11 +62,13 @@ models:
 
       - name: utm_source
         data_type: varchar
-        description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
+        description: "Source where the ad was displayed. For example, Google, Facebook,
+          Twitter, Newsletter, etc."
 
       - name: utm_medium
         data_type: varchar
-        description: "The advertising or marketing medium. The medium can be social media, banners, CPC, third-party blogs, etc."
+        description: "The advertising or marketing medium. The medium can be social
+          media, banners, CPC, third-party blogs, etc."
 
       - name: utm_campain
         data_type: varchar
@@ -115,8 +122,13 @@ models:
         data_type: number
         description: ""
 
+    description: This table contains attribution data for customer touchpoints before
+      conversion, tracking sessions within a 30-day window. It calculates different
+      attribution models (first-touch, last-touch, 40-20-40, and linear) to distribute
+      revenue credit across marketing touchpoints. The model helps marketing teams
+      understand which channels contribute to conversions and their relative revenue
+      impact based on different attribution methodologies.
   - name: cpa_and_roas
-    description: "This table contains the cost per acquisition and return on ad spend, by source, and per month"
     meta:
       owner: "Noa"
     config:
@@ -130,7 +142,8 @@ models:
 
       - name: utm_source
         data_type: varchar
-        description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
+        description: "Source where the ad was displayed. For example, Google, Facebook,
+          Twitter, Newsletter, etc."
 
       - name: attribution_points
         data_type: number
@@ -150,10 +163,18 @@ models:
 
       - name: return_on_advertising_spend
         data_type: number
-        description: "The ROI of the ad spend, calculated as attribution_revenue / total_spend"
+        description: "The ROI of the ad spend, calculated as attribution_revenue /
+          total_spend"
 
+    description: This table calculates marketing performance metrics by combining
+      ad spend and attribution data on a monthly basis per UTM source. It provides
+      cost per acquisition (CPA) and return on advertising spend (ROAS) metrics to
+      help evaluate marketing channel effectiveness. The model performs key calculations
+      including aggregating spend and attribution points, then dividing spend by attribution
+      to determine cost efficiency and revenue generation of different marketing channels.
   - name: marketing_ads
-    description: "This table contains information on the ad spend, by source, medium and campaign"
+    description: "This table contains information on the ad spend, by source, medium
+      and campaign"
     meta:
       owner: "Noa"
     config:
@@ -171,7 +192,8 @@ models:
 
       - name: utm_medium
         data_type: varchar
-        description: "The advertising or marketing medium. The medium can be social media, banners, CPC, third-party blogs, etc."
+        description: "The advertising or marketing medium. The medium can be social
+          media, banners, CPC, third-party blogs, etc."
 
       - name: utm_campain
         data_type: varchar
@@ -183,16 +205,17 @@ models:
 
       - name: utm_source
         data_type: varchar
-        description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
+        description: "Source where the ad was displayed. For example, Google, Facebook,
+          Twitter, Newsletter, etc."
 
   - name: agg_sessions
     description: "This table contains aggregated information on the sessions"
     meta:
       owner: "Noa"
     config:
-        tags: ["marketing"]
-        elementary:
-            timestamp_column: "started_at"
+      tags: ["marketing"]
+      elementary:
+        timestamp_column: "started_at"
     columns:
       - name: session_id
         data_type: varchar
@@ -212,7 +235,8 @@ models:
 
       - name: utm_source
         data_type: varchar
-        description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
+        description: "Source where the ad was displayed. For example, Google, Facebook,
+          Twitter, Newsletter, etc."
 
       - name: ad_id
         data_type: varchar
@@ -220,16 +244,17 @@ models:
 
       - name: platform
         data_type: varchar
-        description: "Platform where the session was made. For example, website, iOS app, Android app, etc."
+        description: "Platform where the session was made. For example, website, iOS
+          app, Android app, etc."
 
   - name: customer_conversions
     description: "This table contains information on the conversions of all the customers"
     meta:
       owner: "Noa"
     config:
-        tags: ["marketing", "finance", "pii"]
-        elementary:
-            timestamp_column: "converted_at"
+      tags: ["marketing", "finance", "pii"]
+      elementary:
+        timestamp_column: "converted_at"
     columns:
       - name: customer_id
         data_type: number
@@ -244,13 +269,14 @@ models:
         description: "Total revenue amount (USD) of the conversion"
 
   - name: sessions
-    description: "This table contains information on the sessions of all the customers and the utm_source, utm_medium and utm_campaign of the session"
+    description: "This table contains information on the sessions of all the customers
+      and the utm_source, utm_medium and utm_campaign of the session"
     meta:
       owner: "Noa"
     config:
-        tags: ["marketing", "pii"]
-        elementary:
-            timestamp_column: "started_at"
+      tags: ["marketing", "pii"]
+      elementary:
+        timestamp_column: "started_at"
     columns:
       - name: session_id
         data_type: varchar
@@ -270,11 +296,13 @@ models:
 
       - name: utm_source
         data_type: varchar
-        description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
+        description: "Source where the ad was displayed. For example, Google, Facebook,
+          Twitter, Newsletter, etc."
 
       - name: utm_medium
         data_type: varchar
-        description: "The advertising or marketing medium. The medium can be social media, banners, CPC, third-party blogs, etc."
+        description: "The advertising or marketing medium. The medium can be social
+          media, banners, CPC, third-party blogs, etc."
 
       - name: utm_campain
         data_type: varchar
