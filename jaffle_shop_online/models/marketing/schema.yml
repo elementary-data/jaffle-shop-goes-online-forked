@@ -123,6 +123,7 @@ models:
       tags: ["marketing", "finance", "finance-data-product"]
       elementary:
         timestamp_column: "date_month"
+        subscribers: ["michael"]
     columns:
       - name: date_month
         data_type: timestamp_ntz
