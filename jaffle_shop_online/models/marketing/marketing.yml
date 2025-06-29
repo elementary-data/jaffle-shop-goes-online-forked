@@ -1,0 +1,40 @@
+models:
+  - name: cpa_and_roas
+    tests:
+      - unique:
+          column_name: [date_month, utm_source]
+      - not_null:
+          column_name: total_spend
+      - not_null:
+          column_name: attribution_points
+      - not_null:
+          column_name: attribution_revenue
+      - accepted_values:
+          column_name: utm_source
+          values: ['google', 'facebook', 'twitter', 'linkedin']  # Add your actual utm_sources here
+    columns:
+      - name: total_spend
+        tests:
+          - positive_value
+      - name: attribution_points
+        tests:
+          - positive_value
+      - name: attribution_revenue
+        tests:
+          - positive_value
+      - name: date_month
+        tests:
+          - dbt_utils.date_between:
+              min_date: '2020-01-01'  # Adjust this date as needed
+              max_date: "{{ '{{' }}current_timestamp() - 1 {{ '}}' }}"
+    
+    tests:
+      - relationships:
+          name: cpa_and_roas_date_utm_in_ads_spend
+          to: ref('ads_spend')
+          field: [date_month, utm_source]
+
+      - relationships:
+          name: cpa_and_roas_date_utm_in_attribution_touches
+          to: ref('attribution_touches')
+          field: [date_month, utm_source]
