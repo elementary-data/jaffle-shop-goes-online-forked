@@ -151,6 +151,8 @@ models:
       - name: return_on_advertising_spend
         data_type: number
         description: "The ROI of the ad spend, calculated as attribution_revenue / total_spend"
+    meta:
+      subscribers: ["Human"]
 
   - name: marketing_ads
     description: "This table contains information on the ad spend, by source, medium and campaign"
