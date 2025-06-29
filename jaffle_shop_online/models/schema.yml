@@ -2,7 +2,8 @@ version: 2
 
 models:
   - name: customers
-    description: This table has basic information about a customer, as well as some derived facts based on a customer's orders
+    description: This table has basic information about a customer, as well as some
+      derived facts based on a customer's orders
     meta:
       owner: "Maayan"
     config:
@@ -53,8 +54,41 @@ models:
       - name: signup_date
         description: Date (UTC) of a customer's signup to the online shop.
 
+    data_tests:
+      - elementary.all_columns_anomalies:
+          column_anomalies: # Optional, A list of column monitors for anomaly detection.
+            - null_count
+            - null_percent
+            - min_length
+          detection_period: # Optional, The period for anomaly detection.
+            period: day
+            count: 2
+          training_period: # Optional, The period for model training.
+            period: day
+            count: 14
+          seasonality: day_of_week # Optional, The seasonality of the data (omit for no seasonality).
+          detection_delay: # Optional, The period for detection delay.
+            period: day
+            count: 0
+          ignore_small_changes: # Optional
+            spike_failure_percent_threshold: 0 # Optional, Threshold for spike anomaly failure.
+            drop_failure_percent_threshold: 0 # Optional, Threshold for drop anomaly failure.
+          anomaly_exclude_metrics: metric_date != '2021-01-01' # Optional, SQL where expression on fields metric_date / metric_time_bucket / metric_value
+          time_bucket: # Optional, The period for time bucketing.
+            period: day
+            count: 1
+          timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+          where_expression: id is not null # Optional, SQL expression to filter the data.
+          config:
+            tags:
+              - stability
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
   - name: orders
-    description: This table has basic information about orders, as well as some derived facts based on payments
+    description: This table has basic information about orders, as well as some derived
+      facts based on payments
     meta:
       owner: "Or"
     config:
@@ -94,11 +128,9 @@ models:
                 tags: ["customer_success"]
                 severity: warn
                 owner: ["@data-ops"]
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
               config:
                 severity: warn
