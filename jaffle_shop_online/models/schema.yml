@@ -10,7 +10,7 @@ models:
       elementary:
         timestamp_column: "signup_date"
       tags:
-        - customer_data
+        - joost
         - pii
     columns:
       - name: customer_id
