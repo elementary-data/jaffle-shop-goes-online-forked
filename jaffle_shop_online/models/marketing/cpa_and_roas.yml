@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: cpa_and_roas
+    meta:
+      owner: "@data_team"
+      subscribers: ["@data_team", "@marketing_team"]
+    columns:
+      - name: date
+        tests:
+          - not_null
+      - name: ad_spend
+        tests:
+          - not_null
+      - name: revenue
+        tests:
+          - not_null
+      - name: roas
+        tests:
+          - not_null
+          - positive_value
