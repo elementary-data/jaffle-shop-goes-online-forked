@@ -1,15 +1,27 @@
 {{
     config(
-        materialized = "table",
+        materialized = 'table',
     )
 }}
 
 with customer_conversions as (
-    select * from {{ ref('customer_conversions') }}
+    select
+        customer_id,
+        converted_at,
+        revenue,
+        order_id
+    from {{ ref('customer_conversions') }}
 ),
 
 sessions as (
-    select * from {{ ref('sessions') }}
+    select
+        customer_id,
+        session_id,
+        started_at,
+        ended_at,
+        utm_source,
+        utm_medium
+    from {{ ref('sessions') }}
 ),
 
 -- Find all sessions that could have contributed to each conversion
@@ -25,27 +37,20 @@ attribution_eligible_sessions as (
         sessions.ended_at,
         sessions.utm_source,
         sessions.utm_medium,
-        datediff('day', sessions.started_at, conversions.converted_at)  as days_before_conversion,
-        datediff('hour', sessions.started_at, conversions.converted_at) as hours_before_conversion
+        date_diff('day', sessions.started_at, conversions.converted_at) as days_before_conversion,
+        date_diff('hour', sessions.started_at, conversions.converted_at) as hours_before_conversion,
+        row_number() over (
+            partition by conversions.customer_id, conversions.converted_at 
+            order by sessions.started_at
+        ) as session_index,
+        count(*) over (
+            partition by conversions.customer_id, conversions.converted_at
+        ) as total_sessions
     from customer_conversions as conversions
     inner join sessions 
         on conversions.customer_id = sessions.customer_id 
         and sessions.started_at <= conversions.converted_at  -- Session must be before conversion
-        and datediff('day', sessions.started_at, conversions.converted_at) <= {{ var('conversion_window_days', 7) }}  -- attribution window matches conversion window
-),
-
--- Calculate session sequence and total sessions per conversion
-sessions_with_sequence as (
-    select
-        *,
-        row_number() over (
-            partition by customer_id, converted_at 
-            order by started_at
-        ) as session_index,
-        count(*) over (
-            partition by customer_id, converted_at
-        ) as total_sessions
-    from attribution_eligible_sessions
+        and date_diff('day', sessions.started_at, conversions.converted_at) <= {{ var('conversion_window_days', 7) }}  -- attribution window matches conversion window
 ),
 
 -- Calculate attribution weights for different models
@@ -70,31 +75,28 @@ with_attribution_weights as (
         end as forty_twenty_forty_weight,
         
         -- Time-decay: more recent sessions get more weight
-        power(0.7, total_sessions - session_index) / 
-        sum(power(0.7, total_sessions - session_index)) over (
-            partition by customer_id, converted_at
-        ) as time_decay_weight
-        
-    from sessions_with_sequence
+        power(0.7, total_sessions - session_index) as time_decay_numerator
+    from attribution_eligible_sessions
 ),
 
 -- Calculate revenue attribution for each model
 with_points as (
     select
         *,
+        time_decay_numerator / sum(time_decay_numerator) over (partition by customer_id, converted_at) as time_decay_weight,
         -- Revenue attribution based on different models
         revenue * first_touch_weight as first_touch_revenue,
         revenue * last_touch_weight as last_touch_revenue,
         revenue * forty_twenty_forty_weight as forty_twenty_forty_revenue,
         revenue * linear_weight as linear_revenue,
-        revenue * time_decay_weight as time_decay_revenue,
+        revenue * (time_decay_numerator / sum(time_decay_numerator) over (partition by customer_id, converted_at)) as time_decay_revenue,
         
         -- Points (conversions) attribution - typically use linear for points
         linear_weight as linear_points,
         first_touch_weight as first_touch_points,
         last_touch_weight as last_touch_points,
         forty_twenty_forty_weight as forty_twenty_forty_points,
-        time_decay_weight as time_decay_points
+        (time_decay_numerator / sum(time_decay_numerator) over (partition by customer_id, converted_at)) as time_decay_points
 
     from with_attribution_weights
 )
