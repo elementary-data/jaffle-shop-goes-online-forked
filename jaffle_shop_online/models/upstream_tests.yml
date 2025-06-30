@@ -1,0 +1,45 @@
+models:
+  - name: orders
+    tests:
+      - unique:
+          column_name: order_id
+          name: unique_order_id
+      - elementary.column_anomalies:
+          column_name: amount
+          name: amount_anomalies
+          description: "Detect anomalies in the order amount"
+          anomaly_sensitivity: 3
+          tests:
+            - sum
+            - average
+            - min
+            - max
+
+  - name: real_time_orders
+    tests:
+      - accepted_range:
+          column_name: amount
+          min_value: 0
+          max_value: 10000
+          name: real_time_orders_amount_range
+
+sources:
+  - name: raw_orders_validation
+    tables:
+      - name: raw_orders
+        tests:
+          - elementary.volume_anomalies:
+              name: raw_orders_volume_anomalies
+          - elementary.freshness_anomalies:
+              name: raw_orders_freshness_anomalies
+              timestamp_column: created_at
+
+  - name: raw_paymentss_validation
+    tables:
+      - name: raw_payments
+        tests:
+          - elementary.volume_anomalies:
+              name: raw_payments_volume_anomalies
+          - elementary.freshness_anomalies:
+              name: raw_payments_freshness_anomalies
+              timestamp_column: payment_date
