@@ -76,6 +76,8 @@ models:
     columns:
       - name: order_id
         description: This is a unique identifier for an order
+        tests:
+          - unique
 
       - name: customer_id
         description: Foreign key to the customers table
@@ -116,6 +118,7 @@ models:
               column_anomalies:
                 - zero_count
                 - zero_percent
+                - average
 
       - name: credit_card_amount
         description: Amount of the order (AUD) paid for by credit card
@@ -318,6 +321,10 @@ models:
         description: '{{ doc("orders_status") }}'
       - name: amount
         description: "Total order amount (AUD) – already converted to dollars"
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 10000
       - name: credit_card_amount
         description: "Portion of the order paid with credit card (AUD)"
       - name: coupon_amount
