@@ -1,0 +1,11 @@
+models:
+  - name: cpa_and_roas
+    meta:
+      subscribers: ["@marketing_team"]
+    columns:
+      - name: source
+      - name: date
+      - name: revenue
+      - name: ad_spend
+      - name: roas
+      - name: cpa
