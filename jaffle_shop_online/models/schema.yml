@@ -56,6 +56,32 @@ models:
       - name: signup_date
         description: Date (UTC) of a customer's signup to the online shop.
 
+    data_tests:
+      - elementary.all_columns_anomalies:
+          column_anomalies: # Optional, A list of column monitors for anomaly detection.
+            - average
+          exclude_prefix: id_ # Optional, Columns with this prefix will be excluded from the test.
+          exclude_regexp: .*SDC$ # Optional, Columns matching this regular expression will be excluded from the test.
+          time_bucket: # Optional, The period for time bucketing.
+            period: day
+            count: 1
+          timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+          anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+          training_period: # Optional, The period for model training.
+            period: day # Optional
+            count: 14 # Optional
+          detection_period: # Optional, The period for anomaly detection.
+            period: day # Optional
+            count: 2 # Optional
+          anomaly_direction: both # Optional, The direction of anomalies to detect.
+          dimensions: ["customer_id"] # Optional, A list of columns to group the monitors by.
+          config:
+            tags:
+              - stability
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
   - name: orders
     description: This table has basic information about orders, as well as some derived
       facts based on payments
