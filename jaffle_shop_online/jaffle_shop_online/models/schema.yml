@@ -1,0 +1,15 @@
+models:
+  - name: orders
+    tests:
+      - unique:
+          column_name: order_id  # Assuming 'order_id' is the primary key
+      - elementary.column_anomalies:
+          column_name: amount
+
+  - name: real_time_orders
+    tests:
+      - accepted_values:
+          column_name: amount
+          values: 
+            - min_value: 0  # Adjust these values as needed
+            - max_value: 10000
