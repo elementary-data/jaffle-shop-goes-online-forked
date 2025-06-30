@@ -10,7 +10,7 @@ models:
       elementary:
         timestamp_column: "signup_date"
       tags:
-        - customer_data
+        - finance-data-product
         - pii
     columns:
       - name: customer_id
@@ -62,10 +62,13 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["finance", "sales"]
       elementary:
         timestamp_column: "order_date"
 
+      tags:
+        - finance
+        - finance-data-product
+        - sales
     tests:
       - elementary.dimension_anomalies:
           dimensions:
@@ -134,10 +137,12 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["finance"]
       elementary:
         timestamp_column: "order_date"
 
+      tags:
+        - finance
+        - finance-data-product
     tests:
       - elementary.schema_changes:
           config:
@@ -195,10 +200,12 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["finance"]
       elementary:
         timestamp_column: "order_date"
 
+      tags:
+        - finance
+        - finance-data-product
     tests:
       - elementary.schema_changes_from_baseline
     columns:
@@ -257,7 +264,9 @@ models:
     meta:
       owner: "Maayan"
     config:
-      tags: ["sales"]
+      tags:
+        - finance-data-product
+        - sales
     columns:
       - name: order_id
         description: "Unique identifier for an order"
@@ -274,9 +283,12 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["finance", "sales"]
       elementary:
         timestamp_column: "order_date"
+      tags:
+        - finance
+        - finance-data-product
+        - sales
     columns:
       - name: order_id
         description: "Unique identifier for an order"
@@ -304,9 +316,13 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["finance", "sales", "real_time"]
       elementary:
         timestamp_column: "order_date"
+      tags:
+        - finance
+        - finance-data-product
+        - real_time
+        - sales
     columns:
       - name: order_id
         description: "Unique identifier for an order"
