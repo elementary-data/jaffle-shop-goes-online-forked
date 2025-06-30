@@ -1,0 +1,4 @@
+models:
+  - name: cpa_and_roas
+    meta:
+      subscribers: "@marketing_team"
