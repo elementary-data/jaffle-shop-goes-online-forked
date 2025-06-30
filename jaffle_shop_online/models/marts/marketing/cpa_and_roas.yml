@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: cpa_and_roas
+    meta:
+      subscribers: "@marketing_team"
+    columns:
+      - name: source
+        description: "The advertising source or channel"
+      - name: date
+        description: "The date of the advertising data"
+      - name: cpa
+        description: "Cost per acquisition"
+      - name: roas
+        description: "Return on ad spend"
