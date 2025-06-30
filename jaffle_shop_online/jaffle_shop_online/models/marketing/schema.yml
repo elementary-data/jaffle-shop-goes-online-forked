@@ -1,7 +1,7 @@
 models:
   - name: cpa_and_roas
     meta:
-      subscribers: "@marketing_team"
+      subscribers: ["@marketing_team"]
     columns:
       - name: source
       - name: date
