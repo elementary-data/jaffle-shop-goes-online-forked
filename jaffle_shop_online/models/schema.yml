@@ -2,7 +2,8 @@ version: 2
 
 models:
   - name: customers
-    description: This table has basic information about a customer, as well as some derived facts based on a customer's orders
+    description: This table has basic information about a customer, as well as some
+      derived facts based on a customer's orders
     meta:
       owner: "Maayan"
     config:
@@ -35,6 +36,31 @@ models:
       - name: number_of_orders
         description: Count of the number of orders a customer has placed
 
+        data_tests:
+          - elementary.column_anomalies:
+              column_anomalies: # Optional, A list of column monitors for anomaly detection. by default all monitors except for `sum` are executed.
+                - average
+              time_bucket: # Optional, The period for time bucketing.
+                period: day
+                count: 1
+              timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+              anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+              training_period: # Optional, The period for model training.
+                period: day # Optional
+                count: 14 # Optional
+              detection_period: # Optional, The period for anomaly detection.
+                period: day # Optional
+                count: 2 # Optional
+              anomaly_direction: both # Optional, The direction of anomalies to detect.
+              dimensions: ["customer_id"] # Optional, A list of columns to group the monitors by.
+              description: Checking for anomaly on customer orders
+              config:
+                tags:
+                  - stability
+                severity: error
+              meta:
+                owner:
+                  - joost@elementary-data.com
       - name: customer_lifetime_value
         description: Total value (AUD) of a customer's orders
 
@@ -54,7 +80,8 @@ models:
         description: Date (UTC) of a customer's signup to the online shop.
 
   - name: orders
-    description: This table has basic information about orders, as well as some derived facts based on payments
+    description: This table has basic information about orders, as well as some derived
+      facts based on payments
     meta:
       owner: "Or"
     config:
@@ -94,11 +121,9 @@ models:
                 tags: ["customer_success"]
                 severity: warn
                 owner: ["@data-ops"]
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
               config:
                 severity: warn
@@ -250,7 +275,8 @@ models:
         description: Amount of the order (AUD) paid for by gift card
 
   - name: order_items
-    description: "Junction table between orders and products, containing the individual line items per order."
+    description: "Junction table between orders and products, containing the individual
+      line items per order."
     meta:
       owner: "Maayan"
     config:
@@ -266,7 +292,8 @@ models:
         description: "Sale price of a single unit (AUD)"
 
   - name: historical_orders
-    description: "Orders loaded from the historical batch datasets (prior to the current day). Amount fields are stored in cents."
+    description: "Orders loaded from the historical batch datasets (prior to the current
+      day). Amount fields are stored in cents."
     meta:
       owner: "Or"
     config:
@@ -294,7 +321,9 @@ models:
         description: "Portion of the order paid with gift card (in cents)"
 
   - name: real_time_orders
-    description: "Orders ingested from the real-time pipeline for the current day. Monetary fields have already been converted to dollars via the cents_to_dollars macro."
+    description: "Orders ingested from the real-time pipeline for the current day.
+      Monetary fields have already been converted to dollars via the cents_to_dollars
+      macro."
     meta:
       owner: "Or"
     config:
