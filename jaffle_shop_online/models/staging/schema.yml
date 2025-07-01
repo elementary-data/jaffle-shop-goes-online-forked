@@ -23,6 +23,10 @@ models:
       tags: ["staging", "finance", "sales"]
       elementary:
         timestamp_column: "order_date"
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies:
+          timestamp_column: order_date
     columns:
       - name: order_id
         tests:
@@ -46,6 +50,9 @@ models:
       owner: "Idan"
     config:
       tags: ["staging", "finance"]
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
     columns:
       - name: payment_id
         tests:
