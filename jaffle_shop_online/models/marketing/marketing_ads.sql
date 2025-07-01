@@ -5,26 +5,55 @@
     )
 }}
 
-with google_ads as (
-    select *
+with combined_ads as (
+    select
+        ad_id,
+        date,
+        campaign_name,
+        ad_name,
+        spend,
+        clicks,
+        impressions,
+        'google' as utm_source
     from {{ source("ads", "stg_google_ads") }}
-),
 
-facebook_ads as (
-    select *
+    union all
+
+    select
+        ad_id,
+        date,
+        campaign_name,
+        ad_name,
+        spend,
+        clicks,
+        impressions,
+        'facebook' as utm_source
     from {{ source("ads", "stg_facebook_ads") }}
-),
 
-instagram_ads as (
-    select *
+    union all
+
+    select
+        ad_id,
+        date,
+        campaign_name,
+        ad_name,
+        spend,
+        clicks,
+        impressions,
+        'instagram' as utm_source
     from {{ source("ads", "stg_instagram_ads") }}
 )
 
-select *, 'google' as utm_source
-from google_ads
-union all
-select *, 'facebook' as utm_source
-from facebook_ads
-union all
-select *, 'instagram' as utm_source
-from instagram_ads
+select
+    ad_id,
+    date,
+    campaign_name,
+    ad_name,
+    spend,
+    clicks,
+    impressions,
+    utm_source
+from combined_ads
+{% if is_incremental() %}
+where date > (select max(date) from {{ this }})
+{% endif %}
