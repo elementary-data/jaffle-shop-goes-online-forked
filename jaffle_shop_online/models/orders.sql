@@ -1,12 +1,13 @@
-{{
-  config(materialized='view')
-}}
 
 -- Union of historical and real-time datasets
-select *
-from {{ ref('historical_orders') }}
+select 
+    *,
+    amount_cents / 100 as amount
+from ELEMENTARY_TESTS.mika_jaffle_shop_online.historical_orders
 
 union all
 
-select *
-from {{ ref('real_time_orders') }} 
+select 
+    *,
+    amount_cents / 100 as amount
+from ELEMENTARY_TESTS.mika_jaffle_shop_online.real_time_orders
