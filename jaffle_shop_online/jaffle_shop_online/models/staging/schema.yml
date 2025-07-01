@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: stg_orders
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
+
+  - name: stg_payments
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
