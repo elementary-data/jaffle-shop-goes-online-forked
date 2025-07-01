@@ -1,83 +1,36 @@
 version: 2
 
 models:
-  - name: stg_customers
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "pii"]
-    columns:
-      - name: customer_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-          - relationships:
-              to: ref('stg_signups')
-              field: customer_id
-
   - name: stg_orders
-    meta:
-      owner: "Idan"
+    description: Staging layer for orders data
     config:
-      tags: ["staging", "finance", "sales"]
-      elementary:
-        timestamp_column: "order_date"
+      tags: ["staging", "daily"]
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
     columns:
       - name: order_id
         tests:
-          - unique:
-              config:
-                severity: warn
+          - unique
+          - not_null
       - name: status
         tests:
           - accepted_values:
-              config:
-                severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
-          - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
-              quote_values: true
+              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
 
   - name: stg_payments
-    meta:
-      owner: "Idan"
+    description: Staging layer for payments data
     config:
-      tags: ["staging", "finance"]
+      tags: ["staging", "daily"]
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
     columns:
       - name: payment_id
         tests:
-          - unique:
-              config:
-                severity: warn
+          - unique
+          - not_null
       - name: payment_method
         tests:
           - accepted_values:
-              config:
-                severity: warn
-              values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
-
-  - name: stg_signups
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "pii"]
-      elementary:
-        timestamp_column: "signup_date"
-    columns:
-      - name: signup_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-      - name: customer_email
-        tests:
-          - unique
-          - elementary.column_anomalies:
-              sensitivity: 2
-              config:
-                severity: warn
-              column_anomalies:
-                - missing_count
+              values: ['credit_card', 'coupon', 'bank_transfer', 'gift_card']
