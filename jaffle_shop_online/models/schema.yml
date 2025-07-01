@@ -76,6 +76,8 @@ models:
     columns:
       - name: order_id
         description: This is a unique identifier for an order
+        tests:
+          - unique
 
       - name: customer_id
         description: Foreign key to the customers table
@@ -116,6 +118,7 @@ models:
               column_anomalies:
                 - zero_count
                 - zero_percent
+                - average
 
       - name: credit_card_amount
         description: Amount of the order (AUD) paid for by credit card
@@ -307,6 +310,10 @@ models:
       tags: ["finance", "sales", "real_time"]
       elementary:
         timestamp_column: "order_date"
+    tests:
+      - dbt_expectations.expect_column_values_to_be_between:
+          column_name: amount
+          max_value: '{{ max_price_from_raw_products() }}'  # This assumes you have a macro to get the max price
     columns:
       - name: order_id
         description: "Unique identifier for an order"
