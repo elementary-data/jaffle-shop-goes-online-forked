@@ -42,7 +42,8 @@ select
     customer_id,
     order_date,
     status,
-    {{ cents_to_dollars('amount_cents') }} as amount,
+    -- All monetary amounts in this model are in dollars
+    {{ cents_to_dollars('amount_cents') }} as amount,  -- Amount is now in dollars
     {{ cents_to_dollars('bank_transfer_amount') }} as bank_transfer_amount,
     {{ cents_to_dollars('coupon_amount') }} as coupon_amount,
     {{ cents_to_dollars('credit_card_amount') }} as credit_card_amount,
