@@ -73,6 +73,8 @@ models:
           config:
             owner: ["@data-ops"]
             tags: ["stability"]
+      - unique:
+          column_name: order_id  # Assuming order_id is the primary key
     columns:
       - name: order_id
         description: This is a unique identifier for an order
@@ -108,6 +110,12 @@ models:
 
       - name: amount
         description: Total amount (AUD) of the order
+        tests:
+          - elementary.column_anomalies:
+              column_anomalies:
+                - average
+              config:
+                owner: ["@data-ops"]
 
       - name: credit_card_amount
         description: Amount of the order (AUD) paid for by credit card
@@ -299,6 +307,9 @@ models:
       tags: ["finance", "sales", "real_time"]
       elementary:
         timestamp_column: "order_date"
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "amount <= (select max(price) from {{ source('raw', 'products') }})"
     columns:
       - name: order_id
         description: "Unique identifier for an order"
@@ -318,3 +329,15 @@ models:
         description: "Portion of the order paid with bank transfer (AUD)"
       - name: gift_card_amount
         description: "Portion of the order paid with gift card (AUD)"
+
+  - name: stg_orders
+    description: "Staged orders data"
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
+
+  - name: stg_payments
+    description: "Staged payments data"
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
