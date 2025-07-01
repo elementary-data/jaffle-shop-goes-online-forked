@@ -1,83 +1,30 @@
 version: 2
 
 models:
-  - name: stg_customers
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "pii"]
-    columns:
-      - name: customer_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-          - relationships:
-              to: ref('stg_signups')
-              field: customer_id
-
   - name: stg_orders
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "finance", "sales"]
-      elementary:
-        timestamp_column: "order_date"
-    columns:
-      - name: order_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-      - name: status
-        tests:
-          - accepted_values:
-              config:
-                severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
-          - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
-              quote_values: true
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
 
   - name: stg_payments
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "finance"]
-    columns:
-      - name: payment_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-      - name: payment_method
-        tests:
-          - accepted_values:
-              config:
-                severity: warn
-              values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
 
-  - name: stg_signups
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "pii"]
-      elementary:
-        timestamp_column: "signup_date"
-    columns:
-      - name: signup_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-      - name: customer_email
-        tests:
-          - unique
-          - elementary.column_anomalies:
-              sensitivity: 2
-              config:
-                severity: warn
-              column_anomalies:
-                - missing_count
+  - name: orders
+    tests:
+      - unique:
+          column_name: order_id
+      - elementary.column_anomalies:
+          column_name: amount
+
+  - name: real_time_orders
+    tests:
+      - elementary.query_test:
+          name: amount_not_exceeding_max_price
+          query: >
+            SELECT
+              rto.order_id
+            FROM {{ model }} rto
+            LEFT JOIN raw_products rp ON rto.product_id = rp.product_id
+            WHERE rto.amount > rp.max_price
