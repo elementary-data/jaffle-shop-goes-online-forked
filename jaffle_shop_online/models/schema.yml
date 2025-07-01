@@ -73,6 +73,10 @@ models:
           config:
             owner: ["@data-ops"]
             tags: ["stability"]
+      - unique:
+          column_name: order_id
+          config:
+            owner: ["@data-ops"]
     columns:
       - name: order_id
         description: This is a unique identifier for an order
@@ -116,6 +120,9 @@ models:
               column_anomalies:
                 - zero_count
                 - zero_percent
+                - average
+                - min
+                - max
 
       - name: credit_card_amount
         description: Amount of the order (AUD) paid for by credit card
@@ -307,6 +314,12 @@ models:
       tags: ["finance", "sales", "real_time"]
       elementary:
         timestamp_column: "order_date"
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "amount <= (select max(price) from {{ ref('raw_products') }})"
+          config:
+            severity: error
+            owner: ["@finance-team"]
     columns:
       - name: order_id
         description: "Unique identifier for an order"
