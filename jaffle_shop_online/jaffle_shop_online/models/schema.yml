@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: orders
+    tests:
+      - unique:
+          column_name: order_id  # Assuming 'order_id' is the primary key
+    columns:
+      - name: amount
+        tests:
+          - elementary.column_anomalies:
+              anomaly_direction: both
+              column_anomalies:
+                - average
+              time_bucket:
+                period: day
+                count: 1
+
+  - name: real_time_orders
+    tests:
+      - elementary.custom_sql:
+          sql: >
+            SELECT *
+            FROM {{ model }}
+            WHERE amount > (SELECT MAX(price) FROM {{ source('raw', 'products') }})
+          warn_if: '>0'
+          error_if: '>0'
+          severity: error
+          description: Validates that the amount field is less than or equal to the max price from the raw_products table
