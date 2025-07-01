@@ -4,7 +4,7 @@ models:
   - name: ads_spend
     description: "This table contains the daily ad spend, by source, medium and campaign"
     meta:
-      owner: "Noa"
+      owner: "@marketing-team"
     config:
       tags: ["marketing", "finance", "finance-data-product"]
       elementary:
@@ -33,7 +33,7 @@ models:
   - name: attribution_touches
     description: "This is a table that contains all the touch points, by session, with the utm_source, utm_medium and utm_campaign"
     meta:
-      owner: "Noa"
+      owner: "@marketing-team"
     config:
       tags: ["marketing", "pii", "finance-data-product"]
       elementary:
@@ -263,7 +263,7 @@ models:
   - name: sessions
     description: "This table contains information on the sessions of all the customers and the utm_source, utm_medium and utm_campaign of the session"
     meta:
-      owner: "Noa"
+      owner: "@marketing-team"
     config:
         tags: ["marketing", "pii"]
         elementary:
