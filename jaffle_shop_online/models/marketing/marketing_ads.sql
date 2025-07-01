@@ -6,18 +6,48 @@
 }}
 
 with google_ads as (
-    select *
+    select
+        ad_id,
+        date,
+        campaign_name,
+        ad_group_name,
+        clicks,
+        impressions,
+        cost
     from {{ source("ads", "stg_google_ads") }}
+    {% if is_incremental() %}
+    where date > (select max(date) from {{ this }})
+    {% endif %}
 ),
 
 facebook_ads as (
-    select *
+    select
+        ad_id,
+        date,
+        campaign_name,
+        ad_set_name as ad_group_name,
+        clicks,
+        impressions,
+        spend as cost
     from {{ source("ads", "stg_facebook_ads") }}
+    {% if is_incremental() %}
+    where date > (select max(date) from {{ this }})
+    {% endif %}
 ),
 
 instagram_ads as (
-    select *
+    select
+        ad_id,
+        date,
+        campaign_name,
+        ad_set_name as ad_group_name,
+        clicks,
+        impressions,
+        spend as cost
     from {{ source("ads", "stg_instagram_ads") }}
+    {% if is_incremental() %}
+    where date > (select max(date) from {{ this }})
+    {% endif %}
 )
 
 select *, 'google' as utm_source
