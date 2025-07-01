@@ -1,0 +1,44 @@
+models:
+  - name: stg_orders
+    tests:
+      - elementary.volume_anomalies:
+          anomaly_sensitivity: 2
+          anomaly_direction: both
+          timestamp_column: created_at  # Assuming there's a 'created_at' column
+          time_bucket:
+            period: day
+            count: 1
+          detection_period:
+            period: day
+            count: 14
+      - elementary.freshness_anomalies:
+          anomaly_sensitivity: 2
+          timestamp_column: created_at
+          time_bucket:
+            period: day
+            count: 1
+          detection_period:
+            period: day
+            count: 14
+
+  - name: stg_payments
+    tests:
+      - elementary.volume_anomalies:
+          anomaly_sensitivity: 2
+          anomaly_direction: both
+          timestamp_column: payment_date  # Assuming there's a 'payment_date' column
+          time_bucket:
+            period: day
+            count: 1
+          detection_period:
+            period: day
+            count: 14
+      - elementary.freshness_anomalies:
+          anomaly_sensitivity: 2
+          timestamp_column: payment_date
+          time_bucket:
+            period: day
+            count: 1
+          detection_period:
+            period: day
+            count: 14

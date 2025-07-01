@@ -1,0 +1,30 @@
+models:
+  - name: orders
+    columns:
+      - name: order_id  # Assuming 'order_id' is the primary key
+        tests:
+          - unique
+    tests:
+      - elementary.column_anomalies:
+          column_name: amount
+          anomaly_sensitivity: 2
+          anomaly_direction: both
+          timestamp_column: order_date  # Assuming there's an 'order_date' column
+          time_bucket:
+            period: day
+            count: 1
+          detection_period:
+            period: day
+            count: 14
+          column_anomalies:
+            - average
+
+  - name: real_time_orders
+    tests:
+      - relationships:
+          name: amount_validation
+          sql: >
+            select amount, max_price
+            from {{ model }}
+            left join {{ source('raw', 'products') }} on {{ model }}.product_id = raw_products.id
+            where amount > max_price
