@@ -40,6 +40,9 @@ models:
               value_set:
                 ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
 
   - name: stg_payments
     meta:
@@ -58,6 +61,9 @@ models:
               config:
                 severity: warn
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
 
   - name: stg_signups
     meta:
@@ -81,3 +87,19 @@ models:
                 severity: warn
               column_anomalies:
                 - missing_count
+
+  - name: orders
+    columns:
+      - name: order_id
+        tests:
+          - unique
+      - name: amount
+        tests:
+          - elementary.column_anomalies
+
+  - name: real_time_orders
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "amount <= (select max(price) from {{ source('raw', 'products') }})"
+          config:
+            severity: error
