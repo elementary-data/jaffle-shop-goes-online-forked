@@ -1,83 +1,40 @@
-version: 2
-
 models:
-  - name: stg_customers
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "pii"]
-    columns:
-      - name: customer_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-          - relationships:
-              to: ref('stg_signups')
-              field: customer_id
-
-  - name: stg_orders
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "finance", "sales"]
-      elementary:
-        timestamp_column: "order_date"
-    columns:
-      - name: order_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-      - name: status
-        tests:
-          - accepted_values:
-              config:
-                severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
-          - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
-              quote_values: true
-
-  - name: stg_payments
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "finance"]
-    columns:
-      - name: payment_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-      - name: payment_method
-        tests:
-          - accepted_values:
-              config:
-                severity: warn
-              values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
-
-  - name: stg_signups
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "pii"]
-      elementary:
-        timestamp_column: "signup_date"
-    columns:
-      - name: signup_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-      - name: customer_email
-        tests:
-          - unique
-          - elementary.column_anomalies:
-              sensitivity: 2
-              config:
-                severity: warn
-              column_anomalies:
-                - missing_count
+  - name: cpa_and_roas
+    tests:
+      - not_null:
+          column_name: total_spend
+      - not_null:
+          column_name: attribution_points
+      - not_null:
+          column_name: attribution_revenue
+      - accepted_values:
+          values: ['>=0']
+          column_name: total_spend
+      - accepted_values:
+          values: ['>=0']
+          column_name: attribution_revenue
+      - accepted_values:
+          values: ['>=0']
+          column_name: cost_per_acquisition
+      - accepted_values:
+          values: ['>=0']
+          column_name: return_on_advertising_spend
+      - custom_generic_test:
+          config:
+            severity: error
+          test_name: date_not_in_future
+          test_description: "Check that 'day' column is not in the future"
+          test_query: >
+            SELECT *
+            FROM {{ model }}
+            WHERE day > CURRENT_DATE()
+      - custom_generic_test:
+          config:
+            severity: error
+          test_name: spend_attribution_relationship
+          test_description: "Check relationship integrity between spend and attribution data"
+          test_query: >
+            SELECT *
+            FROM {{ model }}
+            WHERE total_spend > 0
+              AND (attribution_points <= 0 OR attribution_revenue <= 0)
