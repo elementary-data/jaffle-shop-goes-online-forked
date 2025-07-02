@@ -15,6 +15,9 @@ from data_creation.incremental_data_creation.incremental_training_data_generator
 from data_creation.incremental_data_creation.incremental_validation_data_generator import (
     generate_incremental_validation_data,
 )
+from data_creation.incremental_data_creation.sessions_data_generator import (
+    generate_sessions_data,
+)
 from utils.csv import clear_csv
 
 logger = logging.getLogger(__name__)
@@ -41,6 +44,8 @@ def run_incremental_data_creation(
     clear_data(validation=True, training=True)
 
     dbt_runner.seed(select="ads")
+    # Initial sessions seeding with training data (validation doesn't exist yet)
+    generate_sessions_data("training")
     dbt_runner.seed(select="sessions")
 
     logger.info(f"Running incremental demo for {days_back} days back")
@@ -74,6 +79,14 @@ def run_incremental_data_creation(
             clear_data(validation=True)
             generate_incremental_training_data(custom_run_time)
             dbt_runner.seed(select="training")
+
+            # Regenerate sessions based on current training data
+            logger.info(
+                f"Regenerating sessions for day {run_index} based on current order data..."
+            )
+            generate_sessions_data("training")
+            dbt_runner.seed(select="sessions")
+
             dbt_runner.run(
                 vars={
                     "custom_run_started_at": custom_run_time.isoformat(),
@@ -86,6 +99,14 @@ def run_incremental_data_creation(
         else:
             generate_incremental_training_data(custom_run_time)
             dbt_runner.seed(select="training")
+
+            # Regenerate sessions based on current training data
+            logger.info(
+                f"Regenerating sessions for day {run_index} based on current order data..."
+            )
+            generate_sessions_data("training")
+            dbt_runner.seed(select="sessions")
+
             dbt_runner.run(
                 vars={
                     "custom_run_started_at": custom_run_time.isoformat(),
@@ -110,6 +131,12 @@ def run_incremental_data_creation(
         current_time, ammount_of_new_data=600, last_run=True
     )
     dbt_runner.seed(select="validation")
+
+    # Regenerate sessions to include validation customers
+    logger.info("Regenerating sessions to include validation customers...")
+    generate_sessions_data("validation")
+    dbt_runner.seed(select="sessions")
+
     dbt_runner.run(
         vars={
             "custom_run_started_at": current_time.isoformat(),
