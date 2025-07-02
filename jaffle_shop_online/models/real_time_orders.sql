@@ -1,3 +1,5 @@
+-- All monetary amounts in this model are in dollars
+
 {{
   config(materialized='view')
 }}
