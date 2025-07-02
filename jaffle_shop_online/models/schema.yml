@@ -56,6 +56,13 @@ models:
       - name: signup_date
         description: Date (UTC) of a customer's signup to the online shop.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - id
+            - customer_id
+          config:
+            severity: error
   - name: orders
     description: This table has basic information about orders, as well as some derived
       facts based on payments
