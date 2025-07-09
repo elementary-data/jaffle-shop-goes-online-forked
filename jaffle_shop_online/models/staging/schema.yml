@@ -2,6 +2,13 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model, `stg_customers`, represents the staging table for the
+      customer data in the Jaffle Shop online store. It serves the purpose of providing
+      a clean and standardized source of customer information, including their unique
+      identifier (`customer_id`) and their first and last names. The model renames
+      the columns from the raw customer data table (`raw_customers_training`) to a
+      more intuitive format, ensuring data quality and consistency for downstream
+      analysis and reporting.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +24,13 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model, `stg_orders`, serves as the staging table for order data
+      in the finance and sales domains. It ingests raw order data from the `ELEMENTARY_TESTS.mika_jaffle_shop_online.raw_orders_training`
+      table and performs a simple renaming transformation, mapping the source columns
+      to more meaningful names like `order_id`, `customer_id`, `order_date`, and `status`.
+      This staging table provides a clean, consistent, and well-documented data source
+      for downstream analysis and reporting on the company's order history and customer
+      behavior.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +48,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -60,6 +72,12 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This staging model captures the raw signups data from the `raw_signups_training`
+      table in the `mika_jaffle_shop_online` database. It renames the columns to more
+      descriptive names, such as `signup_id`, `customer_id`, `customer_email`, `hashed_password`,
+      and `signup_date`. This model serves as the foundation for downstream analytics
+      on customer signups, allowing data consumers to easily access and analyze the
+      relevant signup information.
     meta:
       owner: "Idan"
     config:
