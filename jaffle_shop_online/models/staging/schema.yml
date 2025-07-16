@@ -1,83 +1,31 @@
-version: 2
-
 models:
-  - name: stg_customers
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "pii"]
+  - name: ads_spend
     columns:
-      - name: customer_id
+      - name: day
         tests:
-          - unique:
-              config:
-                severity: warn
-          - relationships:
-              to: ref('stg_signups')
-              field: customer_id
-
-  - name: stg_orders
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "finance", "sales"]
-      elementary:
-        timestamp_column: "order_date"
-    columns:
-      - name: order_id
+          - not_null
+      - name: utm_source
         tests:
-          - unique:
-              config:
-                severity: warn
-      - name: status
+          - not_null
+      - name: utm_medium
         tests:
-          - accepted_values:
-              config:
-                severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
-          - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
-              quote_values: true
-
-  - name: stg_payments
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "finance"]
-    columns:
-      - name: payment_id
+          - not_null
+      - name: utm_campaign
         tests:
-          - unique:
-              config:
-                severity: warn
-      - name: payment_method
+          - not_null
+      - name: spend
         tests:
-          - accepted_values:
-              config:
-                severity: warn
-              values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
-
-  - name: stg_signups
-    meta:
-      owner: "Idan"
-    config:
-      tags: ["staging", "pii"]
-      elementary:
-        timestamp_column: "signup_date"
-    columns:
-      - name: signup_id
-        tests:
-          - unique:
-              config:
-                severity: warn
-      - name: customer_email
-        tests:
-          - unique
-          - elementary.column_anomalies:
-              sensitivity: 2
-              config:
-                severity: warn
-              column_anomalies:
-                - missing_count
+          - not_null
+          - positive_value
+    tests:
+      - unique:
+          column_name:
+            - day
+            - utm_source
+            - utm_medium
+            - utm_campaign
+      - dbt_utils.accepted_range:
+          column_name: day
+          min_value: '2020-01-01'  # Adjust this date as needed
+          max_value: "{{ dbt_utils.current_timestamp() }}"
+          inclusive: true
