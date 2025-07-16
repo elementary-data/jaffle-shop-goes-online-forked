@@ -119,6 +119,7 @@ models:
     description: "This table contains the cost per acquisition and return on ad spend, by source, and per day"
     meta:
       owner: "Or"
+      subscribers: ["@marketing_team"]
     config:
       tags: ["marketing", "finance", "finance-data-product"]
       elementary:
