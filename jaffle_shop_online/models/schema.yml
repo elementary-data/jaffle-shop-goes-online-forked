@@ -12,6 +12,7 @@ models:
       tags:
         - customer_data
         - pii
+        - customers
     columns:
       - name: customer_id
         description: This is a unique identifier for a customer
