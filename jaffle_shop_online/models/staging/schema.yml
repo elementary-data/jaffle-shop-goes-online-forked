@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model, `stg_customers`, represents the staged data for customer
+      information, including customer ID, first name, and last name. It serves as
+      an intermediate step in the data pipeline, preparing the raw customer data for
+      downstream transformation and analysis. The model performs basic renaming and
+      selection of relevant columns from the source table `raw_customers_validation`.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +22,13 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model `stg_orders` serves the finance and sales domains
+      by preparing raw order data from the `jaffle_shop.raw_orders_validation` table
+      for downstream analytical use. It renames and selects relevant columns, including
+      the order ID, customer ID, order date, and order status, to create a clean,
+      normalized data set for further processing and analysis. This model provides
+      a foundation for understanding order-level metrics and customer behavior within
+      the business.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +46,19 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This model represents a staging table for the payments data from
+      the jaffle_shop data source. It serves the finance team by providing a clean
+      and consistent representation of the raw payments data, including the payment
+      ID, order ID, and payment amount (converted from cents to dollars). The model
+      performs a basic data transformation to rename the columns and convert the payment
+      amount to dollars, making the data more accessible and easier to use for downstream
+      analysis.
     meta:
       owner: "Idan"
     config:
