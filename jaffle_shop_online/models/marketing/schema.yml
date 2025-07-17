@@ -32,6 +32,31 @@ models:
         data_type: number
         description: "The USD amount of money spent"
 
+    data_tests:
+      - elementary.all_columns_anomalies:
+          column_anomalies: # Optional, A list of column monitors for anomaly detection.
+            - average
+          exclude_prefix: id_ # Optional, Columns with this prefix will be excluded from the test.
+          exclude_regexp: .*SDC$ # Optional, Columns matching this regular expression will be excluded from the test.
+          time_bucket: # Optional, The period for time bucketing.
+            period: day
+            count: 1
+          timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+          anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+          training_period: # Optional, The period for model training.
+            period: day # Optional
+            count: 14 # Optional
+          detection_period: # Optional, The period for anomaly detection.
+            period: day # Optional
+            count: 2 # Optional
+          anomaly_direction: both # Optional, The direction of anomalies to detect.
+          config:
+            tags:
+              - marketing
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
   - name: attribution_touches
     description: "This is a table that contains all the touch points, by session,
       with the utm_source, utm_medium and utm_campaign"
@@ -120,6 +145,31 @@ models:
         data_type: number
         description: ""
 
+    data_tests:
+      - elementary.all_columns_anomalies:
+          column_anomalies: # Optional, A list of column monitors for anomaly detection.
+            - average
+          exclude_prefix: id_ # Optional, Columns with this prefix will be excluded from the test.
+          exclude_regexp: .*SDC$ # Optional, Columns matching this regular expression will be excluded from the test.
+          time_bucket: # Optional, The period for time bucketing.
+            period: day
+            count: 1
+          timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+          anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+          training_period: # Optional, The period for model training.
+            period: day # Optional
+            count: 14 # Optional
+          detection_period: # Optional, The period for anomaly detection.
+            period: day # Optional
+            count: 2 # Optional
+          anomaly_direction: both # Optional, The direction of anomalies to detect.
+          config:
+            tags:
+              - marketing
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
   - name: cpa_and_roas
     description: "This table contains the cost per acquisition and return on ad spend,
       by source, and per day"
@@ -178,6 +228,31 @@ models:
                 period: day
                 count: 1
 
+    data_tests:
+      - elementary.all_columns_anomalies:
+          column_anomalies: # Optional, A list of column monitors for anomaly detection.
+            - average
+          exclude_prefix: id_ # Optional, Columns with this prefix will be excluded from the test.
+          exclude_regexp: .*SDC$ # Optional, Columns matching this regular expression will be excluded from the test.
+          time_bucket: # Optional, The period for time bucketing.
+            period: day
+            count: 1
+          timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+          anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+          training_period: # Optional, The period for model training.
+            period: day # Optional
+            count: 14 # Optional
+          detection_period: # Optional, The period for anomaly detection.
+            period: day # Optional
+            count: 2 # Optional
+          anomaly_direction: both # Optional, The direction of anomalies to detect.
+          config:
+            tags:
+              - marketing
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
   - name: marketing_ads
     description: "This table contains information on the ad spend, by source, medium
       and campaign"
@@ -214,6 +289,31 @@ models:
         description: "Source where the ad was displayed. For example, Google, Facebook,
           Twitter, Newsletter, etc."
 
+    data_tests:
+      - elementary.all_columns_anomalies:
+          column_anomalies: # Optional, A list of column monitors for anomaly detection.
+            - average
+          exclude_prefix: id_ # Optional, Columns with this prefix will be excluded from the test.
+          exclude_regexp: .*SDC$ # Optional, Columns matching this regular expression will be excluded from the test.
+          time_bucket: # Optional, The period for time bucketing.
+            period: day
+            count: 1
+          timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+          anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+          training_period: # Optional, The period for model training.
+            period: day # Optional
+            count: 14 # Optional
+          detection_period: # Optional, The period for anomaly detection.
+            period: day # Optional
+            count: 2 # Optional
+          anomaly_direction: both # Optional, The direction of anomalies to detect.
+          config:
+            tags:
+              - marketing
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
   - name: agg_sessions
     description: "This table contains aggregated information on the sessions"
     meta:
@@ -253,6 +353,31 @@ models:
         description: "Platform where the session was made. For example, website, iOS
           app, Android app, etc."
 
+    data_tests:
+      - elementary.all_columns_anomalies:
+          column_anomalies: # Optional, A list of column monitors for anomaly detection.
+            - average
+          exclude_prefix: id_ # Optional, Columns with this prefix will be excluded from the test.
+          exclude_regexp: .*SDC$ # Optional, Columns matching this regular expression will be excluded from the test.
+          time_bucket: # Optional, The period for time bucketing.
+            period: day
+            count: 1
+          timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+          anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+          training_period: # Optional, The period for model training.
+            period: day # Optional
+            count: 14 # Optional
+          detection_period: # Optional, The period for anomaly detection.
+            period: day # Optional
+            count: 2 # Optional
+          anomaly_direction: both # Optional, The direction of anomalies to detect.
+          config:
+            tags:
+              - marketing
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
   - name: customer_conversions
     description: "This table contains information on the conversions of all the customers"
     meta:
@@ -274,6 +399,31 @@ models:
         data_type: number
         description: "Total revenue amount (USD) of the conversion"
 
+    data_tests:
+      - elementary.all_columns_anomalies:
+          column_anomalies: # Optional, A list of column monitors for anomaly detection.
+            - average
+          exclude_prefix: id_ # Optional, Columns with this prefix will be excluded from the test.
+          exclude_regexp: .*SDC$ # Optional, Columns matching this regular expression will be excluded from the test.
+          time_bucket: # Optional, The period for time bucketing.
+            period: day
+            count: 1
+          timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+          anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+          training_period: # Optional, The period for model training.
+            period: day # Optional
+            count: 14 # Optional
+          detection_period: # Optional, The period for anomaly detection.
+            period: day # Optional
+            count: 2 # Optional
+          anomaly_direction: both # Optional, The direction of anomalies to detect.
+          config:
+            tags:
+              - marketing
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
   - name: sessions
     description: "This table contains information on the sessions of all the customers
       and the utm_source, utm_medium and utm_campaign of the session"
@@ -313,3 +463,28 @@ models:
       - name: utm_campain
         data_type: varchar
         description: "The name of the advertising campaign"
+    data_tests:
+      - elementary.all_columns_anomalies:
+          column_anomalies: # Optional, A list of column monitors for anomaly detection.
+            - average
+          exclude_prefix: id_ # Optional, Columns with this prefix will be excluded from the test.
+          exclude_regexp: .*SDC$ # Optional, Columns matching this regular expression will be excluded from the test.
+          time_bucket: # Optional, The period for time bucketing.
+            period: day
+            count: 1
+          timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+          anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+          training_period: # Optional, The period for model training.
+            period: day # Optional
+            count: 14 # Optional
+          detection_period: # Optional, The period for anomaly detection.
+            period: day # Optional
+            count: 2 # Optional
+          anomaly_direction: both # Optional, The direction of anomalies to detect.
+          config:
+            tags:
+              - marketing
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
