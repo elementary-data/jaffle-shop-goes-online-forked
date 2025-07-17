@@ -296,9 +296,10 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["finance", "sales", "real_time"]
       elementary:
         timestamp_column: "order_date"
+      tags:
+        - staging
     columns:
       - name: order_id
         description: "Unique identifier for an order"
