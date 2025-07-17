@@ -292,6 +292,12 @@ models:
         data_type: number
         description: "Unique identifier for a customer"
 
+        data_tests:
+          - unique:
+              description: The customer_id column in the sessions table should contain
+                only unique values
+              config:
+                severity: warn
       - name: started_at
         data_type: timestamp_ntz
         description: "Time (UTC) when the session started"
