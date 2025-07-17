@@ -208,6 +208,16 @@ models:
               to: ref('customers')
               field: customer_id
 
+          - unique:
+              description: The customer_id column in the lost_orders table should
+                contain only unique values
+              config:
+                tags:
+                  - stability
+                severity: warn
+              meta:
+                owner:
+                  - joost
       - name: order_date
         description: Date (UTC) that the order was placed
 
