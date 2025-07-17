@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model loads the raw customer data from the `ELEMENTARY_TESTS.jaffle_shop.raw_customers_validation`
+      table and renames the columns to more meaningful names. It extracts the customer
+      ID, first name, and last name from the source data and provides a clean, standardized
+      dataset for downstream analysis. This model serves as a crucial building block
+      for creating a unified customer view and enabling data analysts to gain insights
+      into customer behavior and demographics.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +23,13 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model, `stg_orders`, represents the staging table for the orders
+      data from the Jaffle Shop. It serves the finance and sales teams by providing
+      a clean and consistent view of the raw orders data, including the order ID,
+      customer ID, order date, and order status. The model performs a simple renaming
+      and selection of the relevant columns from the `raw_orders_validation` table
+      in the `jaffle_shop` schema, making the data more accessible and easier to use
+      for downstream analyses.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +47,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -60,6 +71,12 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: The `stg_signups` model represents a staging table that ingests and
+      transforms raw signup data for the Jaffle Shop application. It extracts key
+      fields such as the signup ID, customer ID, customer email, hashed password,
+      and signup date. This model serves as a central source of truth for signup information,
+      providing data analysts and consumers with a clean and consistent dataset to
+      power downstream analysis and reporting on user acquisition and customer activity.
     meta:
       owner: "Idan"
     config:
