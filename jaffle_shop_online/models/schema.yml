@@ -318,3 +318,15 @@ models:
         description: "Portion of the order paid with bank transfer (AUD)"
       - name: gift_card_amount
         description: "Portion of the order paid with gift card (AUD)"
+    data_tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+          compare_columns: # Optional
+            - first_column
+            - second_column
+          exclude_columns: # Optional
+            - first_column
+            - third_column
+          precision: 4 # Optional, Decimal precision to compare numeric columns on
+          config:
+            severity: error
