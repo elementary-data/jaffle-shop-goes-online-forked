@@ -2,6 +2,13 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model `stg_customers` represents a staging table that contains
+      the basic customer information, including the customer ID, first name, and last
+      name. This model is used to prepare the customer data for further downstream
+      processing and analysis. The model renames the columns from the raw `raw_customers_training`
+      table in the `ELEMENTARY_TESTS.mika_jaffle_shop_online` schema to more descriptive
+      names, such as `customer_id`, `first_name`, and `last_name`. This staging table
+      serves as a foundational layer for building customer-centric reports and analyses.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +24,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model ingests the raw orders data from the `ELEMENTARY_TESTS.mika_jaffle_shop_online.raw_orders_training`
+      table and renames the relevant columns to `order_id`, `customer_id`, `order_date`,
+      and `status`. This model serves as the foundation for downstream analytics on
+      the orders data, providing a standardized and consistent source of order information
+      for data consumers. The model performs minimal transformations, primarily renaming
+      columns to align with the expected data structure for the orders entity.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +47,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -60,6 +71,12 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This model represents a staging table for customer signup data. It
+      renames and selects key columns from the raw `raw_signups_training` table, including
+      the customer's unique identifier, email, hashed password, and signup date. This
+      staging table serves as an intermediate step in the data pipeline, providing
+      a clean and consistent data structure for downstream analysis and reporting
+      on customer signups.
     meta:
       owner: "Idan"
     config:
