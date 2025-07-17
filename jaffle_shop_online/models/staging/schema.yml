@@ -2,6 +2,13 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging table, `stg_customers`, represents the customer data
+      from the `raw_customers_validation` table in the `jaffle_shop` schema of the
+      `ELEMENTARY_TESTS` database. It extracts and renames the relevant columns, including
+      `customer_id`, `first_name`, and `last_name`, to provide a standardized and
+      more accessible representation of the customer data for downstream data consumers.
+      This model serves as a foundational component for building customer-centric
+      analytics and reports within the organization.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +24,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model represents the raw orders data from the Jaffle
+      Shop, which is a key data source for the finance and sales domains. The model
+      renames and selects the relevant columns from the `raw_orders_validation` view,
+      including the order ID, customer ID, order date, and order status. This data
+      is used to power downstream models and reporting for analyzing sales performance
+      and customer behavior.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +47,17 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This model, `stg_payments`, represents the staging table for payment
+      data in the finance domain. It extracts and transforms the raw payment data
+      from the `raw_payments_validation` table, converting the `amount` column from
+      cents to dollars. This model serves as an intermediate step in the data pipeline,
+      preparing the payment data for further downstream analysis and reporting.
     meta:
       owner: "Idan"
     config:
