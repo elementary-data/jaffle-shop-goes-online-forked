@@ -253,6 +253,13 @@ models:
         description: "Platform where the session was made. For example, website, iOS
           app, Android app, etc."
 
+    data_tests:
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('other_table_name')
+          group_by_columns: # Optional, Columns to group by before executing the test
+            - group_id
+          config:
+            severity: error
   - name: customer_conversions
     description: "This table contains information on the conversions of all the customers"
     meta:
