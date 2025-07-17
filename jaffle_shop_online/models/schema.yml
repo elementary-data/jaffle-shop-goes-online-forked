@@ -73,6 +73,17 @@ models:
           config:
             owner: ["@data-ops"]
             tags: ["stability"]
+      - dbt_utils.expression_is_true:
+          expression: order_items_total = subtotal
+          description: We want to make sure that order_items_total = subtotal
+          config:
+            tags:
+              - finance
+              - finance-data-product
+            severity: error
+          meta:
+            owner:
+              - joost@elementary-data.com
     columns:
       - name: order_id
         description: This is a unique identifier for an order
