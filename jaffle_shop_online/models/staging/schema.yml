@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model, `stg_customers`, represents the staging table for customer
+      data in the jaffle_shop database. It extracts and renames the relevant columns
+      from the `raw_customers_validation` table, including the customer ID, first
+      name, and last name. This staging table serves as a centralized and curated
+      source of customer data, ensuring data quality and consistency before it is
+      used for downstream analytics and reporting.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +23,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model represents the raw orders data from the Jaffle
+      Shop, a fictitious ecommerce business. It serves the purpose of preparing the
+      orders data for downstream analysis and reporting by extracting and renaming
+      key fields such as order ID, customer ID, order date, and order status. The
+      model does not perform any complex transformations, but rather acts as a bridge
+      between the raw data source and the analytics-ready data models.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +46,19 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This model, `stg_payments`, is a staging table that contains the
+      raw payment data from the `raw_payments_validation` table in the `jaffle_shop`
+      schema. It renames the columns to more descriptive names and converts the `amount`
+      column from cents to dollars. This model serves the finance team by providing
+      a clean, standardized version of the payment data that can be used for downstream
+      analysis and reporting. The key transformations performed are the column renaming
+      and the conversion of the `amount` column from cents to dollars.
     meta:
       owner: "Idan"
     config:
