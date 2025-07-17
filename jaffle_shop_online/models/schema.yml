@@ -38,6 +38,31 @@ models:
       - name: number_of_orders
         description: Count of the number of orders a customer has placed
 
+        data_tests:
+          - elementary.column_anomalies:
+              column_anomalies: # Optional, A list of column monitors for anomaly detection. by default all monitors except for `sum` are executed.
+                - average
+              time_bucket: # Optional, The period for time bucketing.
+                period: day
+                count: 1
+              timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+              anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+              training_period: # Optional, The period for model training.
+                period: day # Optional
+                count: 14 # Optional
+              detection_period: # Optional, The period for anomaly detection.
+                period: day # Optional
+                count: 2 # Optional
+              anomaly_direction: both # Optional, The direction of anomalies to detect.
+              dimensions: ["customer_id"] # Optional, A list of columns to group the monitors by.
+              description: Checking for anomaly on customer orders
+              config:
+                tags:
+                  - stability
+                severity: error
+              meta:
+                owner:
+                  - joost@elementary-data.com
       - name: customer_lifetime_value
         description: Total value (AUD) of a customer's orders
 
