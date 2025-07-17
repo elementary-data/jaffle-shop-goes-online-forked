@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model, `stg_customers`, represents a staging table that contains
+      customer data. It serves the purpose of extracting and transforming the raw
+      customer data from the `raw_customers_validation` table in the `jaffle_shop`
+      schema of the `ELEMENTARY_TESTS` database. The key transformations performed
+      in this model are extracting the `customer_id`, `first_name`, and `last_name`
+      columns from the source data and renaming them accordingly.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +23,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model prepares the raw `orders` data from the `jaffle_shop`
+      dataset for downstream consumption. It renames the columns to more intuitive
+      names (`order_id`, `customer_id`, `order_date`, `status`), making the data more
+      accessible to data analysts and consumers. This model serves the finance and
+      sales teams by providing a reliable and consistent source of order information
+      that can be used for further analysis and reporting.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +46,18 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This model represents the standardized and cleaned version of the
+      raw payments data from the `jaffle_shop` data source. It serves the finance
+      team by providing a reliable and consistent view of payment information, including
+      the payment ID, order ID, and payment amount in dollars. The model performs
+      a key transformation by converting the original payment amount stored in cents
+      to dollars, making it more intuitive for data consumers to understand and analyze.
     meta:
       owner: "Idan"
     config:
