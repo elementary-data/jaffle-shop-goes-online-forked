@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model, `stg_customers`, represents the staging table for customer
+      data. It serves the purpose of storing the raw customer information, including
+      the customer ID, first name, and last name, before further downstream processing
+      and transformation. The model performs a simple renaming operation, mapping
+      the source column names to the appropriate target column names, ensuring the
+      data is in the expected format for the next steps in the data pipeline.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +23,11 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model represents a staging table for orders data. It serves
+      the finance and sales teams by providing a clean and consistent data source
+      for downstream reporting and analysis. The model renames and selects the relevant
+      columns from the raw orders data, including the order ID, customer ID, order
+      date, and order status.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +45,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -60,6 +69,12 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This model represents the staging table for the signups data in the
+      Jaffle Shop online business. It ingests the raw signups data from the `raw_signups_training`
+      table, and performs basic transformations to extract the relevant signup details
+      such as the signup ID, customer ID, customer email, hashed password, and signup
+      date. This data is used to support customer analysis and reporting, as well
+      as to enable further downstream data processing and modeling.
     meta:
       owner: "Idan"
     config:
