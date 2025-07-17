@@ -4,7 +4,9 @@ models:
   - name: ads_spend
     description: "This table contains the daily ad spend, by source, medium and campaign"
     meta:
-      owner: "Or"
+      owner:
+        - '@marketing-team'
+        - Or
     config:
       tags: ["marketing", "finance", "finance-data-product"]
       elementary:
@@ -36,7 +38,9 @@ models:
     description: "This is a table that contains all the touch points, by session,
       with the utm_source, utm_medium and utm_campaign"
     meta:
-      owner: "Or"
+      owner:
+        - '@marketing-team'
+        - Or
     config:
       tags: ["marketing", "pii", "finance-data-product"]
       elementary:
@@ -124,7 +128,9 @@ models:
     description: "This table contains the cost per acquisition and return on ad spend,
       by source, and per day"
     meta:
-      owner: "Or"
+      owner:
+        - '@marketing-team'
+        - Or
     config:
       tags:
         - "finance"
@@ -182,7 +188,9 @@ models:
     description: "This table contains information on the ad spend, by source, medium
       and campaign"
     meta:
-      owner: "Or"
+      owner:
+        - '@marketing-team'
+        - Or
     config:
       tags: ["marketing", "finance"]
       elementary:
@@ -217,7 +225,9 @@ models:
   - name: agg_sessions
     description: "This table contains aggregated information on the sessions"
     meta:
-      owner: "Or"
+      owner:
+        - '@marketing-team'
+        - Or
     config:
       tags: ["marketing"]
       elementary:
@@ -256,7 +266,9 @@ models:
   - name: customer_conversions
     description: "This table contains information on the conversions of all the customers"
     meta:
-      owner: "Or"
+      owner:
+        - '@marketing-team'
+        - Or
     config:
       tags: ["marketing", "finance", "pii"]
       elementary:
@@ -278,7 +290,9 @@ models:
     description: "This table contains information on the sessions of all the customers
       and the utm_source, utm_medium and utm_campaign of the session"
     meta:
-      owner: "Or"
+      owner:
+        - '@marketing-team'
+        - Or
     config:
       tags: ["marketing", "pii"]
       elementary:
