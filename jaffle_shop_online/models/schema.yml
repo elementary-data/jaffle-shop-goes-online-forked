@@ -109,6 +109,17 @@ models:
       - name: amount
         description: Total amount (AUD) of the order
 
+          - dbt_utils.accepted_range:
+              max_value: 10000 # Optional
+              inclusive: true # Optional
+              description: Shouldn't be more than 10000
+              config:
+                tags:
+                  - finance
+                severity: warn
+              meta:
+                owner:
+                  - joost@elementary-data.com
       - name: credit_card_amount
         description: Amount of the order (AUD) paid for by credit card
 
