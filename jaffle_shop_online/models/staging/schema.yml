@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model represents a staging table for customer data. It serves
+      as the initial layer of the data model, transforming raw customer data from
+      the `jaffle_shop.raw_customers_validation` table into a more structured and
+      standardized format. The key transformations performed include extracting the
+      `customer_id`, `first_name`, and `last_name` fields from the source data.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +22,13 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model represents the stage table for orders in the finance and
+      sales domain. It ingests data from the `raw_orders_validation` table in the
+      `jaffle_shop` schema and performs basic transformations, including renaming
+      columns to more business-friendly names (e.g., `id` to `order_id`, `user_id`
+      to `customer_id`) and selecting only the relevant columns (`order_id`, `customer_id`,
+      `order_date`, `status`). This staged data can be used by downstream data consumers
+      for further analysis and reporting on order-related metrics and trends.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +46,17 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This model, `stg_payments`, is a staging table that contains payment
+      data from the `raw_payments_validation` table in the `jaffle_shop` schema. It
+      serves the purpose of providing a clean, standardized view of the payment data
+      for downstream analysis and reporting. The model performs a simple transformation,
+      converting the `amount` column from cents to dollars to make the data more human-readable.
     meta:
       owner: "Idan"
     config:
