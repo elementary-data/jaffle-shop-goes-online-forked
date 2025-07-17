@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model represents the staging table for customer data, which
+      is a crucial input for downstream analytical models. It extracts and renames
+      key columns from the raw customer validation table, including the customer ID,
+      first name, and last name. This staging table serves as a centralized and standardized
+      source of customer data, providing a foundation for further analysis and data
+      integration across the organization.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +23,13 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model, `stg_orders`, represents the staging table for order
+      data from the Jaffle Shop dataset. It serves the business purpose of providing
+      a clean and standardized version of the raw order data for downstream analysis
+      and reporting. The model performs key transformations such as renaming the columns
+      to more intuitive names (e.g., `order_id`, `customer_id`, `order_date`, `status`)
+      and removing the need for consumers to interact with the underlying `raw_orders_validation`
+      table directly.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +47,19 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This model, `stg_payments`, is a staging table that contains transformed
+      and enriched payment data from the `raw_payments_validation` source table. It
+      serves the finance domain by providing a clean and standardized representation
+      of payment information, including payment ID, order ID, and payment amount (converted
+      from cents to dollars). This model is an important intermediate step in the
+      data pipeline, preparing the payment data for further downstream analysis and
+      reporting.
     meta:
       owner: "Idan"
     config:
