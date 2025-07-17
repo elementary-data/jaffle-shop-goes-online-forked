@@ -16,6 +16,12 @@ models:
               to: ref('stg_signups')
               field: customer_id
 
+    description: This staging model transforms raw customer data by extracting and
+      renaming key customer identifiers and personal information. It represents the
+      cleaned customer records with standardized field names, serving as a foundation
+      for downstream customer analytics. The model performs simple renaming transformations,
+      converting the raw id field to customer_id while preserving first_name and last_name
+      attributes.
   - name: stg_orders
     meta:
       owner: "Idan"
@@ -34,13 +40,15 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
+    description: This staging model transforms raw order data by renaming fields for
+      consistency and clarity. It represents the cleaned order information including
+      order_id, customer_id, order_date, and status. This model serves as a foundation
+      for downstream finance and sales analytics by standardizing order data structure.
   - name: stg_payments
     meta:
       owner: "Idan"
@@ -59,6 +67,11 @@ models:
                 severity: warn
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
+    description: This staging model transforms raw payment data into a standardized
+      format for analytics use. It represents payment transactions with key fields
+      including payment ID, order ID, payment method, and amount. The model performs
+      a key transformation by converting the amount from cents to dollars to make
+      financial analysis more intuitive for business users.
   - name: stg_signups
     meta:
       owner: "Idan"
@@ -81,3 +94,9 @@ models:
                 severity: warn
               column_anomalies:
                 - missing_count
+    description: This staging model transforms raw signup data by renaming fields
+      to align with naming conventions across the data platform. It contains customer
+      signup information including signup IDs, customer IDs, email addresses, hashed
+      passwords, and signup dates. The model serves as a cleaned intermediate layer
+      that standardizes signup data for downstream analytics while maintaining PII
+      fields that require special handling.
