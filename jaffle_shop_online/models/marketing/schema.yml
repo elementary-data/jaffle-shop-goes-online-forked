@@ -313,3 +313,15 @@ models:
       - name: utm_campain
         data_type: varchar
         description: "The name of the advertising campaign"
+    data_tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          group_by_columns: # Optional, Columns to group by before executing the test
+            - group_id
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
