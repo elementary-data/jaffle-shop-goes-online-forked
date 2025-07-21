@@ -125,6 +125,7 @@ models:
       by source, and per day"
     meta:
       owner: "Or"
+      subscribers: ["@marketing_team"]
     config:
       tags:
         - "finance"
