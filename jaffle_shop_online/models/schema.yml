@@ -57,8 +57,12 @@ models:
         description: Date (UTC) of a customer's signup to the online shop.
 
   - name: orders
-    description: This table has basic information about orders, as well as some derived
-      facts based on payments
+    description: A unified view of order information combining historical and real-time
+      order data from the jaffle_shop database. This model serves as a single source
+      of truth for all orders, allowing finance and sales teams to analyze complete
+      order history regardless of when the data was captured. The union operation
+      ensures seamless integration of both datasets without duplication, providing
+      up-to-date order information for reporting and analysis.
     meta:
       owner: "Or"
     config:
@@ -183,7 +187,12 @@ models:
         description: Amount of the order (AUD) paid for by gift card
 
   - name: lost_orders
-    description: This table contains all of the lost orders
+    description: This table contains orders with a status of either 'return_pending'
+      or 'shipped', representing potentially lost revenue. It serves the finance team
+      by tracking orders that may not complete successfully, enabling analysis of
+      revenue at risk. The model standardizes order IDs with an 'ID-' prefix and includes
+      payment information broken down by payment method (credit card, coupon, bank
+      transfer, and gift card).
     meta:
       owner: "Or"
     config:
