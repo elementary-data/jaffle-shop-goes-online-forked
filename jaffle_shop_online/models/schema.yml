@@ -73,6 +73,15 @@ models:
           config:
             owner: ["@data-ops"]
             tags: ["stability"]
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
     columns:
       - name: order_id
         description: This is a unique identifier for an order
@@ -193,6 +202,15 @@ models:
 
     tests:
       - elementary.schema_changes_from_baseline
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
     columns:
       - name: order_id
         description: This is a unique identifier for an order
