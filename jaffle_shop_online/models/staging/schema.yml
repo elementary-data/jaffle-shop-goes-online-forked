@@ -23,6 +23,9 @@ models:
       tags: ["staging", "finance", "sales"]
       elementary:
         timestamp_column: "order_date"
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
     columns:
       - name: order_id
         tests:
@@ -46,6 +49,9 @@ models:
       owner: "Idan"
     config:
       tags: ["staging", "finance"]
+    tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
     columns:
       - name: payment_id
         tests:
@@ -81,3 +87,30 @@ models:
                 severity: warn
               column_anomalies:
                 - missing_count
+
+  - name: orders
+    columns:
+      - name: order_id
+        tests:
+          - unique
+      - name: amount
+        tests:
+          - elementary.column_anomalies:
+              anomaly_sensitivity: 2
+              column_anomalies:
+                - average
+                - sum
+                - min
+                - max
+              time_bucket:
+                period: day
+                count: 1
+              training_period:
+                period: day
+                count: 14
+
+  - name: real_time_orders
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "amount <= (select max(price) from {{ source('products', 'raw_products') }})"
+          severity: error
