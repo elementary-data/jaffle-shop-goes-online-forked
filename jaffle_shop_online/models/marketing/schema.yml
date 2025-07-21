@@ -214,6 +214,16 @@ models:
         description: "Source where the ad was displayed. For example, Google, Facebook,
           Twitter, Newsletter, etc."
 
+    data_tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
   - name: agg_sessions
     description: "This table contains aggregated information on the sessions"
     meta:
@@ -313,3 +323,13 @@ models:
       - name: utm_campain
         data_type: varchar
         description: "The name of the advertising campaign"
+    data_tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
