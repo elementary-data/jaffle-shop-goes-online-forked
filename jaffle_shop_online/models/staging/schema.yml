@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model represents the standardized customer information extracted
+      from the raw customer data. It serves as a staging layer that cleans and prepares
+      customer data for downstream analytical models. The model performs simple renaming
+      transformations, specifically renaming the ID field to customer_id while preserving
+      first_name and last_name attributes for customer identification.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +22,11 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model cleans and prepares order data from the raw source
+      by renaming fields for consistency. It transforms raw order records into a standardized
+      format, renaming 'id' to 'order_id' and 'user_id' to 'customer_id' while preserving
+      order dates and statuses. This model serves as the foundation for downstream
+      finance and sales analytics.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +44,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
