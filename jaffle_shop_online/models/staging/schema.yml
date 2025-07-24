@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: 'This staging model contains customer information with minimal transformations
+      from the raw source. It renames the customer ID field and retains first and
+      last name fields for easy identification of customers. Contains personally identifiable
+      information (PII) and serves as a foundation for downstream customer analysis
+      models. '
     meta:
       owner: "Idan"
     config:
@@ -17,6 +22,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This model represents the staging layer for order data, standardizing
+      raw order information for analytical use. It renames key fields for clarity
+      including order_id, customer_id, order_date, and status, which are essential
+      for finance and sales reporting. The staging model serves as a clean, validated
+      foundation for downstream models to analyze order patterns and customer purchasing
+      behavior.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +45,18 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This model stages payment data from the raw payment validation source,
+      representing individual customer payments. It standardizes payment information
+      for financial reporting and analytics by providing key payment attributes including
+      payment ID, order ID, payment method, and amount. The model performs a critical
+      transformation by converting payment amounts from cents to dollars to ensure
+      consistent financial analysis.
     meta:
       owner: "Idan"
     config:
