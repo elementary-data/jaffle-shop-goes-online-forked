@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model standardizes customer data from the raw customer
+      table, extracting essential customer information including customer ID, first
+      name, and last name. It serves as a clean, standardized layer for customer data
+      used throughout the analytics pipeline. The model contains personally identifiable
+      information (PII) as indicated by its tags.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +39,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
