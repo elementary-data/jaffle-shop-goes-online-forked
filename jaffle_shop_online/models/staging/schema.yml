@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This model standardizes raw customer data by extracting and renaming
+      key customer identifiers and personal information fields. It serves as a staging
+      layer for downstream consumption, providing a clean interface to customer data
+      while maintaining PII fields like first and last names. The model performs basic
+      field renaming, transforming the raw ID field to customer_id for consistency
+      across the data platform.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +40,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -60,6 +64,11 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: Staging model for user signup data from the raw signups validation
+      table. Contains information about customer signups including signup ID, customer
+      ID, email, hashed password, and signup date. This model normalizes and renames
+      fields from the raw source to be consistent with naming conventions used throughout
+      the data platform.
     meta:
       owner: "Idan"
     config:
