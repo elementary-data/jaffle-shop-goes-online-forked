@@ -318,3 +318,10 @@ models:
         description: "Portion of the order paid with bank transfer (AUD)"
       - name: gift_card_amount
         description: "Portion of the order paid with gift card (AUD)"
+    data_tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          config:
+            severity: error
