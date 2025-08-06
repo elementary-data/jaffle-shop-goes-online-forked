@@ -274,6 +274,11 @@ models:
         data_type: number
         description: "Total revenue amount (USD) of the conversion"
 
+    data_tests:
+      - dbt_utils.expression_is_true:
+          expression: col_a + col_b = total
+          config:
+            severity: error
   - name: sessions
     description: "This table contains information on the sessions of all the customers
       and the utm_source, utm_medium and utm_campaign of the session"
