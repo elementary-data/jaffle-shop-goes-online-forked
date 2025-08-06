@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: 'This staging model contains customer information from raw_customers_validation,
+      selecting and renaming only the essential customer fields: customer_id, first_name,
+      and last_name. The model serves as a cleaned, standardized representation of
+      customer data for downstream consumption. It contains personally identifiable
+      information (PII) as indicated by its tags.'
     meta:
       owner: "Idan"
     config:
@@ -34,11 +39,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -60,6 +63,11 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This staging model represents cleaned and standardized signup data
+      from raw sources. It contains customer signup details including signup ID, customer
+      ID, customer email, hashed password, and signup date. The model performs basic
+      renaming of fields for consistency with other models in the project while preserving
+      PII fields that are appropriately tagged.
     meta:
       owner: "Idan"
     config:
