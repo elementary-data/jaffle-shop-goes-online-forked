@@ -5,11 +5,61 @@ sources:
     schema: "{{ target.schema }}"
     tables:
       - name: stg_google_ads
+        data_tests:
+          - elementary.schema_changes:
+              description: Checks for schema changes against an existing baseline
+              config:
+                tags:
+                  - data-contracts
+                severity: error
+              meta:
+                owner:
+                  - Or
       - name: stg_facebook_ads
+        data_tests:
+          - elementary.schema_changes:
+              description: Checks for schema changes against an existing baseline
+              config:
+                tags:
+                  - data-contracts
+                severity: error
+              meta:
+                owner:
+                  - Or
       - name: stg_instagram_ads
 
+        data_tests:
+          - elementary.schema_changes:
+              description: Checks for schema changes against an existing baseline
+              config:
+                tags:
+                  - data-contracts
+                severity: error
+              meta:
+                owner:
+                  - Or
   - name: sessions
     schema: "{{ target.schema }}"
     tables:
       - name: stg_website_sessions
+        data_tests:
+          - elementary.schema_changes:
+              description: Checks for schema changes against an existing baseline
+              config:
+                tags:
+                  - data-contracts
+                severity: error
+              meta:
+                owner:
+                  - Or
       - name: stg_app_sessions
+        data_tests:
+          - elementary.schema_changes:
+              description: Checks for schema changes against an existing baseline
+              config:
+                tags:
+                  - data-contracts
+                severity: error
+              meta:
+                owner:
+                  - Or

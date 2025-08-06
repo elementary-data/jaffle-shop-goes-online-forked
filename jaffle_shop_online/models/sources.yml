@@ -5,3 +5,13 @@ sources:
     schema: jaffle_shop_elementary
     tables:
       - name: elementary_exposures
+        data_tests:
+          - elementary.schema_changes:
+              description: Checks for schema changes against an existing baseline
+              config:
+                tags:
+                  - data-contracts
+                severity: error
+              meta:
+                owner:
+                  - Or
