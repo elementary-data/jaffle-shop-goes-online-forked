@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model transforms raw customer data into a simplified
+      format by renaming fields for consistency across the data platform. It extracts
+      customer identifiers along with their first and last names from the raw data
+      source, providing a clean foundation for customer analysis. The model contains
+      PII data and serves as an intermediate step in the customer data processing
+      pipeline.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +23,11 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model transforms raw order data from the jaffle_shop
+      database. It represents cleaned order information with renamed columns for better
+      clarity, including order_id, customer_id, order_date, and status. This model
+      serves as a foundation for downstream finance and sales analytics, providing
+      standardized order data for reporting and analysis purposes.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +45,17 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging model standardizes payment data from the raw payments
+      validation table. It represents individual payment records with cleaned and
+      transformed attributes, including payment identification, order details, and
+      payment methods. The model converts payment amounts from cents to dollars to
+      ensure consistent financial reporting across the organization.
     meta:
       owner: "Idan"
     config:
