@@ -6,7 +6,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "finance", "finance-data-product"]
+      tags: ["marketing", "finance", "finance-data-product", pii]
       elementary:
         timestamp_column: "day"
     columns:
@@ -38,7 +38,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "pii", "finance-data-product"]
+      tags: ["marketing", "pii", "finance-data-product", stability]
       elementary:
         timestamp_column: "converted_at"
     columns:
@@ -129,6 +129,7 @@ models:
       tags:
         - "finance"
         - "finance-data-product"
+        - pii
       elementary:
         timestamp_column: "day"
     columns:
