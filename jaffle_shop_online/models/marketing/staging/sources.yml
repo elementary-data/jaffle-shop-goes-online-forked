@@ -5,7 +5,13 @@ sources:
     schema: "{{ target.schema }}"
     tables:
       - name: stg_google_ads
+        meta:
+          owner:
+            - '@marketing-team'
       - name: stg_facebook_ads
+        meta:
+          owner:
+            - '@marketing-team'
       - name: stg_instagram_ads
 
   - name: sessions
