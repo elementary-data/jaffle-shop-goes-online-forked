@@ -1,23 +1,29 @@
-{{
-  config(materialized='view')
-}}
+{{  config(materialized='view') }}
 
+{% raw %}
+-- All monetary amounts in this model are converted from cents to dollars
+{% endraw %}
+
+{% raw %}
 {% set payment_methods = ['credit_card', 'coupon', 'bank_transfer', 'gift_card'] %}
+{% endraw %}
 
 with orders as (
-    select * from {{ ref('stg_orders') }}
+    select * from {% raw %}{{ ref('stg_orders') }}{% endraw %}
 ),
 
 payments as (
-    select * from {{ ref('stg_payments') }}
+    select * from {% raw %}{{ ref('stg_payments') }}{% endraw %}
 ),
 
 order_payments as (
     select
         order_id,
+        {% raw %}
         {% for payment_method in payment_methods -%}
         sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount,
         {% endfor -%}
+        {% endraw %}
         sum(amount) as total_amount
     from payments
     group by order_id
@@ -29,10 +35,12 @@ final as (
         o.customer_id,
         o.order_date,
         o.status,
+        {% raw %}
         {% for payment_method in payment_methods -%}
-        op.{{ payment_method }}_amount,
+        {{ cents_to_dollars('op.' + payment_method + '_amount') }} as {{ payment_method }}_amount,
         {% endfor -%}
-        op.total_amount    as amount
+        {% endraw %}
+        {% raw %}{{ cents_to_dollars('op.total_amount') }}{% endraw %} as amount  -- Amount is now in dollars
     from orders o
     left join order_payments op on o.order_id = op.order_id
 )
