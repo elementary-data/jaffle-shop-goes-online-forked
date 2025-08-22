@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: A staging model that standardizes customer data from the raw customer
+      validation source. This model serves as the foundational customer dataset for
+      downstream analytics and reporting by providing clean, consistently named customer
+      records. The key transformation renames the id field to customer_id while preserving
+      first_name and last_name attributes for each customer.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +39,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -60,6 +63,13 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: A staging model that cleanses and standardizes raw customer signup
+      data from the source system. This model serves as the foundation for downstream
+      customer acquisition and user registration analysis by providing clean, consistently
+      named signup records. Key transformations include renaming columns to follow
+      consistent naming conventions (id to signup_id, user_id to customer_id, user_email
+      to customer_email) while preserving essential signup information such as hashed
+      passwords and registration dates.
     meta:
       owner: "Idan"
     config:
