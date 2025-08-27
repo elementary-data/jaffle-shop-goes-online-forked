@@ -187,14 +187,21 @@ models:
       tags: ["marketing", "finance"]
       elementary:
         timestamp_column: "date"
+    data_tests:
+      - unique:
+          column_name: ad_id
     columns:
       - name: ad_id
         data_type: varchar
         description: "Unique identifier for an ad"
+        data_tests:
+          - not_null
 
       - name: date
         data_type: date
         description: "date (UTC) when the ad was displayed"
+        data_tests:
+          - not_null
 
       - name: utm_medium
         data_type: varchar
@@ -208,6 +215,10 @@ models:
       - name: cost
         data_type: number
         description: "Cost (USD) accumulated of the ad presentations so far"
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
 
       - name: utm_source
         data_type: varchar
