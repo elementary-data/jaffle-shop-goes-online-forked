@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: stg_customers
+    description: "Standardized customer data with cleaned field names and environment-specific sourcing. Uses validation data in validation mode, otherwise uses training data. Transforms raw customer records into a consistent format for downstream models."
     meta:
       owner: "Idan"
     config:
@@ -17,6 +18,7 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: "Cleaned and standardized order data with renamed fields and consistent structure. Dynamically sources from validation or training datasets based on configuration. Provides the foundation for all order-related analytics and transforms raw order IDs and user references into standardized customer and order identifiers."
     meta:
       owner: "Idan"
     config:
@@ -42,6 +44,7 @@ models:
               quote_values: true
 
   - name: stg_payments
+    description: "Processed payment data with standardized field names and currency conversion. Converts payment amounts from cents to dollars for easier analysis and reporting. Sources from validation or training datasets based on environment configuration."
     meta:
       owner: "Idan"
     config:
@@ -60,6 +63,7 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: "Cleaned customer signup data with standardized field naming and structure. Transforms raw signup records into consistent format with proper field mapping (user_id to customer_id, user_email to customer_email). Uses environment-specific data sourcing for validation or training purposes."
     meta:
       owner: "Idan"
     config:
