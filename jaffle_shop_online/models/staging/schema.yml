@@ -2,6 +2,14 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model cleans and standardizes raw customer data from
+      the source system, serving as the foundation for downstream customer analytics
+      and reporting. The model renames the primary key from 'id' to 'customer_id'
+      for consistency across the data warehouse while preserving essential customer
+      information including first and last names. This model contains personally identifiable
+      information (PII) and provides a reliable, consistent view of customer records
+      for use in customer segmentation, personalization, and business intelligence
+      workflows.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +42,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
