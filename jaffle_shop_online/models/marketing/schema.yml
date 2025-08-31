@@ -121,8 +121,13 @@ models:
         description: ""
 
   - name: cpa_and_roas
-    description: "This table contains the cost per acquisition and return on ad spend,
-      by source, and per day"
+    description: This table calculates daily marketing performance metrics including
+      cost per acquisition (CPA) and return on advertising spend (ROAS) for each traffic
+      source. It serves to measure the effectiveness and profitability of marketing
+      campaigns by combining advertising spend data with attributed revenue from customer
+      conversions. The model uses linear attribution to distribute conversion credit
+      across touchpoints and calculates ROAS as a percentage, with both metrics only
+      computed when sufficient spend and attribution data are available.
     meta:
       owner: "Or"
     config:
