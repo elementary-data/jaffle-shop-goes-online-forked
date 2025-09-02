@@ -6,7 +6,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "finance", "finance-data-product"]
+      tags: ["marketing", "finance", "finance-data-product", sales]
       elementary:
         timestamp_column: "day"
     columns:
@@ -184,7 +184,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "finance"]
+      tags: ["marketing", "finance", sales]
       elementary:
         timestamp_column: "date"
     columns:
