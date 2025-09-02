@@ -62,7 +62,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["finance", "sales"]
+      tags: ["finance", "sales", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "order_date"
 
@@ -266,7 +266,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["finance", "sales"]
+      tags: ["finance", "sales", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "order_date"
     columns:
@@ -296,7 +296,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["finance", "sales", "real_time"]
+      tags: ["finance", "sales", "real_time", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "order_date"
     columns:

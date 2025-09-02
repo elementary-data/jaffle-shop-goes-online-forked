@@ -20,7 +20,7 @@ models:
     meta:
       owner: "Idan"
     config:
-      tags: ["staging", "finance", "sales"]
+      tags: ["staging", "finance", "sales", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "order_date"
     columns:
@@ -34,18 +34,16 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
     meta:
       owner: "Idan"
     config:
-      tags: ["staging", "finance"]
+      tags: ["staging", "finance", cpa_and_roas_pipeline]
     columns:
       - name: payment_id
         tests:

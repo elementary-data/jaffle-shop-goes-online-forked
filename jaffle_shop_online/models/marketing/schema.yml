@@ -6,7 +6,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "finance", "finance-data-product"]
+      tags: ["marketing", "finance", "finance-data-product", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "day"
     columns:
@@ -38,7 +38,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "pii", "finance-data-product"]
+      tags: ["marketing", "pii", "finance-data-product", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "converted_at"
     columns:
@@ -184,7 +184,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "finance"]
+      tags: ["marketing", "finance", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "date"
     columns:
@@ -219,7 +219,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing"]
+      tags: ["marketing", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "started_at"
     columns:
@@ -258,7 +258,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "finance", "pii"]
+      tags: ["marketing", "finance", "pii", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "converted_at"
     columns:
@@ -280,7 +280,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "pii"]
+      tags: ["marketing", "pii", cpa_and_roas_pipeline]
       elementary:
         timestamp_column: "started_at"
     columns:
