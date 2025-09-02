@@ -61,6 +61,7 @@ models:
       facts based on payments
     meta:
       owner: "Or"
+      subscribers: "@user"
     config:
       tags: ["finance", "sales"]
       elementary:
