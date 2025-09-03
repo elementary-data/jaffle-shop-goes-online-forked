@@ -249,7 +249,7 @@ models:
     meta:
       owner: "Maayan"
     config:
-      tags: ["sales"]
+      tags: ["sales", stability]
     columns:
       - name: order_id
         description: "Unique identifier for an order"

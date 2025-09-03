@@ -280,7 +280,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "pii"]
+      tags: ["marketing", "pii", stability]
       elementary:
         timestamp_column: "started_at"
     columns:
