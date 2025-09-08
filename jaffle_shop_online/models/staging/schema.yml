@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model prepares raw customer data for downstream analytics
+      by standardizing column names and structure. It serves as the foundation for
+      customer analysis, reporting, and segmentation across the business. The model
+      renames the ID column to customer_id for consistency and selects essential customer
+      identifiers including first and last names.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +22,13 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model contains standardized order data from the raw
+      orders source, with each row representing a single customer order. It serves
+      as the foundation for sales and financial analysis by providing clean, consistently
+      named order information including customer relationships and order status tracking.
+      The model performs basic transformations by renaming columns for clarity (id
+      to order_id, user_id to customer_id) and standardizing the data structure for
+      downstream analytics models.
     meta:
       owner: "Idan"
     config:
@@ -34,14 +46,18 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: Staging table that cleanses and standardizes raw payment data from
+      the source system. This model serves as the foundation for downstream financial
+      analysis and reporting by providing consistent payment transaction records.
+      The model transforms payment amounts from cents to dollars and renames columns
+      to follow standard naming conventions, with each row representing a single payment
+      transaction linked to an order.
     meta:
       owner: "Idan"
     config:
@@ -60,6 +76,12 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This staging model contains cleaned and standardized customer signup
+      data from the raw signups source. It serves as the foundation for analyzing
+      user registration patterns, tracking customer acquisition, and supporting downstream
+      customer analytics. The model renames key columns for consistency (id to signup_id,
+      user_id to customer_id, user_email to customer_email) and preserves essential
+      signup information including hashed passwords and signup dates.
     meta:
       owner: "Idan"
     config:
