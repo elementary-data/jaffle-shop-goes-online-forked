@@ -124,7 +124,7 @@ models:
     description: "This table contains the cost per acquisition and return on ad spend,
       by source, and per day"
     meta:
-      owner: "Or"
+      owner: ["Or", "@user"]
     config:
       tags:
         - "finance"
