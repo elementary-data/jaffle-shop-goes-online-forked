@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model contains cleaned and standardized customer data
+      from the raw customer source table. It serves as the foundational layer for
+      customer analytics and reporting across the organization. The model renames
+      the customer ID field for consistency and selects core customer attributes including
+      first name and last name.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +39,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -60,6 +63,12 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This staging model cleans and standardizes raw customer signup data
+      from the jaffle shop application. It serves as the foundation for analyzing
+      customer acquisition patterns and managing user registration processes. The
+      model renames columns for consistency, converting raw field names like 'id'
+      to 'signup_id' and 'user_id' to 'customer_id', while preserving essential signup
+      information including customer email, hashed passwords, and signup dates.
     meta:
       owner: "Idan"
     config:
