@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model standardizes raw customer data from the training
+      dataset by cleaning and renaming columns for consistency. It serves as the foundation
+      for downstream customer analytics and reporting by providing a reliable, structured
+      view of customer information. The model transforms the raw customer ID field
+      to a standardized `customer_id` column while preserving first and last name
+      details.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +23,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model contains cleaned and standardized order data from
+      the raw orders source table. It serves as the foundation for sales and finance
+      analytics by providing a consistent view of customer orders with proper column
+      naming conventions. The model performs basic transformations including renaming
+      the id column to order_id and user_id to customer_id for clarity and consistency
+      across downstream models.
     meta:
       owner: "Idan"
     config:
@@ -34,11 +46,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
