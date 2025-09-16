@@ -60,7 +60,7 @@ models:
     description: This table has basic information about orders, as well as some derived
       facts based on payments
     meta:
-      owner: "Or"
+      owner: "Joost"
     config:
       tags: ["finance", "sales"]
       elementary:
@@ -124,7 +124,7 @@ models:
   - name: returned_orders
     description: This table contains all of the returned orders
     meta:
-      owner: "Or"
+      owner: "Joost"
     config:
       tags: ["finance"]
       elementary:
@@ -185,7 +185,7 @@ models:
   - name: lost_orders
     description: This table contains all of the lost orders
     meta:
-      owner: "Or"
+      owner: "Joost"
     config:
       tags: ["finance"]
       elementary:
@@ -264,7 +264,7 @@ models:
     description: "Orders loaded from the historical batch datasets (prior to the current
       day). Amount fields are stored in cents."
     meta:
-      owner: "Or"
+      owner: "Joost"
     config:
       tags: ["finance", "sales"]
       elementary:
@@ -294,7 +294,7 @@ models:
       Monetary fields have already been converted to dollars via the cents_to_dollars
       macro."
     meta:
-      owner: "Or"
+      owner: "Joost"
     config:
       tags: ["finance", "sales", "real_time"]
       elementary:
