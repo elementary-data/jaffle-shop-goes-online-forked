@@ -15,6 +15,7 @@ models:
     columns:
       - name: customer_id
         description: This is a unique identifier for a customer
+        tags: ["pii"]
         tests:
           - relationships:
               config:
@@ -25,9 +26,11 @@ models:
 
       - name: first_name
         description: Customer's first name. PII.
+        tags: ["pii"]
 
       - name: last_name
         description: Customer's last name. PII.
+        tags: ["pii"]
 
       - name: first_order
         description: Date (UTC) of a customer's first order
@@ -43,6 +46,7 @@ models:
 
       - name: customer_email
         description: Customer's email. PII.
+        tags: ["pii"]
         tests:
           - unique:
               config:
@@ -76,9 +80,11 @@ models:
     columns:
       - name: order_id
         description: This is a unique identifier for an order
+        tags: ["pii"]
 
       - name: customer_id
         description: Foreign key to the customers table
+        tags: ["pii"]
         tests:
           - relationships:
               config:
@@ -137,9 +143,11 @@ models:
     columns:
       - name: order_id
         description: This is a unique identifier for an order
+        tags: ["pii"]
 
       - name: customer_id
         description: Foreign key to the customers table
+        tags: ["pii"]
         tests:
           - relationships:
               config:
@@ -197,9 +205,11 @@ models:
       - name: order_id
         description: This is a unique identifier for an order
         data_type: integer
+        tags: ["pii"]
 
       - name: customer_id
         description: Foreign key to the customers table
+        tags: ["pii"]
         tests:
           - relationships:
               config:
@@ -253,6 +263,7 @@ models:
     columns:
       - name: order_id
         description: "Unique identifier for an order"
+        tags: ["pii"]
       - name: sku
         description: "Unique stock-keeping unit for the item"
       - name: quantity
@@ -272,8 +283,10 @@ models:
     columns:
       - name: order_id
         description: "Unique identifier for an order"
+        tags: ["pii"]
       - name: customer_id
         description: "Foreign key to the customers table"
+        tags: ["pii"]
       - name: order_date
         description: "Date (UTC) the order was placed"
       - name: status
@@ -302,8 +315,10 @@ models:
     columns:
       - name: order_id
         description: "Unique identifier for an order"
+        tags: ["pii"]
       - name: customer_id
         description: "Foreign key to the customers table"
+        tags: ["pii"]
       - name: order_date
         description: "Date (UTC) the order was placed"
       - name: status

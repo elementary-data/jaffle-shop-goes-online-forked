@@ -8,6 +8,7 @@ models:
       tags: ["staging", "pii"]
     columns:
       - name: customer_id
+        tags: ["pii"]
         tests:
           - unique:
               config:
@@ -25,10 +26,13 @@ models:
         timestamp_column: "order_date"
     columns:
       - name: order_id
+        tags: ["pii"]
         tests:
           - unique:
               config:
                 severity: warn
+      - name: customer_id
+        tags: ["pii"]
       - name: status
         tests:
           - accepted_values:
@@ -73,6 +77,7 @@ models:
               config:
                 severity: warn
       - name: customer_email
+        tags: ["pii"]
         tests:
           - unique
           - elementary.column_anomalies:
