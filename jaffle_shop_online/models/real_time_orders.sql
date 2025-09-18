@@ -1,3 +1,4 @@
+-- All monetary amounts in this model are already normalized to dollars
 {{
   config(materialized='view')
 }}
