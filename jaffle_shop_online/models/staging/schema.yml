@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: stg_customers
+    description: Staging layer for customer data with basic customer information including names and unique identifiers.
     meta:
       owner: "Idan"
     config:
@@ -17,6 +18,7 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: Staging layer for order data containing order details, customer references, and order status information.
     meta:
       owner: "Idan"
     config:
@@ -42,6 +44,7 @@ models:
               quote_values: true
 
   - name: stg_payments
+    description: Staging layer for payment data with payment amounts, methods, and order references.
     meta:
       owner: "Idan"
     config:
@@ -60,6 +63,7 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: Staging layer for customer signup data including email addresses, signup dates, and hashed passwords. Contains PII.
     meta:
       owner: "Idan"
     config:
