@@ -3,5 +3,7 @@ version: 2
 sources:
   - name: elementary
     schema: jaffle_shop_elementary
+    meta:
+      owner: "Or"
     tables:
       - name: elementary_exposures

@@ -3,6 +3,8 @@ version: 2
 sources:
   - name: ads
     schema: "{{ target.schema }}"
+    meta:
+      owner: "Or"
     tables:
       - name: stg_google_ads
       - name: stg_facebook_ads
@@ -10,6 +12,8 @@ sources:
 
   - name: sessions
     schema: "{{ target.schema }}"
+    meta:
+      owner: "Or"
     tables:
       - name: stg_website_sessions
       - name: stg_app_sessions
