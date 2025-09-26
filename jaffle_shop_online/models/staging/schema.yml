@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: stg_customers
+    description: "Staging layer for customer data that standardizes column names and selects core customer attributes. Dynamically sources from validation or training datasets based on environment configuration."
     meta:
       owner: "Idan"
     config:
@@ -17,6 +18,7 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: "Staging layer for order data that standardizes column names and provides clean order information with status tracking. Dynamically sources from validation or training datasets based on environment configuration."
     meta:
       owner: "Idan"
     config:
@@ -42,6 +44,7 @@ models:
               quote_values: true
 
   - name: stg_payments
+    description: "Staging layer for payment data that standardizes column names and converts payment amounts from cents to dollars. Dynamically sources from validation or training datasets based on environment configuration."
     meta:
       owner: "Idan"
     config:
@@ -60,6 +63,7 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: "Staging layer for customer signup data that standardizes column names and provides user registration information including email and signup dates. Dynamically sources from validation or training datasets based on environment configuration."
     meta:
       owner: "Idan"
     config:
