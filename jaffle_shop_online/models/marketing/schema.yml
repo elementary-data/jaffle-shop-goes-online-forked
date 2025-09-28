@@ -313,3 +313,8 @@ models:
       - name: utm_campain
         data_type: varchar
         description: "The name of the advertising campaign"
+    data_tests:
+      - elementary.schema_changes:
+          description: Checks for schema changes against an existing baseline
+          config:
+            severity: error
