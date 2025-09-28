@@ -253,6 +253,11 @@ models:
         description: "Platform where the session was made. For example, website, iOS
           app, Android app, etc."
 
+    data_tests:
+      - elementary.schema_changes:
+          description: Checks for schema changes against an existing baseline
+          config:
+            severity: error
   - name: customer_conversions
     description: "This table contains information on the conversions of all the customers"
     meta:
