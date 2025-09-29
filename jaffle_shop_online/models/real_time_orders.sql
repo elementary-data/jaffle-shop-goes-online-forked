@@ -1,6 +1,5 @@
-{{
-  config(materialized='view')
-}}
+-- All monetary amounts in this model are in dollars
+{{ config(materialized='view') }}
 
 {% set payment_methods = ['credit_card', 'coupon', 'bank_transfer', 'gift_card'] %}
 
@@ -50,4 +49,4 @@ select
 from final
 where date(order_date) = (
     select date(max(order_date)) from final
-) 
+)
