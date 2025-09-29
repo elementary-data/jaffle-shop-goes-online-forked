@@ -1,3 +1,6 @@
+{% raw %}
+-- All monetary amounts in this model are in dollars
+{% endraw %}
 {{
   config(materialized='view')
 }}
