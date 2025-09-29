@@ -23,6 +23,29 @@ models:
       tags: ["staging", "finance", "sales"]
       elementary:
         timestamp_column: "order_date"
+    tests:
+      - elementary.volume_anomalies:
+          config:
+            owner: ["Idan"]
+            severity: warning
+          timestamp_column: order_date
+          time_bucket:
+            period: day
+            count: 1
+          training_period:
+            period: day
+            count: 14
+          detection_period:
+            period: day
+            count: 1
+          anomaly_sensitivity: 2
+          anomaly_direction: both
+      - elementary.freshness_anomalies:
+          config:
+            owner: ["Idan"]
+            severity: warning
+          timestamp_column: order_date
+          anomaly_sensitivity: 2
     columns:
       - name: order_id
         tests:
