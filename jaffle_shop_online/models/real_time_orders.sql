@@ -1,6 +1,7 @@
-{{
-  config(materialized='view')
-}}
+{% raw %}
+-- All monetary amounts in this model are in dollars
+{% endraw %}
+{{ config(materialized='view') }}
 
 {% set payment_methods = ['credit_card', 'coupon', 'bank_transfer', 'gift_card'] %}
 
