@@ -38,7 +38,7 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "pii", "finance-data-product"]
+      tags: ["marketing", "pii", "finance-data-product", real_time]
       elementary:
         timestamp_column: "converted_at"
     columns:
@@ -280,9 +280,10 @@ models:
     meta:
       owner: "Or"
     config:
-      tags: ["marketing", "pii"]
       elementary:
         timestamp_column: "started_at"
+      tags:
+        - real_time
     columns:
       - name: session_id
         data_type: varchar
