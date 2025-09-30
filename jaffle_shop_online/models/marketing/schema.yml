@@ -46,10 +46,16 @@ models:
         data_type: number
         description: "A unique identifier for a customer"
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: session_id
         data_type: varchar
         description: "A unique identifier for a session"
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: started_at
         data_type: timestamp_ntz
         description: "Time (UTC) when the session started"
@@ -120,6 +126,10 @@ models:
         data_type: number
         description: ""
 
+      - name: order_id
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
   - name: cpa_and_roas
     description: "This table contains the cost per acquisition and return on ad spend,
       by source, and per day"
@@ -192,6 +202,9 @@ models:
         data_type: varchar
         description: "Unique identifier for an ad"
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: date
         data_type: date
         description: "date (UTC) when the ad was displayed"
@@ -227,10 +240,16 @@ models:
         data_type: varchar
         description: "Unique identifier for a session"
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: customer_id
         data_type: number
         description: "Unique identifier for a customer"
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: started_at
         data_type: timestamp_ntz
         description: "Time (UTC) when the session started"
@@ -248,6 +267,9 @@ models:
         data_type: varchar
         description: "Unique identifier for an ad"
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: platform
         data_type: varchar
         description: "Platform where the session was made. For example, website, iOS
@@ -266,6 +288,9 @@ models:
         data_type: number
         description: "Unique identifier for a customer"
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: converted_at
         data_type: timestamp_ntz
         description: "Time (UTC) when the conversion happened"
@@ -274,6 +299,10 @@ models:
         data_type: number
         description: "Total revenue amount (USD) of the conversion"
 
+      - name: order_id
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
   - name: sessions
     description: "This table contains information on the sessions of all the customers
       and the utm_source, utm_medium and utm_campaign of the session"
@@ -288,10 +317,16 @@ models:
         data_type: varchar
         description: "Unique identifier for a session"
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: customer_id
         data_type: number
         description: "Unique identifier for a customer"
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: started_at
         data_type: timestamp_ntz
         description: "Time (UTC) when the session started"
