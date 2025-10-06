@@ -60,7 +60,8 @@ models:
     description: This table has basic information about orders, as well as some derived
       facts based on payments
     meta:
-      owner: "@sales-team"
+      owner: "@finance-team"
+      subscribers: "@finance-team"
     config:
       tags: ["finance", "sales"]
       elementary:
@@ -71,7 +72,7 @@ models:
           dimensions:
             - customer_id
           config:
-            owner: ["@data-ops"]
+            owner: ["@finance-team"]
             tags: ["stability"]
     columns:
       - name: order_id
@@ -83,7 +84,7 @@ models:
           - relationships:
               config:
                 severity: warn
-                owner: ["@data-ops"]
+                owner: ["@finance-team"]
               to: ref('customers')
               field: customer_id
 
@@ -97,14 +98,14 @@ models:
               config:
                 tags: ["customer_success"]
                 severity: warn
-                owner: ["@data-ops"]
+                owner: ["@finance-team"]
               values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
               value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
               config:
                 severity: warn
-                owner: ["@data-ops"]
+                owner: ["@finance-team"]
 
       - name: amount
         description: Total amount (AUD) of the order
@@ -124,7 +125,8 @@ models:
   - name: returned_orders
     description: This table contains all of the returned orders
     meta:
-      owner: "@sales-team"
+      owner: "@finance-team"
+      subscribers: "@finance-team"
     config:
       tags: ["finance"]
       elementary:
@@ -144,7 +146,7 @@ models:
           - relationships:
               config:
                 severity: warn
-                owner: ["@customer-team"]
+                owner: ["@finance-team"]
               to: ref('customers')
               field: customer_id
 
@@ -157,7 +159,7 @@ models:
           - accepted_values:
               config:
                 severity: warn
-                owner: ["@customer-team"]
+                owner: ["@finance-team"]
               values: ["return_pending", "returned"]
 
       - name: amount
@@ -185,7 +187,8 @@ models:
   - name: lost_orders
     description: This table contains all of the lost orders
     meta:
-      owner: "@sales-team"
+      owner: "@finance-team"
+      subscribers: "@finance-team"
     config:
       tags: ["finance"]
       elementary:
@@ -204,7 +207,7 @@ models:
           - relationships:
               config:
                 severity: warn
-                owner: ["@customer-team"]
+                owner: ["@finance-team"]
               to: ref('customers')
               field: customer_id
 
