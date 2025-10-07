@@ -278,7 +278,7 @@ models:
     description: "This table contains information on the sessions of all the customers
       and the utm_source, utm_medium and utm_campaign of the session"
     meta:
-      owner: "@marketing-team"
+      owner: "@marketing-team,Idan"
     config:
       tags: ["marketing", "pii"]
       elementary:
