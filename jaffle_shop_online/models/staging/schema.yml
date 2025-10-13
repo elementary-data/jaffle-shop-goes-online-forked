@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: stg_customers
+    description: "Cleaned and standardized customer data from raw sources. Renames 'id' to 'customer_id' and includes basic customer profile information (first name, last name) for downstream analytics."
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +18,7 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: "Standardized order transaction data with consistent field naming. Renames 'id' to 'order_id' and 'user_id' to 'customer_id' to establish clear relationships between customers and their orders."
     meta:
       owner: "@sales-team"
     config:
@@ -42,6 +44,7 @@ models:
               quote_values: true
 
   - name: stg_payments
+    description: "Payment transaction data with standardized monetary values. Converts payment amounts from cents to dollars for consistent financial reporting and renames 'id' to 'payment_id' for clarity."
     meta:
       owner: "@finance-team"
     config:
@@ -60,6 +63,7 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: "User registration and signup data with standardized customer identifiers. Renames 'id' to 'signup_id' and 'user_id' to 'customer_id', includes customer email and hashed password information for user management."
     meta:
       owner: "@customer-team"
     config:
