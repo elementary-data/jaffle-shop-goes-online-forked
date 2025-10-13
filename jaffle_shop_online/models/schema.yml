@@ -73,6 +73,21 @@ models:
           config:
             owner: ["@data-ops"]
             tags: ["stability"]
+      - elementary.freshness_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+          days_back: 14
+          backfill_days: 2
+          sensitivity: 3.0
+          timestamp_column: order_date
+          description: Checking for freshness anomalies by looking at a 1 days period
+            and comparing it to last 14 days
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
     columns:
       - name: order_id
         description: This is a unique identifier for an order
@@ -193,6 +208,21 @@ models:
 
     tests:
       - elementary.schema_changes_from_baseline
+      - elementary.freshness_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+          days_back: 14
+          backfill_days: 2
+          sensitivity: 3.0
+          timestamp_column: order_date
+          description: Checking for freshness anomalies by looking at a 1 days period
+            and comparing it to last 14 days
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
     columns:
       - name: order_id
         description: This is a unique identifier for an order
@@ -260,6 +290,22 @@ models:
       - name: sale_price
         description: "Sale price of a single unit (AUD)"
 
+    data_tests:
+      - elementary.freshness_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+          days_back: 14
+          backfill_days: 2
+          sensitivity: 3.0
+          timestamp_column: order_date
+          description: Checking for freshness anomalies by looking at a 1 days period
+            and comparing it to last 14 days
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
   - name: historical_orders
     description: "Orders loaded from the historical batch datasets (prior to the current
       day). Amount fields are stored in cents."
@@ -289,6 +335,22 @@ models:
       - name: gift_card_amount
         description: "Portion of the order paid with gift card (in cents)"
 
+    data_tests:
+      - elementary.freshness_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+          days_back: 14
+          backfill_days: 2
+          sensitivity: 3.0
+          timestamp_column: order_date
+          description: Checking for freshness anomalies by looking at a 1 days period
+            and comparing it to last 14 days
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
   - name: real_time_orders
     description: "Orders ingested from the real-time pipeline for the current day.
       Monetary fields have already been converted to dollars via the cents_to_dollars
@@ -318,3 +380,19 @@ models:
         description: "Portion of the order paid with bank transfer (AUD)"
       - name: gift_card_amount
         description: "Portion of the order paid with gift card (AUD)"
+    data_tests:
+      - elementary.freshness_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+          days_back: 14
+          backfill_days: 2
+          sensitivity: 3.0
+          timestamp_column: order_date
+          description: Checking for freshness anomalies by looking at a 1 days period
+            and comparing it to last 14 days
+          config:
+            severity: error
+          meta:
+            owner:
+              - Or
