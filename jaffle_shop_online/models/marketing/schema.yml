@@ -256,7 +256,7 @@ models:
   - name: customer_conversions
     description: "This table contains information on the conversions of all the customers"
     meta:
-      owner: "@marketing-team"
+      owner: "@marketing-team,data-engineering-team"
     config:
       tags: ["marketing", "finance", "pii"]
       elementary:
