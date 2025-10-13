@@ -258,7 +258,7 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing", "finance", "pii"]
+      tags: ["marketing", "finance", "pii", stability]
       elementary:
         timestamp_column: "converted_at"
     columns:

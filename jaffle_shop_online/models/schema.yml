@@ -12,6 +12,9 @@ models:
       tags:
         - customer_data
         - pii
+        - finance
+        - marketing
+        - stability
     columns:
       - name: customer_id
         description: This is a unique identifier for a customer
@@ -296,7 +299,11 @@ models:
     meta:
       owner: "@finance-team"
     config:
-      tags: ["finance", "sales", "real_time"]
+      tags:
+        - "real_time"
+        - "finance"
+        - marketing
+        - stability
       elementary:
         timestamp_column: "order_date"
     columns:
