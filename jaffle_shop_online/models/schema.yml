@@ -76,6 +76,11 @@ models:
     columns:
       - name: order_id
         description: This is a unique identifier for an order
+        tests:
+          - unique:
+              config:
+                severity: error
+                owner: ["@sales-team"]
 
       - name: customer_id
         description: Foreign key to the customers table
@@ -108,6 +113,15 @@ models:
 
       - name: amount
         description: Total amount (AUD) of the order
+        tests:
+          - elementary.column_anomalies:
+              config:
+                severity: warn
+                owner: ["@sales-team"]
+              column_anomalies:
+                - average
+                - max
+                - min
 
       - name: credit_card_amount
         description: Amount of the order (AUD) paid for by credit card
@@ -299,6 +313,8 @@ models:
       tags: ["finance", "sales", "real_time"]
       elementary:
         timestamp_column: "order_date"
+    tests:
+      - assert_amount_within_product_range
     columns:
       - name: order_id
         description: "Unique identifier for an order"
