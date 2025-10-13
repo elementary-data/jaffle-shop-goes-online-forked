@@ -36,7 +36,7 @@ models:
     description: "This is a table that contains all the touch points, by session,
       with the utm_source, utm_medium and utm_campaign"
     meta:
-      owner: "@marketing-team"
+      owner: "@finance-team"
     config:
       tags: ["marketing", "pii", "finance-data-product"]
       elementary:
@@ -129,33 +129,97 @@ models:
       tags:
         - "finance"
         - "finance-data-product"
+        - "marketing"
       elementary:
         timestamp_column: "day"
+    data_tests:
+      # Business Logic Validation Tests
+      - name: roas_range_validation
+        test: dbt_utils.expression_is_true
+        config:
+          expression: "return_on_advertising_spend IS NULL OR (return_on_advertising_spend >= 0 AND return_on_advertising_spend <= 1000)"
+          severity: error
+        description: "Ensures ROAS values are within reasonable business bounds (0-1000%)"
+      
+      - name: cpa_positive_values_check
+        test: dbt_utils.expression_is_true
+        config:
+          expression: "cost_per_acquisition IS NULL OR cost_per_acquisition > 0"
+          severity: error
+        description: "Validates that CPA is always positive when calculated"
+      
+      - name: spend_attribution_consistency
+        test: dbt_utils.expression_is_true  
+        config:
+          expression: "NOT (total_spend > 0 AND attribution_points = 0 AND attribution_revenue = 0)"
+          severity: warn
+        description: "Verifies records with spend have corresponding attribution data"
     columns:
       - name: day
         data_type: date
         description: "Day (UTC)"
+        data_tests:
+          - not_null:
+              config:
+                severity: error
+          - dbt_utils.not_accepted_values:
+              values: ['1900-01-01', '2099-12-31']
+              quote: false
+              config:
+                severity: warn
 
       - name: utm_source
         data_type: varchar
         description: "Source where the ad was displayed. For example, Google, Facebook,
           Twitter, Newsletter, etc."
+        data_tests:
+          - not_null:
+              config:
+                severity: error
 
       - name: attribution_points
         data_type: number
         description: "Total number of attribution points"
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+              where: "attribution_points IS NOT NULL"
+              config:
+                severity: warn
 
       - name: attribution_revenue
         data_type: number
         description: "Total revenue amount (USD)"
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+              where: "attribution_revenue IS NOT NULL"
+              config:
+                severity: warn
 
       - name: total_spend
         data_type: number
         description: "Total spend amount (USD)"
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+              where: "total_spend IS NOT NULL"
+              config:
+                severity: warn
 
       - name: cost_per_acquisition
         data_type: number
         description: "Cost (USD) per acquisition, calculated as total_spend / attribution_points"
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+              where: "cost_per_acquisition IS NOT NULL"
+              config:
+                severity: error
 
       - name: return_on_advertising_spend
         data_type: number
@@ -164,7 +228,7 @@ models:
         data_tests:
           - elementary.column_anomalies:
               anomaly_direction: both
-              anomaly_sensitivity: 2
+              anomaly_sensitivity: 1.5
               column_anomalies:
                 - average
               detection_period:
@@ -172,11 +236,18 @@ models:
                 period: day
               timestamp_column: day
               training_period:
-                count: 14
+                count: 30
                 period: day
               time_bucket:
                 period: day
                 count: 1
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1000
+              inclusive: true
+              where: "return_on_advertising_spend IS NOT NULL"
+              config:
+                severity: error
 
   - name: marketing_ads
     description: "This table contains information on the ad spend, by source, medium
