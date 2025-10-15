@@ -126,9 +126,6 @@ models:
     meta:
       owner: "@finance-team"
     config:
-      tags:
-        - "finance"
-        - "finance-data-product"
       elementary:
         timestamp_column: "day"
     columns:
