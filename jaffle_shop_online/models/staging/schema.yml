@@ -23,6 +23,20 @@ models:
       tags: ["staging", "finance", "sales"]
       elementary:
         timestamp_column: "order_date"
+    tests:
+      - elementary.volume_anomalies:
+          config:
+            severity: warn
+            tags: ["bussiness-rule"]
+          sensitivity: 2
+          detection_period:
+            count: 2
+            period: day
+      - elementary.freshness_anomalies:
+          config:
+            severity: warn
+            tags: ["bussiness-rule"]
+          sensitivity: 2
     columns:
       - name: order_id
         tests:
@@ -46,6 +60,20 @@ models:
       owner: "@finance-team"
     config:
       tags: ["staging", "finance"]
+    tests:
+      - elementary.volume_anomalies:
+          config:
+            severity: warn
+            tags: ["bussiness-rule"]
+          sensitivity: 2
+          detection_period:
+            count: 2
+            period: day
+      - elementary.freshness_anomalies:
+          config:
+            severity: warn
+            tags: ["bussiness-rule"]
+          sensitivity: 2
     columns:
       - name: payment_id
         tests:
