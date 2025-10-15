@@ -120,6 +120,16 @@ models:
         data_type: number
         description: ""
 
+    data_tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 2
+          group_by_columns: # Optional, Columns to group by before executing the test
+            - group_id
+          description: 'Checking the data is updated at '
+          config:
+            severity: error
   - name: cpa_and_roas
     description: "This table contains the cost per acquisition and return on ad spend,
       by source, and per day"
@@ -313,3 +323,13 @@ models:
       - name: utm_campain
         data_type: varchar
         description: "The name of the advertising campaign"
+    data_tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 2
+          group_by_columns: # Optional, Columns to group by before executing the test
+            - group_id
+          description: 'Checking the data is updated at '
+          config:
+            severity: error

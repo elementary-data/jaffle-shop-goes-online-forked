@@ -318,3 +318,13 @@ models:
         description: "Portion of the order paid with bank transfer (AUD)"
       - name: gift_card_amount
         description: "Portion of the order paid with gift card (AUD)"
+    data_tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 2
+          group_by_columns: # Optional, Columns to group by before executing the test
+            - group_id
+          description: 'Checking the data is updated at '
+          config:
+            severity: error
