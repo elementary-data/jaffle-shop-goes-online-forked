@@ -60,7 +60,7 @@ models:
     description: This table has basic information about orders, as well as some derived
       facts based on payments
     meta:
-      owner: "@sales-team"
+      owner: "@de-engineering-team"
     config:
       tags: ["finance", "sales"]
       elementary:
