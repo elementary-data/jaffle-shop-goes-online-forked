@@ -34,11 +34,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -81,3 +79,8 @@ models:
                 severity: warn
               column_anomalies:
                 - missing_count
+      - name: customer_id
+        data_tests:
+          - unique:
+              description: The customer_id column in the stg_signups table should
+                contain only unique values
