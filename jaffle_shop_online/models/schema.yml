@@ -23,6 +23,9 @@ models:
               to: ref('stg_signups')
               field: customer_id
 
+          - unique:
+              description: The customer_id column in the customers table should contain
+                only unique values
       - name: first_name
         description: Customer's first name. PII.
 
