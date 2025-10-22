@@ -124,7 +124,8 @@ models:
     description: "This table contains the cost per acquisition and return on ad spend,
       by source, and per day"
     meta:
-      owner: "@finance-team"
+      owner:
+        - eden@elementary-data.com
     config:
       tags:
         - "finance"
