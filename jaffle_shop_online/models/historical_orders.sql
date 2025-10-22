@@ -37,7 +37,15 @@ final as (
     left join order_payments op on o.order_id = op.order_id
 )
 
-select *
+select 
+    order_id,
+    customer_id,
+    order_date,
+    status,
+    {% raw %}{{ cents_to_dollars('amount') }} as amount,{% endraw %}
+    {% for payment_method in payment_methods -%}
+    {% raw %}{{ cents_to_dollars(payment_method + '_amount') }} as {{ payment_method }}_amount,{% endraw %}
+    {% endfor -%}
 from final
 where date(order_date) < (
     select date(max(order_date))
