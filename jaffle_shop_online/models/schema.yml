@@ -185,7 +185,8 @@ models:
   - name: lost_orders
     description: This table contains all of the lost orders
     meta:
-      owner: "@sales-team"
+      owner:
+        - '@finance-team'
     config:
       tags: ["finance"]
       elementary:
