@@ -2,7 +2,13 @@
   config(materialized='view')
 }}
 
+{% raw %}
+-- All monetary amounts in this model are in dollars
+{% endraw %}
+
+{% raw %}
 {% set payment_methods = ['credit_card', 'coupon', 'bank_transfer', 'gift_card'] %}
+{% endraw %}
 
 with orders as (
     select * from {{ ref('stg_orders') }}
@@ -15,9 +21,11 @@ payments as (
 order_payments as (
     select
         order_id,
+        {% raw %}
         {% for payment_method in payment_methods -%}
         sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount,
         {% endfor -%}
+        {% endraw %}
         sum(amount) as total_amount
     from payments
     group by order_id
@@ -29,9 +37,11 @@ final as (
         o.customer_id,
         o.order_date,
         o.status,
+        {% raw %}
         {% for payment_method in payment_methods -%}
         op.{{ payment_method }}_amount,
         {% endfor -%}
+        {% endraw %}
         op.total_amount    as amount_cents
     from orders o
     left join order_payments op on o.order_id = op.order_id
@@ -42,11 +52,13 @@ select
     customer_id,
     order_date,
     status,
+    {% raw %}
     {{ cents_to_dollars('amount_cents') }} as amount,
     {{ cents_to_dollars('bank_transfer_amount') }} as bank_transfer_amount,
     {{ cents_to_dollars('coupon_amount') }} as coupon_amount,
     {{ cents_to_dollars('credit_card_amount') }} as credit_card_amount,
     {{ cents_to_dollars('gift_card_amount') }} as gift_card_amount
+    {% endraw %}
 from final
 where date(order_date) = (
     select date(max(order_date)) from final
