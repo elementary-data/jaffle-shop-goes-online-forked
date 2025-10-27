@@ -5,3 +5,9 @@ sources:
     schema: jaffle_shop_elementary
     tables:
       - name: elementary_exposures
+        description: This source table contains metadata about dbt exposures tracked
+          by the Elementary data observability package. It stores information about
+          dashboards, reports, and other downstream data consumers that depend on
+          dbt models, including their configuration, dependencies, and health status.
+          This table is primarily used for data lineage tracking and monitoring the
+          impact of data quality issues on business-critical exposures.
