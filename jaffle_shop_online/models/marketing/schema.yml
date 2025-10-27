@@ -6,7 +6,10 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing", "finance", "finance-data-product"]
+      tags:
+        - "finance"
+        - "marketing"
+        - marketing-data-product
       elementary:
         timestamp_column: "day"
     columns:
@@ -38,7 +41,10 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing", "pii", "finance-data-product"]
+      tags:
+        - "pii"
+        - "marketing"
+        - marketing-data-product
       elementary:
         timestamp_column: "converted_at"
     columns:
@@ -128,7 +134,7 @@ models:
     config:
       tags:
         - "finance"
-        - "finance-data-product"
+        - marketing-data-product
       elementary:
         timestamp_column: "day"
     columns:
@@ -184,7 +190,7 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing", "finance"]
+      tags: ["marketing", "finance", marketing-data-product]
       elementary:
         timestamp_column: "date"
     columns:
@@ -219,7 +225,7 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing"]
+      tags: ["marketing", marketing-data-product]
       elementary:
         timestamp_column: "started_at"
     columns:
@@ -258,7 +264,7 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing", "finance", "pii"]
+      tags: ["marketing", "finance", "pii", marketing-data-product]
       elementary:
         timestamp_column: "converted_at"
     columns:
@@ -280,7 +286,7 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing", "pii"]
+      tags: ["marketing", "pii", marketing-data-product]
       elementary:
         timestamp_column: "started_at"
     columns:
