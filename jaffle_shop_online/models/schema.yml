@@ -23,6 +23,8 @@ models:
               to: ref('stg_signups')
               field: customer_id
 
+          - unique:
+              description: The column should contain only unique values
       - name: first_name
         description: Customer's first name. PII.
 
@@ -77,6 +79,9 @@ models:
       - name: order_id
         description: This is a unique identifier for an order
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: customer_id
         description: Foreign key to the customers table
         tests:
@@ -87,6 +92,8 @@ models:
               to: ref('customers')
               field: customer_id
 
+          - unique:
+              description: The column should contain only unique values
       - name: order_date
         description: Date (UTC) that the order was placed
 
@@ -138,6 +145,9 @@ models:
       - name: order_id
         description: This is a unique identifier for an order
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: customer_id
         description: Foreign key to the customers table
         tests:
@@ -148,6 +158,8 @@ models:
               to: ref('customers')
               field: customer_id
 
+          - unique:
+              description: The column should contain only unique values
       - name: order_date
         description: Date (UTC) that the order was placed
 
@@ -198,6 +210,9 @@ models:
         description: This is a unique identifier for an order
         data_type: integer
 
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: customer_id
         description: Foreign key to the customers table
         tests:
@@ -208,6 +223,8 @@ models:
               to: ref('customers')
               field: customer_id
 
+          - unique:
+              description: The column should contain only unique values
       - name: order_date
         description: Date (UTC) that the order was placed
 
@@ -253,6 +270,9 @@ models:
     columns:
       - name: order_id
         description: "Unique identifier for an order"
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: sku
         description: "Unique stock-keeping unit for the item"
       - name: quantity
@@ -260,6 +280,10 @@ models:
       - name: sale_price
         description: "Sale price of a single unit (AUD)"
 
+      - name: customer_id
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
   - name: historical_orders
     description: "Orders loaded from the historical batch datasets (prior to the current
       day). Amount fields are stored in cents."
@@ -272,8 +296,14 @@ models:
     columns:
       - name: order_id
         description: "Unique identifier for an order"
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: customer_id
         description: "Foreign key to the customers table"
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: order_date
         description: "Date (UTC) the order was placed"
       - name: status
@@ -302,8 +332,14 @@ models:
     columns:
       - name: order_id
         description: "Unique identifier for an order"
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: customer_id
         description: "Foreign key to the customers table"
+        data_tests:
+          - unique:
+              description: The column should contain only unique values
       - name: order_date
         description: "Date (UTC) the order was placed"
       - name: status
