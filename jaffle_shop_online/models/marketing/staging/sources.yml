@@ -2,13 +2,27 @@ version: 2
 
 sources:
   - name: ads
+    description: Advertising campaign data from various social media and search platforms
     schema: "{{ target.schema }}"
     tables:
       - name: stg_google_ads
+        description: >
+          Google Ads campaign performance data including impressions, clicks, conversions, and spend metrics.
+          This source provides the foundation for Google advertising ROI analysis, keyword performance tracking,
+          and search marketing attribution. Essential for measuring paid search effectiveness and optimizing ad spend.
       - name: stg_facebook_ads
+        description: >
+          Facebook advertising campaign data including audience engagement, reach, and conversion metrics.
+          This source enables social media advertising analysis, audience performance evaluation,
+          and Facebook marketing attribution. Critical for measuring social advertising ROI and audience optimization.
       - name: stg_instagram_ads
+        description: >
+          Instagram advertising campaign performance data including visual content engagement and conversion tracking.
+          This source supports Instagram marketing analysis, influencer campaign measurement,
+          and visual advertising attribution. Key for measuring Instagram advertising effectiveness and creative performance.
 
   - name: sessions
+    description: User session data from various digital touchpoints and platforms
     schema: "{{ target.schema }}"
     tables:
       - name: stg_website_sessions

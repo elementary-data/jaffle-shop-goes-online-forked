@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: >
+      Standardized customer dimension table that consolidates customer information from raw data sources.
+      This model handles both training and validation datasets based on environment configuration.
+      Contains personally identifiable information (PII) and is subject to data privacy regulations.
+      Key transformations include renaming 'id' to 'customer_id' for consistency across the data model.
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +22,11 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: >
+      Standardized orders fact table that tracks the complete order lifecycle from placement to completion.
+      This staging model provides the foundation for order analytics, revenue reporting, and customer behavior analysis.
+      Includes order status validation and supports both training and validation datasets.
+      The order_date column enables time-series analysis and freshness monitoring.
     meta:
       owner: "@sales-team"
     config:
@@ -42,6 +52,11 @@ models:
               quote_values: true
 
   - name: stg_payments
+    description: >
+      Standardized payments fact table that processes financial transaction data with proper currency conversion.
+      This model converts payment amounts from cents to dollars for consistent financial reporting.
+      Supports multiple payment methods and integrates with order data for revenue attribution.
+      Critical for financial reporting, reconciliation, and payment method performance analysis.
     meta:
       owner: "@finance-team"
     config:
@@ -60,6 +75,11 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: >
+      Standardized user registration data that tracks customer acquisition and signup patterns.
+      This model contains sensitive personally identifiable information (PII) including email addresses and hashed passwords.
+      Enables customer acquisition analysis, signup funnel optimization, and user lifecycle tracking.
+      The signup_date column supports cohort analysis and customer acquisition cost calculations.
     meta:
       owner: "@customer-team"
     config:
