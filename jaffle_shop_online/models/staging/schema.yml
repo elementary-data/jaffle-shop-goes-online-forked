@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: stg_customers
+    description: Reatr
     meta:
       owner: "@customer-team"
     config:
@@ -34,14 +35,17 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging model contains cleaned and standardized payment transaction
+      data from the raw payments source. It serves as the foundation for financial
+      reporting and analysis by providing a consistent view of customer payment information.
+      The model renames columns for clarity and converts payment amounts from cents
+      to dollars for easier consumption by downstream analytics.
     meta:
       owner: "@finance-team"
     config:
@@ -60,6 +64,12 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This staging model contains cleaned and standardized customer signup
+      data from the raw signups source. It serves as the foundation for analyzing
+      customer acquisition patterns and user registration metrics across the business.
+      The model renames columns to follow consistent naming conventions, transforming
+      user identifiers to customer identifiers and standardizing field names for downstream
+      consumption.
     meta:
       owner: "@customer-team"
     config:
