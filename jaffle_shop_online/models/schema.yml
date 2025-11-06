@@ -249,7 +249,7 @@ models:
     meta:
       owner: "@sales-team"
     config:
-      tags: ["sales"]
+      tags: ["sales", show_sample_rows]
     columns:
       - name: order_id
         description: "Unique identifier for an order"
@@ -296,7 +296,7 @@ models:
     meta:
       owner: "@finance-team"
     config:
-      tags: ["finance", "sales", "real_time"]
+      tags: ["finance", "sales", "real_time", show_sample_rows]
       elementary:
         timestamp_column: "order_date"
     columns:
