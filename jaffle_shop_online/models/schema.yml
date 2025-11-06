@@ -260,6 +260,15 @@ models:
       - name: sale_price
         description: "Sale price of a single unit (AUD)"
 
+    data_tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          group_by_columns: # Optional, Columns to group by before executing the test
+            - group_id
+          config:
+            severity: error
   - name: historical_orders
     description: "Orders loaded from the historical batch datasets (prior to the current
       day). Amount fields are stored in cents."
