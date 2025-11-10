@@ -2,12 +2,17 @@ version: 2
 
 models:
   - name: stg_customers
+    description: >
+      Staging table for customer data. Standardizes customer information from raw training/validation datasets.
+      Performs basic field renaming and provides clean customer identifiers for downstream models.
+      Data source switches between training and validation datasets based on configuration.
     meta:
       owner: "@customer-team"
     config:
       tags: ["staging", "pii"]
     columns:
       - name: customer_id
+        description: Unique identifier for each customer, renamed from 'id' in source data
         tests:
           - unique:
               config:
@@ -15,8 +20,16 @@ models:
           - relationships:
               to: ref('stg_signups')
               field: customer_id
+      - name: first_name
+        description: Customer's first name (PII)
+      - name: last_name
+        description: Customer's last name (PII)
 
   - name: stg_orders
+    description: >
+      Staging table for order data. Standardizes order information from raw datasets and establishes
+      the relationship between orders and customers. Includes order status tracking and date information.
+      Data source switches between training and validation datasets based on configuration.
     meta:
       owner: "@sales-team"
     config:
@@ -25,11 +38,17 @@ models:
         timestamp_column: "order_date"
     columns:
       - name: order_id
+        description: Unique identifier for each order, renamed from 'id' in source data
         tests:
           - unique:
               config:
                 severity: warn
+      - name: customer_id
+        description: Foreign key to customers table, renamed from 'user_id' in source data
+      - name: order_date
+        description: Date when the order was placed
       - name: status
+        description: Current status of the order (placed, shipped, completed, return_pending, returned)
         tests:
           - accepted_values:
               config:
@@ -42,24 +61,38 @@ models:
               quote_values: true
 
   - name: stg_payments
+    description: >
+      Staging table for payment data. Standardizes payment information from raw datasets and
+      converts monetary amounts from cents to dollars. Links payments to their corresponding orders
+      and categorizes payment methods for financial analysis.
     meta:
       owner: "@finance-team"
     config:
       tags: ["staging", "finance"]
     columns:
       - name: payment_id
+        description: Unique identifier for each payment transaction, renamed from 'id' in source data
         tests:
           - unique:
               config:
                 severity: warn
+      - name: order_id
+        description: Foreign key linking the payment to its corresponding order
       - name: payment_method
+        description: Method used for payment (credit_card, coupon, bank_transfer, gift_card)
         tests:
           - accepted_values:
               config:
                 severity: warn
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
+      - name: amount
+        description: Payment amount in dollars (converted from cents in source data)
 
   - name: stg_signups
+    description: >
+      Staging table for customer signup data. Standardizes user registration information from raw datasets
+      and manages customer authentication data. Contains PII including email addresses and tracks
+      signup timestamps for customer lifecycle analysis.
     meta:
       owner: "@customer-team"
     config:
@@ -68,11 +101,15 @@ models:
         timestamp_column: "signup_date"
     columns:
       - name: signup_id
+        description: Unique identifier for each signup event, renamed from 'id' in source data
         tests:
           - unique:
               config:
                 severity: warn
+      - name: customer_id
+        description: Unique customer identifier, renamed from 'user_id' in source data
       - name: customer_email
+        description: Customer's email address used for registration (PII), renamed from 'user_email'
         tests:
           - unique
           - elementary.column_anomalies:
@@ -81,3 +118,7 @@ models:
                 severity: warn
               column_anomalies:
                 - missing_count
+      - name: hashed_password
+        description: Hashed version of customer's password for security
+      - name: signup_date
+        description: Date and time when the customer signed up
