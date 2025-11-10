@@ -214,6 +214,26 @@ models:
         description: "Source where the ad was displayed. For example, Google, Facebook,
           Twitter, Newsletter, etc."
 
+        data_tests:
+          - elementary.column_anomalies:
+              column_anomalies: # Optional, A list of column monitors for anomaly detection. by default all monitors except for `sum` are executed.
+                - average
+              time_bucket: # Optional, The period for time bucketing.
+                period: day
+                count: 1
+              timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+              anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+              training_period: # Optional, The period for model training.
+                period: day # Optional
+                count: 14 # Optional
+              detection_period: # Optional, The period for anomaly detection.
+                period: day # Optional
+                count: 2 # Optional
+              anomaly_direction: both # Optional, The direction of anomalies to detect.
+              dimensions: ["utm_source"] # Optional, A list of columns to group the monitors by.
+              where_expression: id is not null # Optional, SQL expression to filter the data.
+              config:
+                severity: error
   - name: agg_sessions
     description: "This table contains aggregated information on the sessions"
     meta:
