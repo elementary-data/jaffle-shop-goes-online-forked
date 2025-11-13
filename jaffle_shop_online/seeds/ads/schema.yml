@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+  - name: stg_google_ads
+    description: "Google Ads seed data containing campaign performance metrics, spend data, and attribution information for marketing analysis."
+    
+  - name: stg_facebook_ads
+    description: "Facebook Ads seed data containing campaign performance metrics, spend data, and attribution information for marketing analysis."
+    
+  - name: stg_instagram_ads
+    description: "Instagram Ads seed data containing campaign performance metrics, spend data, and attribution information for marketing analysis."

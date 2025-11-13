@@ -1,0 +1,14 @@
+version: 2
+
+seeds:
+  - name: raw_customers_training
+    description: "Training dataset containing customer information used for model development and testing. Contains customer IDs, first names, and last names."
+    
+  - name: raw_orders_training
+    description: "Training dataset containing order transaction data used for model development and testing. Includes order IDs, customer relationships, dates, and status information."
+    
+  - name: raw_payments_training
+    description: "Training dataset containing payment transaction data used for model development and testing. Includes payment methods, amounts (in cents), and order relationships."
+    
+  - name: raw_signups_training
+    description: "Training dataset containing user registration data used for model development and testing. Includes signup information, email addresses, and customer relationships."

@@ -2,6 +2,8 @@ version: 2
 
 sources:
   - name: elementary
-    schema: jaffle_shop_elementary
+    description: "Elementary data observability platform metadata and monitoring data"
+    schema: "{{ target.schema }}"
     tables:
       - name: elementary_exposures
+        description: "Elementary platform exposure definitions and metadata for data lineage and impact analysis"

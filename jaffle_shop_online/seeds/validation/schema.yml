@@ -1,0 +1,14 @@
+version: 2
+
+seeds:
+  - name: raw_customers_validation
+    description: "Validation dataset containing customer information used for data quality testing and validation workflows. Contains customer IDs, first names, and last names."
+    
+  - name: raw_orders_validation
+    description: "Validation dataset containing order transaction data used for data quality testing and validation workflows. Includes order IDs, customer relationships, dates, and status information."
+    
+  - name: raw_payments_validation
+    description: "Validation dataset containing payment transaction data used for data quality testing and validation workflows. Includes payment methods, amounts (in cents), and order relationships."
+    
+  - name: raw_signups_validation
+    description: "Validation dataset containing user registration data used for data quality testing and validation workflows. Includes signup information, email addresses, and customer relationships."

@@ -1,0 +1,5 @@
+version: 2
+
+seeds:
+  - name: stg_website_sessions
+    description: "Website session seed data for marketing attribution analysis, containing user interactions, page views, and session duration metrics."

@@ -2,14 +2,21 @@ version: 2
 
 sources:
   - name: ads
+    description: "Marketing advertising data from various platforms including Google, Facebook, and Instagram ads"
     schema: "{{ target.schema }}"
     tables:
       - name: stg_google_ads
+        description: "Google Ads campaign data including spend, impressions, and performance metrics for marketing attribution analysis"
       - name: stg_facebook_ads
+        description: "Facebook Ads campaign data including spend, impressions, and performance metrics for marketing attribution analysis"
       - name: stg_instagram_ads
+        description: "Instagram Ads campaign data including spend, impressions, and performance metrics for marketing attribution analysis"
 
   - name: sessions
+    description: "User session tracking data from website and mobile app interactions"
     schema: "{{ target.schema }}"
     tables:
       - name: stg_website_sessions
+        description: "Website user session data capturing page views, session duration, and user interactions for marketing attribution and user behavior analysis"
       - name: stg_app_sessions
+        description: "Mobile app user session data capturing screen views, session duration, and user interactions for marketing attribution and user behavior analysis"

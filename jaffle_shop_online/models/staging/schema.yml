@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: stg_customers
+    description: "Standardized customer dimension table that consolidates customer information from raw sources. Normalizes customer IDs and names, switching between validation and training datasets based on configuration."
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +18,7 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: "Clean order transactions with standardized column names and status tracking. Converts raw user_id to customer_id for consistency across the data model. Switches between validation and training datasets based on configuration."
     meta:
       owner: "@sales-team"
     config:
@@ -42,6 +44,7 @@ models:
               quote_values: true
 
   - name: stg_payments
+    description: "Standardized payment records with currency conversion from cents to dollars. Links payments to orders and categorizes by payment method. Switches between validation and training datasets based on configuration."
     meta:
       owner: "@finance-team"
     config:
@@ -60,6 +63,7 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: "User registration data with standardized column names and PII handling. Tracks customer email and signup dates for marketing attribution. Switches between validation and training datasets based on configuration."
     meta:
       owner: "@customer-team"
     config:
