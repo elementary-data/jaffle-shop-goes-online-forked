@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model provides a clean, standardized view of customer
+      data from the raw customer training dataset. It serves as the foundation for
+      downstream customer analytics and reporting by ensuring consistent customer
+      identification and naming conventions. The model renames the source ID field
+      to customer_id and preserves first_name and last_name attributes for each customer
+      record.
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +23,10 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: Staging model that cleans and standardizes raw order data for downstream
+      analytics. This model renames columns to follow consistent naming conventions
+      and serves as the foundation for sales and finance reporting. Each row represents
+      a single order with standardized identifiers, order date, and status information.
     meta:
       owner: "@sales-team"
     config:
@@ -34,14 +44,17 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging model contains cleaned and standardized payment data
+      from the raw payments source. Each row represents a single payment transaction
+      with basic payment details including payment method and order association. The
+      model converts payment amounts from cents to dollars and renames columns to
+      follow consistent naming conventions for downstream analytics.
     meta:
       owner: "@finance-team"
     config:
@@ -60,6 +73,11 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This staging model contains customer signup data with standardized
+      column names and data types. Each row represents a single customer registration
+      event, including their unique identifier, email address, hashed password, and
+      signup timestamp. The model serves as a cleaned foundation for downstream analysis
+      of customer acquisition patterns and user onboarding metrics.
     meta:
       owner: "@customer-team"
     config:
