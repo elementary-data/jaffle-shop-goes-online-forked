@@ -178,6 +178,11 @@ models:
                 period: day
                 count: 1
 
+    data_tests:
+      - elementary.schema_changes:
+          description: Checks for schema changes against an existing baseline
+          config:
+            severity: error
   - name: marketing_ads
     description: "This table contains information on the ad spend, by source, medium
       and campaign"
