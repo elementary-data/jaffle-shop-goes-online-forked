@@ -32,12 +32,21 @@ final as (
         {% for payment_method in payment_methods -%}
         op.{{ payment_method }}_amount,
         {% endfor -%}
-        op.total_amount    as amount
+        op.total_amount as amount_cents
     from orders o
     left join order_payments op on o.order_id = op.order_id
 )
 
-select *
+select 
+    order_id,
+    customer_id,
+    order_date,
+    status,
+    {% raw %}{{ cents_to_dollars('amount_cents') }}{% endraw %} as amount,
+    {% raw %}{{ cents_to_dollars('bank_transfer_amount') }}{% endraw %} as bank_transfer_amount,
+    {% raw %}{{ cents_to_dollars('coupon_amount') }}{% endraw %} as coupon_amount,
+    {% raw %}{{ cents_to_dollars('credit_card_amount') }}{% endraw %} as credit_card_amount,
+    {% raw %}{{ cents_to_dollars('gift_card_amount') }}{% endraw %} as gift_card_amount
 from final
 where date(order_date) < (
     select date(max(order_date))
