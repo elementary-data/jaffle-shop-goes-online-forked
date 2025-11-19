@@ -219,7 +219,7 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing"]
+      tags: ["marketing", ads]
       elementary:
         timestamp_column: "started_at"
     columns:
