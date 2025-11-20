@@ -129,6 +129,7 @@ models:
       tags:
         - "finance"
         - "finance-data-product"
+        - elementary-tests
       elementary:
         timestamp_column: "day"
     columns:
