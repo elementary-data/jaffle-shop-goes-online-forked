@@ -2,6 +2,10 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model contains cleaned and standardized customer data
+      from the raw customer source table. It serves as the foundation for downstream
+      customer analytics and reporting by providing a consistent view of customer
+      information.
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +21,11 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model standardizes raw order data by cleaning column
+      names and preparing it for downstream analytics. It serves as the foundation
+      for sales and finance reporting by providing a consistent view of customer orders.
+      The model renames key fields (id to order_id, user_id to customer_id) and selects
+      essential order attributes including order date and status for further analysis.
     meta:
       owner: "@sales-team"
     config:
@@ -34,14 +43,17 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging model cleans and standardizes raw payment data to prepare
+      it for downstream analytics and reporting. It serves as the foundation for financial
+      analysis by providing consistent payment transaction data across the organization.
+      The model renames the payment ID field for clarity and converts payment amounts
+      from cents to dollars for easier business interpretation.
     meta:
       owner: "@finance-team"
     config:
