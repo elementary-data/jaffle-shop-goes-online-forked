@@ -2,6 +2,10 @@ version: 2
 
 models:
   - name: stg_customers
+    description: 'This staging model provides a cleaned and standardized view of customer
+      data from the raw customer source table. It serves as the foundation for downstream
+      analytics and reporting by ensuring consistent customer identification and naming
+      conventions across the data warehouse. '
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +21,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model provides a standardized view of raw order data
+      from the jaffle_shop database, serving as the foundation for downstream analytics
+      and reporting. The model supports business operations by cleaning and renaming
+      key order attributes to ensure consistent data structure across the organization.
+      Key transformations include renaming the id column to order_id and user_id to
+      customer_id for improved clarity and standardization.
     meta:
       owner: "@sales-team"
     config:
@@ -34,14 +44,18 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging model cleans and standardizes raw payment data from
+      the source system, containing one record per payment transaction with payment
+      method and order details. It serves as the foundation for downstream financial
+      analysis and reporting by providing consistent, validated payment information.
+      The model converts payment amounts from cents to dollars and renames columns
+      to follow consistent naming conventions across the data warehouse.
     meta:
       owner: "@finance-team"
     config:
