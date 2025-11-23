@@ -41,7 +41,6 @@ models:
         data_tests:
           - elementary.column_anomalies:
               column_anomalies: # Optional, A list of column monitors for anomaly detection. by default all monitors except for `sum` are executed.
-                - min
                 - max
                 - average
               time_bucket: # Optional, The period for time bucketing.
