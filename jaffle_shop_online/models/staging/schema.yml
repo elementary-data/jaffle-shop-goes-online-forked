@@ -46,6 +46,13 @@ models:
       owner: "@finance-team"
     config:
       tags: ["staging", "finance"]
+    tests:
+      - elementary.volume_anomalies:
+          config:
+            severity: warn
+      - elementary.freshness_anomalies:
+          config:
+            severity: warn
     columns:
       - name: payment_id
         tests:
