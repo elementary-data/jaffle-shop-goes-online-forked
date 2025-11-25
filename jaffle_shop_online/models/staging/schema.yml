@@ -34,11 +34,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -59,6 +57,39 @@ models:
                 severity: warn
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
+      - name: amount
+        data_tests:
+          - elementary.column_anomalies:
+              column_anomalies: # Optional, A list of column monitors for anomaly detection. by default all monitors except for `sum` are executed.
+                - null_count
+                - null_percent
+                - min_length
+                - max_length
+                - average_length
+                - missing_count
+                - missing_percent
+                - min
+                - max
+                - average
+                - zero_count
+                - zero_percent
+                - standard_deviation
+                - variance
+                - sum
+              time_bucket: # Optional, The period for time bucketing.
+                period: day
+                count: 1
+              timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+              anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+              training_period: # Optional, The period for model training.
+                period: day # Optional
+                count: 14 # Optional
+              detection_period: # Optional, The period for anomaly detection.
+                period: day # Optional
+                count: 2 # Optional
+              anomaly_direction: both # Optional, The direction of anomalies to detect.
+              config:
+                severity: error
   - name: stg_signups
     meta:
       owner: "@customer-team"
