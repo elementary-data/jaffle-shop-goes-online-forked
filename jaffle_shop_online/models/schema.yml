@@ -56,6 +56,21 @@ models:
       - name: signup_date
         description: Date (UTC) of a customer's signup to the online shop.
 
+    data_tests:
+      - elementary.dimension_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+          days_back: 14
+          backfill_days: 2
+          sensitivity: 3.0
+          timestamp_column: signup_date
+          dimensions:
+            - organization_id
+          description: Checking for anomalies in the values distribution of the signup_date
+            column by looking at a 1 days period and comparing it to the last 14 days
+          config:
+            severity: warn
   - name: orders
     description: This table has basic information about orders, as well as some derived
       facts based on payments
