@@ -249,7 +249,7 @@ models:
     meta:
       owner: "@sales-team"
     config:
-      tags: ["sales"]
+      tags: ["sales", "test"]
     columns:
       - name: order_id
         description: "Unique identifier for an order"
