@@ -4,7 +4,7 @@ models:
   - name: ads_spend
     description: "This table contains the daily ad spend, by source, medium and campaign"
     meta:
-      owner: "@marketing-team"
+      owner: "@marketing-team,@finance-team"
     config:
       tags: ["marketing", "finance", "finance-data-product"]
       elementary:
@@ -182,7 +182,7 @@ models:
     description: "This table contains information on the ad spend, by source, medium
       and campaign"
     meta:
-      owner: "@marketing-team"
+      owner: "@marketing-team,@finance-team"
     config:
       tags: ["marketing", "finance"]
       elementary:
