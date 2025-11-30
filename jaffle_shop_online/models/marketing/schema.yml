@@ -253,6 +253,17 @@ models:
         description: "Platform where the session was made. For example, website, iOS
           app, Android app, etc."
 
+    data_tests:
+      - dbt_expectations.expect_table_aggregation_to_equal_other_table:
+          name: 'test1234' # Optional, An override for the test name.
+          description: test1234- test test !
+          config:
+            tags:
+              - customer_success
+            severity: error
+            meta:
+              owner:
+                - Idan
   - name: customer_conversions
     description: "This table contains information on the conversions of all the customers"
     meta:
