@@ -178,6 +178,30 @@ models:
                 period: day
                 count: 1
 
+          - elementary.column_anomalies:
+              name: 'Checking the column average per day' # Optional, An override for the test name.
+              column_anomalies: # Optional, A list of column monitors for anomaly detection. by default all monitors except for `sum` are executed.
+                - average
+              time_bucket: # Optional, The period for time bucketing.
+                period: day
+                count: 1
+              timestamp_column: created_at # Optional, The timestamp column to use in order to split the data into time buckets.
+              anomaly_sensitivity: 3 # Optional, The sensitivity level for anomaly detection.
+              training_period: # Optional, The period for model training.
+                period: day # Optional
+                count: 14 # Optional
+              detection_period: # Optional, The period for anomaly detection.
+                period: day # Optional
+                count: 2 # Optional
+              anomaly_direction: both # Optional, The direction of anomalies to detect.
+              description: Checking the column average per day
+              config:
+                tags:
+                  - marketing
+                severity: warn
+                meta:
+                  owner:
+                    - '@marketing-team'
   - name: marketing_ads
     description: "This table contains information on the ad spend, by source, medium
       and campaign"
