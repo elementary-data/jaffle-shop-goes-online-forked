@@ -73,6 +73,12 @@ models:
           config:
             owner: ["@data-ops"]
             tags: ["stability"]
+      - elementary.sql_test:
+          name: orders_custom_not_null
+          sql: "select * from elementary_tests.jaffle_shop.orders where status is null"
+          config:
+            severity: error
+            tags: ["business-rule"]
     columns:
       - name: order_id
         description: This is a unique identifier for an order
