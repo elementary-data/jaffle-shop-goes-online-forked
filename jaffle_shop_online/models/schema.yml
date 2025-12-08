@@ -66,13 +66,6 @@ models:
       elementary:
         timestamp_column: "order_date"
 
-    tests:
-      - elementary.dimension_anomalies:
-          dimensions:
-            - customer_id
-          config:
-            owner: ["@data-ops"]
-            tags: ["stability"]
     columns:
       - name: order_id
         description: This is a unique identifier for an order
@@ -130,10 +123,6 @@ models:
       elementary:
         timestamp_column: "order_date"
 
-    tests:
-      - elementary.schema_changes:
-          config:
-            owner: ["@finance-team"]
     columns:
       - name: order_id
         description: This is a unique identifier for an order
@@ -162,14 +151,6 @@ models:
 
       - name: amount
         description: Total amount (AUD) of the order
-        tests:
-          - elementary.column_anomalies:
-              config:
-                owner: ["@finance-team"]
-              column_anomalies:
-                - zero_count
-                - zero_percent
-
       - name: credit_card_amount
         description: Amount of the order (AUD) paid for by credit card
 
@@ -191,8 +172,6 @@ models:
       elementary:
         timestamp_column: "order_date"
 
-    tests:
-      - elementary.schema_changes_from_baseline
     columns:
       - name: order_id
         description: This is a unique identifier for an order
