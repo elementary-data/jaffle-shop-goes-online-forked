@@ -99,12 +99,6 @@ models:
                 severity: warn
                 owner: ["@data-ops"]
               values: ["placed", "shipped", "completed", "return_pending", "returned"]
-          - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
-              quote_values: true
-              config:
-                severity: warn
-                owner: ["@data-ops"]
 
       - name: amount
         description: Total amount (AUD) of the order
