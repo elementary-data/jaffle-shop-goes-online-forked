@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model provides a cleaned and standardized view of customer
+      data from the raw customers source table. It serves as the foundation for downstream
+      analytics and reporting on customer demographics and identification. The model
+      performs basic transformations by renaming the customer ID field for consistency
+      and selecting core customer attributes including first name and last name.
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +22,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model provides cleaned and standardized order data from
+      the raw orders source table for downstream analytics and reporting. It serves
+      as the foundation for sales and finance teams to analyze order patterns, track
+      order statuses, and understand customer purchasing behavior. The model renames
+      key fields for consistency (id to order_id, user_id to customer_id) and selects
+      essential order attributes including order date and status information.
     meta:
       owner: "@sales-team"
     config:
@@ -34,14 +45,18 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging model provides cleaned and standardized payment data
+      from the raw payments source table. Each row represents a single payment transaction
+      with details about the payment method, associated order, and transaction amount.
+      The model converts payment amounts from cents to dollars for easier analysis
+      and renames columns to follow consistent naming conventions across the data
+      warehouse.
     meta:
       owner: "@finance-team"
     config:
