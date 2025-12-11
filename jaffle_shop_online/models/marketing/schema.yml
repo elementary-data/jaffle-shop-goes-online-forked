@@ -6,7 +6,9 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing", "finance", "finance-data-product"]
+      tags:
+        - "finance"
+        - "marketing"
       elementary:
         timestamp_column: "day"
     columns:
@@ -219,7 +221,6 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing"]
       elementary:
         timestamp_column: "started_at"
     columns:
@@ -258,7 +259,9 @@ models:
     meta:
       owner: "@marketing-team"
     config:
-      tags: ["marketing", "finance", "pii"]
+      tags:
+        - "finance"
+        - "marketing"
       elementary:
         timestamp_column: "converted_at"
     columns:
