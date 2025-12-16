@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model contains cleaned and standardized customer data
+      from the raw customer source table. It serves as the foundation for downstream
+      customer analytics and reporting by providing a consistent view of customer information.
+      The model renames the primary key from 'id' to 'customer_id' for clarity and
+      selects essential customer attributes including first name and last name.
     meta:
       owner: "@customer-team"
     config:
@@ -34,14 +39,18 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging model contains cleaned and standardized payment transaction
+      data from the raw payments source. It serves as the foundation for financial
+      reporting and analysis by providing a consistent view of all payment records
+      with proper data types and formatting. The model renames the payment ID field
+      for clarity and converts payment amounts from cents to dollars for easier business
+      use.
     meta:
       owner: "@finance-team"
     config:
