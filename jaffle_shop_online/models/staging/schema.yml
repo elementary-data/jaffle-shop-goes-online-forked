@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: stg_customers
+    description: "Staging table for customer data. Standardizes raw customer information by renaming columns and selecting core customer attributes like ID, first name, and last name."
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +18,7 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: "Staging table for order data. Standardizes raw order information by renaming columns and selecting essential order attributes including order ID, customer ID, order date, and status."
     meta:
       owner: "@sales-team"
     config:
@@ -42,6 +44,7 @@ models:
               quote_values: true
 
   - name: stg_payments
+    description: "Staging table for payment data. Standardizes raw payment information by renaming columns and converting payment amounts from cents to dollars. Contains payment details including payment method and associated order information."
     meta:
       owner: "@finance-team"
     config:
@@ -60,6 +63,7 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: "Staging table for customer signup data. Standardizes raw signup information by renaming columns and selecting key signup attributes including customer email, signup date, and associated customer information."
     meta:
       owner: "@customer-team"
     config:
