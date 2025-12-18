@@ -1,23 +1,24 @@
+-- All monetary amounts in this model are converted from cents to dollars
 {{
   config(materialized='view')
 }}
 
-{% set payment_methods = ['credit_card', 'coupon', 'bank_transfer', 'gift_card'] %}
+{% raw %}{% set payment_methods = ['credit_card', 'coupon', 'bank_transfer', 'gift_card'] %}{% endraw %}
 
 with orders as (
-    select * from {{ ref('stg_orders') }}
+    select * from {% raw %}{{ ref('stg_orders') }}{% endraw %}
 ),
 
 payments as (
-    select * from {{ ref('stg_payments') }}
+    select * from {% raw %}{{ ref('stg_payments') }}{% endraw %}
 ),
 
 order_payments as (
     select
         order_id,
-        {% for payment_method in payment_methods -%}
+        {% raw %}{% for payment_method in payment_methods -%}
         sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount,
-        {% endfor -%}
+        {% endfor -%}{% endraw %}
         sum(amount) as total_amount
     from payments
     group by order_id
@@ -29,15 +30,24 @@ final as (
         o.customer_id,
         o.order_date,
         o.status,
-        {% for payment_method in payment_methods -%}
+        {% raw %}{% for payment_method in payment_methods -%}
         op.{{ payment_method }}_amount,
-        {% endfor -%}
-        op.total_amount    as amount
+        {% endfor -%}{% endraw %}
+        op.total_amount    as amount_cents
     from orders o
     left join order_payments op on o.order_id = op.order_id
 )
 
-select *
+select 
+    order_id,
+    customer_id,
+    order_date,
+    status,
+    {% raw %}{{ cents_to_dollars('amount_cents') }}{% endraw %} as amount,
+    {% raw %}{{ cents_to_dollars('bank_transfer_amount') }}{% endraw %} as bank_transfer_amount,
+    {% raw %}{{ cents_to_dollars('coupon_amount') }}{% endraw %} as coupon_amount,
+    {% raw %}{{ cents_to_dollars('credit_card_amount') }}{% endraw %} as credit_card_amount,
+    {% raw %}{{ cents_to_dollars('gift_card_amount') }}{% endraw %} as gift_card_amount
 from final
 where date(order_date) < (
     select date(max(order_date))
