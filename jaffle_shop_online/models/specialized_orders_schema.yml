@@ -1,0 +1,124 @@
+version: 2
+
+models:
+  - name: returned_orders
+    description: This table contains all of the returned orders
+    meta:
+      owner: "@sales-team"
+    config:
+      tags: ["finance"]
+      elementary:
+        timestamp_column: "order_date"
+
+    tests:
+      - elementary.schema_changes:
+          config:
+            owner: ["@finance-team"]
+    columns:
+      - name: order_id
+        description: This is a unique identifier for an order
+
+      - name: customer_id
+        description: Foreign key to the customers table
+        tests:
+          - relationships:
+              config:
+                severity: warn
+                owner: ["@customer-team"]
+              to: ref('customers')
+              field: customer_id
+
+      - name: order_date
+        description: Date (UTC) that the order was placed
+
+      - name: status
+        description: '{{ doc("orders_status") }}'
+        tests:
+          - accepted_values:
+              config:
+                severity: warn
+                owner: ["@customer-team"]
+              values: ["return_pending", "returned"]
+
+      - name: amount
+        description: Total amount (AUD) of the order
+        tests:
+          - elementary.column_anomalies:
+              config:
+                owner: ["@finance-team"]
+              column_anomalies:
+                - zero_count
+                - zero_percent
+
+      - name: credit_card_amount
+        description: Amount of the order (AUD) paid for by credit card
+
+      - name: coupon_amount
+        description: Amount of the order (AUD) paid for by coupon
+
+      - name: bank_transfer_amount
+        description: Amount of the order (AUD) paid for by bank transfer
+
+      - name: gift_card_amount
+        description: Amount of the order (AUD) paid for by gift card
+
+  - name: lost_orders
+    description: This table contains all of the lost orders
+    meta:
+      owner: "@sales-team"
+    config:
+      tags: ["finance"]
+      elementary:
+        timestamp_column: "order_date"
+
+    tests:
+      - elementary.schema_changes_from_baseline
+    columns:
+      - name: order_id
+        description: This is a unique identifier for an order
+        data_type: integer
+
+      - name: customer_id
+        description: Foreign key to the customers table
+        tests:
+          - relationships:
+              config:
+                severity: warn
+                owner: ["@customer-team"]
+              to: ref('customers')
+              field: customer_id
+
+      - name: order_date
+        description: Date (UTC) that the order was placed
+
+      - name: status
+        description: '{{ doc("orders_status") }}'
+        tests:
+          - accepted_values:
+              config:
+                severity: warn
+                owner: ["@finance-team"]
+              values: ["shipped", "return_pending"]
+
+      - name: amount
+        description: Total amount (AUD) of the order
+        tests:
+          - elementary.column_anomalies:
+              config:
+                severity: warn
+                owner: ["@finance-team"]
+              column_anomalies:
+                - zero_count
+                - zero_percent
+
+      - name: credit_card_amount
+        description: Amount of the order (AUD) paid for by credit card
+
+      - name: coupon_amount
+        description: Amount of the order (AUD) paid for by coupon
+
+      - name: bank_transfer_amount
+        description: Amount of the order (AUD) paid for by bank transfer
+
+      - name: gift_card_amount
+        description: Amount of the order (AUD) paid for by gift card
