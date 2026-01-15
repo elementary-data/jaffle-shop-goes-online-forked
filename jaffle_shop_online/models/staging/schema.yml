@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model contains basic customer information from the raw
+      customer data source. It provides a cleaned and standardized view of customer
+      records with consistent naming conventions for downstream analytics. The model
+      renames the primary key from `id` to `customer_id` while preserving first and
+      last name fields for customer identification and analysis.
     meta:
       owner: "@customer-team"
     config:
@@ -34,11 +39,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
