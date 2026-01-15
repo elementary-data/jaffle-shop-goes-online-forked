@@ -1,4 +1,5 @@
-{{
+{% raw %}-- All monetary amounts in this model are converted from cents to dollars
+{{ 
   config(materialized='view')
 }}
 
@@ -30,9 +31,9 @@ final as (
         o.order_date,
         o.status,
         {% for payment_method in payment_methods -%}
-        op.{{ payment_method }}_amount,
+        {{ cents_to_dollars('op.' + payment_method + '_amount') }} as {{ payment_method }}_amount,
         {% endfor -%}
-        op.total_amount    as amount
+        {{ cents_to_dollars('op.total_amount') }} as amount  -- Amount is now in dollars
     from orders o
     left join order_payments op on o.order_id = op.order_id
 )
@@ -42,4 +43,4 @@ from final
 where date(order_date) < (
     select date(max(order_date))
     from final
-) 
+) {% endraw %}
