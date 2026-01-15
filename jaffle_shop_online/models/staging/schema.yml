@@ -34,13 +34,23 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
+    data_tests:
+      - elementary.volume_anomalies:
+          time_bucket:
+            period: day
+            count: 1
+          days_back: 14
+          sensitivity: 3.0
+          timestamp_column: order_date
+          description: Checking for anomalies in the size and growth of a table by
+            comparing the row count of each 1 days period to the last 14 days
+          config:
+            severity: error
   - name: stg_payments
     meta:
       owner: "@finance-team"
