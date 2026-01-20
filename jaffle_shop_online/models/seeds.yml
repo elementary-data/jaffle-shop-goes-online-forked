@@ -1,6 +1,28 @@
 version: 2
 
 seeds:
+  - name: raw_customers_training
+    description: "Raw customer training data containing personally identifiable information"
+    tags: ["pii"]
+    columns:
+      - name: id
+        description: "Unique identifier for a customer"
+      - name: first_name
+        description: "Customer's first name. PII."
+      - name: last_name
+        description: "Customer's last name. PII."
+
+  - name: raw_customers_validation
+    description: "Raw customer validation data containing personally identifiable information"
+    tags: ["pii"]
+    columns:
+      - name: id
+        description: "Unique identifier for a customer"
+      - name: first_name
+        description: "Customer's first name. PII."
+      - name: last_name
+        description: "Customer's last name. PII."
+
   - name: stg_app_sessions
     description: "App session data for marketing attribution analysis"
     config:
