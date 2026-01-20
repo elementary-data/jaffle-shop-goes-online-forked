@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model contains basic customer information including unique
+      customer identifiers and personal details. It serves as the foundational layer
+      for customer analytics and reporting across the organization. The model standardizes
+      the raw customer data by renaming the ID field to customer_id for consistency
+      with downstream models.
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +22,10 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: 'This staging model contains cleaned and standardized order data from
+      the raw orders source table. It serves as the foundation for downstream analytics
+      by providing consistent column naming and data structure for order analysis across
+      finance and sales reporting. '
     meta:
       owner: "@sales-team"
     config:
@@ -34,14 +43,17 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging table contains standardized payment data from the raw
+      payments source, with each row representing a single payment transaction. It
+      serves as a cleaned foundation for downstream financial analysis and reporting
+      by the finance team. The model renames the payment ID field for clarity and converts
+      payment amounts from cents to dollars for easier business use.
     meta:
       owner: "@finance-team"
     config:
@@ -60,6 +72,11 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This table contains customer signup information including signup identifiers,
+      customer details, and registration dates. It serves as the foundational dataset
+      for analyzing customer acquisition patterns and onboarding processes. The model
+      standardizes column names from the raw signup data, renaming user fields to customer
+      fields for consistency across the data warehouse.
     meta:
       owner: "@customer-team"
     config:
