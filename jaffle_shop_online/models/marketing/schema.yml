@@ -125,6 +125,8 @@ models:
       by source, and per day"
     meta:
       owner: "@finance-team"
+      subscribers:
+        - "@marketing_team"
     config:
       tags:
         - "finance"
