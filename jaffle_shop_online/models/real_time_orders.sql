@@ -1,3 +1,5 @@
+{% raw %}-- All monetary amounts in this model are in dollars
+
 {{
   config(materialized='view')
 }}
@@ -50,4 +52,4 @@ select
 from final
 where date(order_date) = (
     select date(max(order_date)) from final
-) 
+) {% endraw %}
