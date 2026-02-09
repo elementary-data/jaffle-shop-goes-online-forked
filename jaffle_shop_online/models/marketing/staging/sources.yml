@@ -6,6 +6,13 @@ sources:
     tables:
       - name: stg_google_ads
       - name: stg_facebook_ads
+        description: This source table contains staging data from Facebook advertising
+          campaigns, including ad performance metrics, campaign details, and spend
+          information. It serves as the foundational layer for transforming raw Facebook
+          Ads data into analytics-ready models for marketing performance analysis.
+          This table supports the marketing domain and is used to track advertising
+          effectiveness, ROI, and campaign optimization across Facebook's advertising
+          platform.
       - name: stg_instagram_ads
 
   - name: sessions
