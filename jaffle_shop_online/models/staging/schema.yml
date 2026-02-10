@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model contains basic customer information from the raw
+      customer data source. It provides a clean, renamed version of customer records
+      with standardized column names for downstream analysis and reporting. The model
+      performs simple field renaming, transforming the raw `id` field to `customer_id`
+      while preserving first and last name attributes.
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +22,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model contains cleaned and standardized order data from
+      the raw orders source. It provides a foundational view of order transactions,
+      including order identifiers, associated customers, order dates, and order status.
+      The model performs basic transformations by renaming columns to follow consistent
+      naming conventions (e.g., `id` to `order_id`, `user_id` to `customer_id`) for
+      easier downstream consumption by sales and finance analytics.
     meta:
       owner: "@sales-team"
     config:
@@ -34,14 +45,17 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging model contains cleaned and standardized payment transaction
+      data from the raw payments source. It serves as the foundation for financial
+      reporting and order analytics by providing payment-level details including payment
+      method and transaction amounts. The model renames fields for consistency and
+      converts payment amounts from cents to dollars for easier analysis.
     meta:
       owner: "@finance-team"
     config:
@@ -60,6 +74,11 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: This staging model contains customer signup information, including
+      unique signup identifiers, customer details, and registration dates. It serves
+      as the foundation for analyzing customer acquisition and registration patterns.
+      The model renames fields from the raw signup data for consistency and clarity,
+      standardizing column names like `id` to `signup_id` and `user_id` to `customer_id`.
     meta:
       owner: "@customer-team"
     config:
