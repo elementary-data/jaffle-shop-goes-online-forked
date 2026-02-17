@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This table represents the raw customers data
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +18,7 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This table represents the raw customers data
     meta:
       owner: "@sales-team"
     config:
@@ -34,11 +36,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
