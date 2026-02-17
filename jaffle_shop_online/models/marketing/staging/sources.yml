@@ -5,11 +5,78 @@ sources:
     schema: "{{ target.schema }}"
     tables:
       - name: stg_google_ads
+        data_tests:
+          - dbt_utils.equal_column_subset:
+              compare_model: source('ads', 'stg_google_ads')
+              include:
+                - ad_id
+                - cost
+                - date
+                - utm_campain
+                - utm_medium
+              config:
+                severity: warn
+                tags:
+                  - data_contract
       - name: stg_facebook_ads
+        data_tests:
+          - dbt_utils.equal_column_subset:
+              compare_model: source('ads', 'stg_facebook_ads')
+              include:
+                - ad_id
+                - cost
+                - date
+                - utm_campain
+                - utm_medium
+              config:
+                severity: warn
+                tags:
+                  - data_contract
       - name: stg_instagram_ads
+        data_tests:
+          - dbt_utils.equal_column_subset:
+              compare_model: source('ads', 'stg_instagram_ads')
+              include:
+                - ad_id
+                - cost
+                - date
+                - utm_campain
+                - utm_medium
+              config:
+                severity: warn
+                tags:
+                  - data_contract
 
   - name: sessions
     schema: "{{ target.schema }}"
     tables:
       - name: stg_website_sessions
+        data_tests:
+          - dbt_utils.equal_column_subset:
+              compare_model: source('sessions', 'stg_website_sessions')
+              include:
+                - ad_id
+                - customer_id
+                - ended_at
+                - session_id
+                - started_at
+                - utm_source
+              config:
+                severity: warn
+                tags:
+                  - data_contract
       - name: stg_app_sessions
+        data_tests:
+          - dbt_utils.equal_column_subset:
+              compare_model: source('sessions', 'stg_app_sessions')
+              include:
+                - ad_id
+                - customer_id
+                - ended_at
+                - session_id
+                - started_at
+                - utm_source
+              config:
+                severity: warn
+                tags:
+                  - data_contract
