@@ -32,6 +32,8 @@ clean-targets: # directories to be removed by `dbt clean`
 models:
   elementary:
     +schema: elementary
+    +meta:
+      owner: "data-engineering@acme.com"
 # on-run-end:
 #   - "{{ elementary.upload_dbt_artifacts(results) }}"
 
