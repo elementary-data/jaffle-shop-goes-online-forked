@@ -1,0 +1,43 @@
+models:
+  - name: stg_facebook_ads
+    columns:
+      - name: ad_id
+        data_tests:
+          - unique:
+              arguments:
+                column_name: ad_id
+  - name: stg_google_ads
+    columns:
+      - name: ad_id
+        data_tests:
+          - unique:
+              arguments:
+                column_name: ad_id
+  - name: stg_instagram_ads
+    columns:
+      - name: ad_id
+        data_tests:
+          - unique:
+              arguments:
+                column_name: ad_id
+  - name: elementary_exposures
+    columns:
+      - name: unique_id
+        data_tests:
+          - unique:
+              arguments:
+                column_name: unique_id
+  - name: stg_app_sessions
+    columns:
+      - name: session_id
+        data_tests:
+          - unique:
+              arguments:
+                column_name: session_id
+  - name: stg_website_sessions
+    columns:
+      - name: session_id
+        data_tests:
+          - unique:
+              arguments:
+                column_name: session_id
