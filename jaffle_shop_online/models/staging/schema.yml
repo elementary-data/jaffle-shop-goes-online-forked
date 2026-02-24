@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_customers
+    description: This staging model contains the core customer attributes from the
+      raw customer data source. It provides a cleaned and renamed version of customer
+      records with basic identifying information including customer ID, first name,
+      and last name. This model serves as the foundational layer for downstream customer
+      analytics and is tagged with PII due to the presence of personal information.
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +22,12 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model contains cleaned and standardized order data from
+      the raw orders source table. It serves as the foundational layer for sales and
+      finance analytics by renaming columns to consistent business terms (id to order_id,
+      user_id to customer_id) and selecting core order attributes including order date
+      and status. The model is maintained by the sales team and is used as a source
+      for downstream sales and finance reporting.
     meta:
       owner: "@sales-team"
     config:
@@ -34,14 +45,16 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: This staging model contains payment transaction data loaded from the
+      raw payments source. It standardizes payment information including payment methods
+      and order associations for downstream analytical use. Amount values are converted
+      from cents to dollars for easier business reporting.
     meta:
       owner: "@finance-team"
     config:
