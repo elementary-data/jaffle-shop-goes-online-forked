@@ -6,6 +6,9 @@ sources:
     tables:
       - name: stg_google_ads
       - name: stg_facebook_ads
+        config:
+          tags:
+            - marketing
       - name: stg_instagram_ads
 
   - name: sessions
