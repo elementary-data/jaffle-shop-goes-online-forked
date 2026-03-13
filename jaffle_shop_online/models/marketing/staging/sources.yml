@@ -5,9 +5,18 @@ sources:
     schema: "{{ target.schema }}"
     tables:
       - name: stg_google_ads
+        config:
+          tags:
+            - marketing
       - name: stg_facebook_ads
+        config:
+          tags:
+            - marketing
       - name: stg_instagram_ads
 
+        config:
+          tags:
+            - marketing
   - name: sessions
     schema: "{{ target.schema }}"
     tables:
