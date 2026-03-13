@@ -5,3 +5,48 @@ sources:
     schema: jaffle_shop_elementary
     tables:
       - name: elementary_exposures
+        columns:
+          - name: depends_on_columns
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values:
+                      - credit_card
+                      - transfer
+                  description: 'The column should be one of the following values:
+                    credit_card, transfer'
+                  config:
+                    severity: error
+          - name: depends_on_macros
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values:
+                      - credit_card
+                      - transfer
+                  description: 'The column should be one of the following values:
+                    credit_card, transfer'
+                  config:
+                    severity: error
+          - name: depends_on_nodes
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values:
+                      - credit_card
+                      - transfer
+                  description: 'The column should be one of the following values:
+                    credit_card, transfer'
+                  config:
+                    severity: error
+          - name: description
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values:
+                      - credit_card
+                      - transfer
+                  description: 'The column should be one of the following values:
+                    credit_card, transfer'
+                  config:
+                    severity: error
