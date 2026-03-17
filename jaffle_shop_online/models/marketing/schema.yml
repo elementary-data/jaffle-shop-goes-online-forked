@@ -178,6 +178,51 @@ models:
                 period: day
                 count: 1
 
+  - name: campaign_roi
+    description: "This table contains the ROI of marketing campaigns, broken down by source, campaign, and day. It calculates CPA, ROAS, and ROI percentage using linear attribution."
+    meta:
+      owner: "@marketing-team"
+    config:
+      tags: ["marketing", "finance", "finance-data-product"]
+      elementary:
+        timestamp_column: "day"
+    columns:
+      - name: day
+        data_type: date
+        description: "Day (UTC)"
+
+      - name: utm_source
+        data_type: varchar
+        description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
+
+      - name: utm_campain
+        data_type: varchar
+        description: "The name of the advertising campaign"
+
+      - name: total_spend
+        data_type: number
+        description: "Total ad spend amount (USD) for the campaign on that day"
+
+      - name: attribution_points
+        data_type: number
+        description: "Total attributed conversions (linear model) for the campaign on that day"
+
+      - name: attribution_revenue
+        data_type: number
+        description: "Total attributed revenue (USD, linear model) for the campaign on that day"
+
+      - name: cost_per_acquisition
+        data_type: number
+        description: "Cost (USD) per acquisition, calculated as total_spend / attribution_points"
+
+      - name: return_on_advertising_spend
+        data_type: number
+        description: "Return on advertising spend, calculated as attribution_revenue / total_spend"
+
+      - name: roi_percentage
+        data_type: number
+        description: "ROI percentage, calculated as (attribution_revenue - total_spend) / total_spend * 100"
+
   - name: marketing_ads
     description: "This table contains information on the ad spend, by source, medium
       and campaign"
