@@ -313,3 +313,76 @@ models:
       - name: utm_campain
         data_type: varchar
         description: "The name of the advertising campaign"
+
+  - name: campaign_roi
+    description: "This table contains campaign-level ROI metrics including ROI, ROAS, CPA, and revenue per conversion, broken down by day, source, medium, and campaign. Supports multi-attribution model comparison."
+    meta:
+      owner: "@marketing-team"
+    config:
+      tags: ["marketing", "finance", "finance-data-product"]
+      elementary:
+        timestamp_column: "day"
+    columns:
+      - name: day
+        data_type: date
+        description: "Day (UTC) of the campaign activity"
+
+      - name: utm_source
+        data_type: varchar
+        description: "Source where the ad was displayed (e.g. Google, Facebook, Twitter)"
+
+      - name: utm_medium
+        data_type: varchar
+        description: "The advertising or marketing medium (e.g. social, banners, CPC)"
+
+      - name: utm_campain
+        data_type: varchar
+        description: "The name of the advertising campaign"
+
+      - name: total_spend
+        data_type: number
+        description: "Total spend amount (USD) for the campaign on this day"
+
+      - name: unique_customers
+        data_type: number
+        description: "Number of unique customers attributed to this campaign"
+
+      - name: total_conversions
+        data_type: number
+        description: "Total number of conversions (orders) attributed to this campaign"
+
+      - name: attribution_points
+        data_type: number
+        description: "Total attribution points using linear attribution model"
+
+      - name: attribution_revenue
+        data_type: number
+        description: "Total attributed revenue (USD) using linear attribution model"
+
+      - name: roi
+        data_type: number
+        description: "Return on Investment, calculated as (attribution_revenue - total_spend) / total_spend"
+
+      - name: roas
+        data_type: number
+        description: "Return on Advertising Spend, calculated as attribution_revenue / total_spend"
+
+      - name: cost_per_acquisition
+        data_type: number
+        description: "Cost per acquisition (USD), calculated as total_spend / attribution_points"
+
+      - name: revenue_per_conversion
+        data_type: number
+        description: "Average revenue per conversion (USD), calculated as attribution_revenue / total_conversions"
+
+      - name: first_touch_revenue
+        data_type: number
+        description: "Attributed revenue (USD) using first-touch attribution model"
+
+      - name: last_touch_revenue
+        data_type: number
+        description: "Attributed revenue (USD) using last-touch attribution model"
+
+      - name: time_decay_revenue
+        data_type: number
+        description: "Attributed revenue (USD) using time-decay attribution model"
