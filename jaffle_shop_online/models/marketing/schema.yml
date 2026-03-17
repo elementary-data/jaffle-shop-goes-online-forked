@@ -313,3 +313,104 @@ models:
       - name: utm_campain
         data_type: varchar
         description: "The name of the advertising campaign"
+
+  - name: campaign_roi_multi_attribution
+    description: "This table contains marketing ROI metrics (ROAS and CPA) calculated across all 5 attribution models (linear, first-touch, last-touch, 40/20/40, and time-decay), broken down by day and utm_source."
+    meta:
+      owner: "@marketing-team"
+    config:
+      tags: ["marketing", "finance", "finance-data-product"]
+      elementary:
+        timestamp_column: "day"
+    columns:
+      - name: day
+        data_type: date
+        description: "Day (UTC)"
+
+      - name: utm_source
+        data_type: varchar
+        description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
+
+      - name: total_spend
+        data_type: number
+        description: "Total ad spend amount (USD) for the day and source"
+
+      - name: linear_points
+        data_type: number
+        description: "Attribution points using linear model"
+
+      - name: linear_revenue
+        data_type: number
+        description: "Attributed revenue (USD) using linear model"
+
+      - name: first_touch_points
+        data_type: number
+        description: "Attribution points using first-touch model"
+
+      - name: first_touch_revenue
+        data_type: number
+        description: "Attributed revenue (USD) using first-touch model"
+
+      - name: last_touch_points
+        data_type: number
+        description: "Attribution points using last-touch model"
+
+      - name: last_touch_revenue
+        data_type: number
+        description: "Attributed revenue (USD) using last-touch model"
+
+      - name: forty_twenty_forty_points
+        data_type: number
+        description: "Attribution points using 40/20/40 model"
+
+      - name: forty_twenty_forty_revenue
+        data_type: number
+        description: "Attributed revenue (USD) using 40/20/40 model"
+
+      - name: time_decay_points
+        data_type: number
+        description: "Attribution points using time-decay model"
+
+      - name: time_decay_revenue
+        data_type: number
+        description: "Attributed revenue (USD) using time-decay model"
+
+      - name: linear_roas
+        data_type: number
+        description: "Return on ad spend using linear attribution (linear_revenue / total_spend)"
+
+      - name: first_touch_roas
+        data_type: number
+        description: "Return on ad spend using first-touch attribution"
+
+      - name: last_touch_roas
+        data_type: number
+        description: "Return on ad spend using last-touch attribution"
+
+      - name: forty_twenty_forty_roas
+        data_type: number
+        description: "Return on ad spend using 40/20/40 attribution"
+
+      - name: time_decay_roas
+        data_type: number
+        description: "Return on ad spend using time-decay attribution"
+
+      - name: linear_cpa
+        data_type: number
+        description: "Cost per acquisition using linear attribution (total_spend / linear_points)"
+
+      - name: first_touch_cpa
+        data_type: number
+        description: "Cost per acquisition using first-touch attribution"
+
+      - name: last_touch_cpa
+        data_type: number
+        description: "Cost per acquisition using last-touch attribution"
+
+      - name: forty_twenty_forty_cpa
+        data_type: number
+        description: "Cost per acquisition using 40/20/40 attribution"
+
+      - name: time_decay_cpa
+        data_type: number
+        description: "Cost per acquisition using time-decay attribution"
