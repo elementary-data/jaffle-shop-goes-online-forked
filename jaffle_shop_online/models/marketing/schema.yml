@@ -131,31 +131,66 @@ models:
         - "finance-data-product"
       elementary:
         timestamp_column: "day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - utm_source
+      - dbt_utils.recency:
+          datepart: day
+          field: day
+          interval: 1
     columns:
       - name: day
         data_type: date
         description: "Day (UTC)"
+        data_tests:
+          - not_null
 
       - name: utm_source
         data_type: varchar
         description: "Source where the ad was displayed. For example, Google, Facebook,
           Twitter, Newsletter, etc."
+        data_tests:
+          - not_null
 
       - name: attribution_points
         data_type: number
         description: "Total number of attribution points"
+        data_tests:
+          - not_null
 
       - name: attribution_revenue
         data_type: number
         description: "Total revenue amount (USD)"
+        data_tests:
+          - not_null
 
       - name: total_spend
         data_type: number
         description: "Total spend amount (USD)"
+        data_tests:
+          - not_null
 
       - name: cost_per_acquisition
         data_type: number
         description: "Cost (USD) per acquisition, calculated as total_spend / attribution_points"
+        data_tests:
+          - elementary.column_anomalies:
+              anomaly_direction: both
+              anomaly_sensitivity: 1.5
+              column_anomalies:
+                - average
+              detection_period:
+                count: 2
+                period: day
+              timestamp_column: day
+              training_period:
+                count: 30
+                period: day
+              time_bucket:
+                period: day
+                count: 1
 
       - name: return_on_advertising_spend
         data_type: number
