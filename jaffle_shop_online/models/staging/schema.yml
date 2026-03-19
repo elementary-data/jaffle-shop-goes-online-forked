@@ -34,13 +34,14 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
+    data_tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
   - name: stg_payments
     meta:
       owner: "@finance-team"
@@ -59,6 +60,9 @@ models:
                 severity: warn
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
+    data_tests:
+      - elementary.volume_anomalies
+      - elementary.freshness_anomalies
   - name: stg_signups
     meta:
       owner: "@customer-team"
