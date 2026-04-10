@@ -6,6 +6,19 @@ sources:
     tables:
       - name: stg_google_ads
       - name: stg_facebook_ads
+        data_tests:
+          - dbt_utils.recency:
+              arguments:
+                datepart: day
+                field: created_at
+                interval: 1
+              config:
+                tags:
+                  - stability
+                severity: error
+                meta:
+                  owner:
+                    - '@marketing-team'
       - name: stg_instagram_ads
 
   - name: sessions
