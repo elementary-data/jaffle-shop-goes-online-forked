@@ -1,15 +1,32 @@
 {{
     config(
-        materialized = "table",
+        materialized = "incremental",
+        unique_key = ["customer_id", "order_id", "session_id"],
+        on_schema_change = "sync_all_columns"
     )
 }}
 
 with customer_conversions as (
-    select * from {{ ref('customer_conversions') }}
+    select
+        customer_id,
+        converted_at,
+        revenue,
+        order_id
+    from {{ ref('customer_conversions') }}
+    {% if is_incremental() %}
+    where converted_at > (select max(converted_at) from {{ this }})
+    {% endif %}
 ),
 
 sessions as (
-    select * from {{ ref('sessions') }}
+    select
+        customer_id,
+        session_id,
+        started_at,
+        ended_at,
+        utm_source,
+        utm_medium
+    from {{ ref('sessions') }}
 ),
 
 -- Find all sessions that could have contributed to each conversion
@@ -37,7 +54,17 @@ attribution_eligible_sessions as (
 -- Calculate session sequence and total sessions per conversion
 sessions_with_sequence as (
     select
-        *,
+        customer_id,
+        converted_at,
+        revenue,
+        order_id,
+        session_id,
+        started_at,
+        ended_at,
+        utm_source,
+        utm_medium,
+        days_before_conversion,
+        hours_before_conversion,
         row_number() over (
             partition by customer_id, converted_at 
             order by started_at
@@ -51,7 +78,19 @@ sessions_with_sequence as (
 -- Calculate attribution weights for different models
 with_attribution_weights as (
     select
-        *,
+        customer_id,
+        converted_at,
+        revenue,
+        order_id,
+        session_id,
+        started_at,
+        ended_at,
+        utm_source,
+        utm_medium,
+        days_before_conversion,
+        hours_before_conversion,
+        session_index,
+        total_sessions,
         -- Linear attribution: equal weight to all sessions
         1.0 / total_sessions as linear_weight,
         
@@ -81,7 +120,24 @@ with_attribution_weights as (
 -- Calculate revenue attribution for each model
 with_points as (
     select
-        *,
+        customer_id,
+        converted_at,
+        revenue,
+        order_id,
+        session_id,
+        started_at,
+        ended_at,
+        utm_source,
+        utm_medium,
+        days_before_conversion,
+        hours_before_conversion,
+        session_index,
+        total_sessions,
+        linear_weight,
+        first_touch_weight,
+        last_touch_weight,
+        forty_twenty_forty_weight,
+        time_decay_weight,
         -- Revenue attribution based on different models
         revenue * first_touch_weight as first_touch_revenue,
         revenue * last_touch_weight as last_touch_revenue,
