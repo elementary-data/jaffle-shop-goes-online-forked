@@ -2,6 +2,10 @@ version: 2
 
 models:
   - name: stg_customers
+    description: 'Staged customer data sourced from the raw customers training table,
+      containing core customer attributes. This model renames the raw `id` field to
+      `customer_id` and selects `first_name` and `last_name` for downstream use. Note:
+      this model is tagged as PII as it contains personally identifiable customer information.'
     meta:
       owner: "@customer-team"
     config:
@@ -17,6 +21,10 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: Staging table that cleans and renames fields from the raw orders source.
+      This model contains order-level data including the order ID, customer ID, order
+      date, and order status, serving as the foundational layer for downstream finance
+      and sales analytics.
     meta:
       owner: "@sales-team"
     config:
@@ -34,14 +42,15 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
+    description: Staged payment records sourced from the raw payments training data.
+      Each row represents a single payment associated with an order, including the
+      payment method used. Monetary amounts have been converted from cents to dollars.
     meta:
       owner: "@finance-team"
     config:
@@ -60,6 +69,10 @@ models:
               values: ["credit_card", "coupon", "bank_transfer", "gift_card"]
 
   - name: stg_signups
+    description: Staging model that contains customer signup information sourced from
+      the raw signups training data. Fields are renamed for consistency, mapping user
+      identifiers and emails to customer-level fields. This table includes PII such
+      as customer email and hashed password, along with the signup date for each customer.
     meta:
       owner: "@customer-team"
     config:
