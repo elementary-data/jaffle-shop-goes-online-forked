@@ -29,18 +29,33 @@ models:
           - unique:
               config:
                 severity: warn
+          - not_null:
+              arguments:
+                column_name: order_id
       - name: status
         tests:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
+      - name: order_date
+        data_tests:
+          - not_null:
+              arguments:
+                column_name: order_date
+      - name: customer_id
+        data_tests:
+          - relationships:
+              arguments:
+                column_name: customer_id
+                to: ref('stg_customers')
+                field: customer_id
+    data_tests:
+      - elementary.schema_changes
   - name: stg_payments
     meta:
       owner: "@finance-team"
