@@ -25,22 +25,27 @@ models:
         timestamp_column: "order_date"
     columns:
       - name: order_id
+        description: Unique identifier of the order
         tests:
           - unique:
               config:
                 severity: warn
       - name: status
+        description: 'Order status. One of: placed, shipped, completed, return_pending,
+          returned'
         tests:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
+      - name: customer_id
+        description: Foreign key to the customers table
+      - name: order_date
+        description: Date (UTC) that the order was placed
   - name: stg_payments
     meta:
       owner: "@finance-team"
