@@ -32,6 +32,102 @@ models:
         data_type: number
         description: "The USD amount of money spent"
 
+  - name: cpa_and_roas
+    description: "This table contains the cost per acquisition and return on ad spend, by source, and per day"
+    meta:
+      owner: "@finance-team"
+    config:
+      tags: ["marketing", "finance", "finance-data-product", "no_pii"]
+      elementary:
+        timestamp_column: "day"
+    data_tests:
+      # Primary key: grain is (day, utm_source)
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - utm_source
+          config:
+            where: "day >= dateadd('day', -1, current_date)"
+            meta:
+              quality_dimension: uniqueness
+    columns:
+      - name: day
+        data_type: date
+        description: "Day (UTC) of the CPA and ROAS metrics"
+        data_tests:
+          - not_null:
+              config:
+                where: "day >= dateadd('day', -1, current_date)"
+                meta:
+                  quality_dimension: completeness
+
+      - name: utm_source
+        data_type: varchar
+        description: "Source where the ad was displayed. For example, Google, Facebook,
+          Twitter, Newsletter, etc."
+        data_tests:
+          - not_null:
+              config:
+                where: "day >= dateadd('day', -1, current_date)"
+                meta:
+                  quality_dimension: completeness
+
+      - name: total_spend
+        data_type: number
+        description: "Total USD amount spent on ads for the day and source"
+        data_tests:
+          - not_null:
+              config:
+                where: "day >= dateadd('day', -1, current_date)"
+                meta:
+                  quality_dimension: completeness
+          - dbt_utils.accepted_range:
+              min_value: 0
+              config:
+                where: "day >= dateadd('day', -1, current_date)"
+                meta:
+                  quality_dimension: validity
+
+      - name: attribution_points
+        data_type: number
+        description: "Total attribution points for the day and source"
+
+      - name: attribution_revenue
+        data_type: number
+        description: "Total attributed revenue (USD) for the day and source"
+
+      - name: cost_per_acquisition
+        data_type: number
+        description: "Cost (USD) per acquisition, calculated as total_spend / attribution_points"
+        data_tests:
+          - not_null:
+              config:
+                where: "day >= dateadd('day', -1, current_date) and total_spend > 0 and attribution_points > 0"
+                meta:
+                  quality_dimension: completeness
+          - dbt_utils.accepted_range:
+              min_value: 0
+              config:
+                where: "day >= dateadd('day', -1, current_date) and cost_per_acquisition is not null"
+                meta:
+                  quality_dimension: accuracy
+
+      - name: return_on_advertising_spend
+        data_type: number
+        description: "The ROI of the ad spend, calculated as attribution_revenue / total_spend"
+        data_tests:
+          - not_null:
+              config:
+                where: "day >= dateadd('day', -1, current_date) and total_spend > 0 and attribution_revenue > 0"
+                meta:
+                  quality_dimension: completeness
+          - dbt_utils.accepted_range:
+              min_value: 0
+              config:
+                where: "day >= dateadd('day', -1, current_date) and return_on_advertising_spend is not null"
+                meta:
+                  quality_dimension: accuracy
+
   - name: attribution_touches
     description: "This is a table that contains all the touch points, by session,
       with the utm_source, utm_medium and utm_campaign"
