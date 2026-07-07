@@ -5,11 +5,26 @@ sources:
     schema: "{{ target.schema }}"
     tables:
       - name: stg_google_ads
+        data_tests:
+          - elementary.volume_anomalies
+          - elementary.freshness_anomalies
       - name: stg_facebook_ads
+        data_tests:
+          - elementary.volume_anomalies
+          - elementary.freshness_anomalies
       - name: stg_instagram_ads
 
+        data_tests:
+          - elementary.volume_anomalies
+          - elementary.freshness_anomalies
   - name: sessions
     schema: "{{ target.schema }}"
     tables:
       - name: stg_website_sessions
+        data_tests:
+          - elementary.volume_anomalies
+          - elementary.freshness_anomalies
       - name: stg_app_sessions
+        data_tests:
+          - elementary.volume_anomalies
+          - elementary.freshness_anomalies
