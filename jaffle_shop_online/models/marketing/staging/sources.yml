@@ -12,4 +12,10 @@ sources:
     schema: "{{ target.schema }}"
     tables:
       - name: stg_website_sessions
+        columns:
+          - name: customer_id
+            data_tests:
+              - unique:
+                  description: The customer_id column in the stg_website_sessions
+                    table should contain only unique values
       - name: stg_app_sessions
