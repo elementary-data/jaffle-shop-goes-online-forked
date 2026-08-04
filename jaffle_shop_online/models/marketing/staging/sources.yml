@@ -6,6 +6,12 @@ sources:
     tables:
       - name: stg_google_ads
       - name: stg_facebook_ads
+        description: Contains raw advertising data extracted from Facebook Ads, including
+          metrics such as impressions, clicks, spend, and campaign-level performance
+          details. This staging table serves as the foundation for downstream marketing
+          models, enabling analysis of ad effectiveness and return on ad spend. It
+          relates to the marketing domain, specifically paid social media advertising
+          performance tracking.
       - name: stg_instagram_ads
 
   - name: sessions
