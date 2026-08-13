@@ -6,6 +6,17 @@ sources:
     tables:
       - name: stg_google_ads
       - name: stg_facebook_ads
+        columns:
+          - name: ad_id
+            data_tests:
+              - not_null
+              - unique
+          - name: cost
+            data_tests:
+              - dbt_utils.dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+                    inclusive: true
       - name: stg_instagram_ads
 
   - name: sessions
