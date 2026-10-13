@@ -262,7 +262,8 @@ models:
 
   - name: historical_orders
     description: "Orders loaded from the historical batch datasets (prior to the current
-      day). Amount fields are stored in cents."
+      day). Amount fields are converted to dollars via the cents_to_dollars macro,
+      consistent with real_time_orders."
     meta:
       owner: "@finance-team"
     config:
@@ -279,15 +280,15 @@ models:
       - name: status
         description: '{{ doc("orders_status") }}'
       - name: amount
-        description: "Total order amount (in cents)"
+        description: "Total order amount (AUD)"
       - name: credit_card_amount
-        description: "Portion of the order paid with credit card (in cents)"
+        description: "Portion of the order paid with credit card (AUD)"
       - name: coupon_amount
-        description: "Portion of the order paid with coupon (in cents)"
+        description: "Portion of the order paid with coupon (AUD)"
       - name: bank_transfer_amount
-        description: "Portion of the order paid with bank transfer (in cents)"
+        description: "Portion of the order paid with bank transfer (AUD)"
       - name: gift_card_amount
-        description: "Portion of the order paid with gift card (in cents)"
+        description: "Portion of the order paid with gift card (AUD)"
 
   - name: real_time_orders
     description: "Orders ingested from the real-time pipeline for the current day.
