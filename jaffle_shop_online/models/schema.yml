@@ -291,8 +291,7 @@ models:
 
   - name: real_time_orders
     description: "Orders ingested from the real-time pipeline for the current day.
-      Monetary fields have already been converted to dollars via the cents_to_dollars
-      macro."
+      Monetary fields are in dollars (converted once upstream in stg_payments)."
     meta:
       owner: "@finance-team"
     config:

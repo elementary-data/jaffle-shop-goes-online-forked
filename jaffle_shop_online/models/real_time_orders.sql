@@ -32,21 +32,15 @@ final as (
         {% for payment_method in payment_methods -%}
         op.{{ payment_method }}_amount,
         {% endfor -%}
-        op.total_amount    as amount_cents
+        -- stg_payments already converts amounts from cents to dollars,
+        -- so no further conversion is applied here
+        op.total_amount    as amount
     from orders o
     left join order_payments op on o.order_id = op.order_id
 )
 
-select 
-    order_id,
-    customer_id,
-    order_date,
-    status,
-    {{ cents_to_dollars('amount_cents') }} as amount,
-    {{ cents_to_dollars('bank_transfer_amount') }} as bank_transfer_amount,
-    {{ cents_to_dollars('coupon_amount') }} as coupon_amount,
-    {{ cents_to_dollars('credit_card_amount') }} as credit_card_amount,
-    {{ cents_to_dollars('gift_card_amount') }} as gift_card_amount
+-- Column order must match historical_orders: orders unions both models positionally
+select *
 from final
 where date(order_date) = (
     select date(max(order_date)) from final
