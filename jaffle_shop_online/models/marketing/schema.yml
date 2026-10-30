@@ -131,6 +131,12 @@ models:
         - "finance-data-product"
       elementary:
         timestamp_column: "day"
+    data_tests:
+      - assert_cpa_and_roas_formula_consistency:
+          config:
+            severity: error
+          meta:
+            data_quality_dimension: accuracy
     columns:
       - name: day
         data_type: date
