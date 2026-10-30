@@ -13,3 +13,6 @@ sources:
     tables:
       - name: stg_website_sessions
       - name: stg_app_sessions
+        meta:
+          owner:
+            - joost
