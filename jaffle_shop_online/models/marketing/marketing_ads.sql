@@ -20,11 +20,14 @@ instagram_ads as (
     from {{ source("ads", "stg_instagram_ads") }}
 )
 
-select *, 'google' as utm_source
+-- Normalize cost to a common currency unit (dollars) before unioning.
+-- Facebook reports cost in cents, while Google and Instagram report in dollars.
+-- Without this conversion, total ad spend is inflated and ROAS collapses.
+select ad_id, date, utm_medium, utm_campain, cost, 'google' as utm_source
 from google_ads
 union all
-select *, 'facebook' as utm_source
+select ad_id, date, utm_medium, utm_campain, cost / 100.0 as cost, 'facebook' as utm_source
 from facebook_ads
 union all
-select *, 'instagram' as utm_source
+select ad_id, date, utm_medium, utm_campain, cost, 'instagram' as utm_source
 from instagram_ads
