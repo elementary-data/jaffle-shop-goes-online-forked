@@ -32,6 +32,39 @@ models:
         data_type: number
         description: "The USD amount of money spent"
 
+        data_tests:
+          - elementary.column_anomalies:
+              arguments:
+                column_anomalies:
+                  - null_count
+                  - null_percent
+                  - min_length
+                  - max_length
+                  - average_length
+                  - missing_count
+                  - missing_percent
+                  - min
+                  - max
+                  - average
+                  - zero_count
+                  - zero_percent
+                  - standard_deviation
+                  - variance
+                  - sum
+                time_bucket:
+                  period: month
+                  count: 1
+                timestamp_column: created_at
+                anomaly_sensitivity: 3
+                training_period:
+                  period: day
+                  count: 14
+                detection_period:
+                  period: day
+                  count: 2
+                anomaly_direction: both
+              config:
+                severity: error
   - name: attribution_touches
     description: "This is a table that contains all the touch points, by session, with the utm_source,
       utm_medium and utm_campaign"
