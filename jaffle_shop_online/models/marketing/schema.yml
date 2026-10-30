@@ -153,6 +153,28 @@ models:
         data_type: number
         description: "Total spend amount (USD)"
 
+        data_tests:
+          - elementary.column_anomalies:
+              arguments:
+                column_anomalies:
+                  - average
+                  - max
+                  - min
+                  - sum
+                time_bucket:
+                  period: day
+                  count: 1
+                timestamp_column: created_at
+                anomaly_sensitivity: 3
+                training_period:
+                  period: day
+                  count: 14
+                detection_period:
+                  period: day
+                  count: 2
+                anomaly_direction: both
+              config:
+                severity: error
       - name: cost_per_acquisition
         data_type: number
         description: "Cost (USD) per acquisition, calculated as total_spend / attribution_points"
