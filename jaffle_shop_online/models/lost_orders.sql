@@ -10,12 +10,7 @@ with orders as (
 )
 
 select 
-  {# This if case is used to fail the test schema_changes_from_baseline for the lost_orders model #}
-  {% if elementary.get_config_var('validation') %}
-    CONCAT('ID-', order_id) as order_id,
-  {% else %}
-    order_id,
-  {% endif %}
+  order_id,
   customer_id,
   order_date,
   status,
