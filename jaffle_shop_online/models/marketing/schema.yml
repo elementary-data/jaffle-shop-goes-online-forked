@@ -14,6 +14,8 @@ models:
         data_type: date
         description: "Day (UTC) of the ad spend"
 
+        data_tests:
+          - not_null
       - name: utm_source
         data_type: varchar
         description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter,
@@ -32,6 +34,19 @@ models:
         data_type: number
         description: "The USD amount of money spent"
 
+        data_tests:
+          - not_null
+    data_tests:
+      - dbt_utils.dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - day
+              - utm_source
+              - utm_medium
+              - utm_campain
+      - dbt_utils.dbt_utils.expression_is_true:
+          arguments:
+            expression: spend >= 0
   - name: attribution_touches
     description: "This is a table that contains all the touch points, by session, with the utm_source,
       utm_medium and utm_campaign"
