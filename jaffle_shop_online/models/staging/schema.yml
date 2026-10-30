@@ -17,6 +17,11 @@ models:
               field: customer_id
 
   - name: stg_orders
+    description: This staging model contains cleaned order data sourced from the raw
+      orders training dataset. It provides one row per order with standardized identifiers
+      linking each order to its associated customer, along with the order date and
+      current status. Field names are renamed for consistency to support downstream
+      sales and finance reporting.
     meta:
       owner: "@sales-team"
     config:
@@ -34,11 +39,9 @@ models:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
