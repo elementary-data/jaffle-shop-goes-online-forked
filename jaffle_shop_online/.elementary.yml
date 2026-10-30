@@ -1,0 +1,5 @@
+# Elementary Cloud settings for this dbt project.
+# A fixed YAML width keeps PRs from Elementary from re-wrapping existing lines.
+format:
+  yaml:
+    width: 120
