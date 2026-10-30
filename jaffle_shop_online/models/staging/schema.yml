@@ -11,7 +11,7 @@ models:
         tests:
           - unique:
               config:
-                severity: warn
+                severity: error
           - relationships:
               to: ref('stg_signups')
               field: customer_id
@@ -28,17 +28,15 @@ models:
         tests:
           - unique:
               config:
-                severity: warn
+                severity: error
       - name: status
         tests:
           - accepted_values:
               config:
                 severity: warn
-              values:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
           - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set:
-                ["placed", "shipped", "completed", "return_pending", "returned"]
+              value_set: ["placed", "shipped", "completed", "return_pending", "returned"]
               quote_values: true
 
   - name: stg_payments
@@ -51,7 +49,7 @@ models:
         tests:
           - unique:
               config:
-                severity: warn
+                severity: error
       - name: payment_method
         tests:
           - accepted_values:
@@ -71,7 +69,7 @@ models:
         tests:
           - unique:
               config:
-                severity: warn
+                severity: error
       - name: customer_email
         tests:
           - unique
