@@ -132,26 +132,68 @@ models:
         data_type: date
         description: "Day (UTC)"
 
+        data_tests:
+          - not_null:
+              config:
+                where: day >= current_date - interval '1 day'
       - name: utm_source
         data_type: varchar
         description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
 
+        data_tests:
+          - not_null:
+              config:
+                where: day >= current_date - interval '1 day'
       - name: attribution_points
         data_type: number
         description: "Total number of attribution points"
 
+        data_tests:
+          - not_null:
+              config:
+                where: day >= current_date - interval '1 day'
       - name: attribution_revenue
         data_type: number
         description: "Total revenue amount (USD)"
 
+        data_tests:
+          - not_null:
+              config:
+                where: day >= current_date - interval '1 day'
       - name: total_spend
         data_type: number
         description: "Total spend amount (USD)"
 
+        data_tests:
+          - not_null:
+              config:
+                where: day >= current_date - interval '1 day'
       - name: cost_per_acquisition
         data_type: number
         description: "Cost (USD) per acquisition, calculated as total_spend / attribution_points"
 
+        data_tests:
+          - not_null:
+              config:
+                where: day >= current_date - interval '1 day'
+          - elementary.column_anomalies:
+              arguments:
+                time_bucket:
+                  count: 1
+                  period: day
+                training_period:
+                  count: 30
+                  period: day
+                column_anomalies:
+                  - average
+                detection_period:
+                  count: 2
+                  period: day
+                timestamp_column: day
+                anomaly_direction: both
+                anomaly_sensitivity: 1.5
+              config:
+                severity: ERROR
       - name: return_on_advertising_spend
         data_type: number
         description: "The ROI of the ad spend, calculated as attribution_revenue / total_spend"
@@ -173,6 +215,17 @@ models:
                 count: 1
 
               description: Flags unusual shifts in the average return on ad spend.
+          - not_null:
+              config:
+                where: day >= current_date - interval '1 day'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - day
+              - utm_source
+          config:
+            where: day >= current_date - interval '1 day'
   - name: marketing_ads
     description: "This table contains information on the ad spend, by source, medium and campaign"
     meta:
