@@ -145,18 +145,46 @@ models:
         data_type: number
         description: "Total number of attribution points"
 
+        data_tests:
+          - elementary.column_anomalies:
+              arguments:
+                column_anomalies:
+                  - average
+                timestamp_column: day
+                anomaly_direction: both
       - name: attribution_revenue
         data_type: number
         description: "Total revenue amount (USD)"
 
+        data_tests:
+          - elementary.column_anomalies:
+              arguments:
+                column_anomalies:
+                  - average
+                timestamp_column: day
+                anomaly_direction: both
       - name: total_spend
         data_type: number
         description: "Total spend amount (USD)"
 
+        data_tests:
+          - elementary.column_anomalies:
+              arguments:
+                column_anomalies:
+                  - average
+                timestamp_column: day
+                anomaly_direction: both
       - name: cost_per_acquisition
         data_type: number
         description: "Cost (USD) per acquisition, calculated as total_spend / attribution_points"
 
+        data_tests:
+          - elementary.column_anomalies:
+              arguments:
+                column_anomalies:
+                  - average
+                timestamp_column: day
+                anomaly_direction: both
       - name: return_on_advertising_spend
         data_type: number
         description: "The ROI of the ad spend, calculated as attribution_revenue / total_spend"
