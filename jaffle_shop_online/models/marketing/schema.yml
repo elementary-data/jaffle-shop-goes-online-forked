@@ -152,6 +152,39 @@ models:
         data_type: number
         description: "Cost (USD) per acquisition, calculated as total_spend / attribution_points"
 
+        data_tests:
+          - elementary.column_anomalies:
+              arguments:
+                column_anomalies: # Optional, A list of column monitors for anomaly detection. by default all monitors except for `sum` are executed.
+                  - null_count
+                  - null_percent
+                  - min_length
+                  - max_length
+                  - average_length
+                  - missing_count
+                  - missing_percent
+                  - min
+                  - max
+                  - average
+                  - zero_count
+                  - zero_percent
+                  - standard_deviation
+                  - variance
+                  - sum
+                time_bucket: # Optional, The period for time bucketing.
+                  period: day
+                  count: 1
+                timestamp_column: created_at
+                anomaly_sensitivity: 3
+                training_period: # Optional, The period for model training.
+                  period: day # Optional
+                  count: 14 # Optional
+                detection_period: # Optional, The period for anomaly detection.
+                  period: day # Optional
+                  count: 2 # Optional
+                anomaly_direction: both
+              config:
+                severity: error
       - name: return_on_advertising_spend
         data_type: number
         description: "The ROI of the ad spend, calculated as attribution_revenue / total_spend"
