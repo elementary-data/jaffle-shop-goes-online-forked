@@ -262,7 +262,7 @@ models:
 
   - name: historical_orders
     description: "Orders loaded from the historical batch datasets (prior to the current
-      day). Amount fields are stored in cents."
+      day). Amount fields are already converted to dollars upstream in stg_payments."
     meta:
       owner: "@finance-team"
     config:
@@ -279,20 +279,20 @@ models:
       - name: status
         description: '{{ doc("orders_status") }}'
       - name: amount
-        description: "Total order amount (in cents)"
+        description: "Total order amount (in dollars)"
       - name: credit_card_amount
-        description: "Portion of the order paid with credit card (in cents)"
+        description: "Portion of the order paid with credit card (in dollars)"
       - name: coupon_amount
-        description: "Portion of the order paid with coupon (in cents)"
+        description: "Portion of the order paid with coupon (in dollars)"
       - name: bank_transfer_amount
-        description: "Portion of the order paid with bank transfer (in cents)"
+        description: "Portion of the order paid with bank transfer (in dollars)"
       - name: gift_card_amount
-        description: "Portion of the order paid with gift card (in cents)"
+        description: "Portion of the order paid with gift card (in dollars)"
 
   - name: real_time_orders
     description: "Orders ingested from the real-time pipeline for the current day.
-      Monetary fields have already been converted to dollars via the cents_to_dollars
-      macro."
+      Monetary fields are already in dollars (converted from cents upstream in
+      stg_payments) and must not be converted again here."
     meta:
       owner: "@finance-team"
     config:
