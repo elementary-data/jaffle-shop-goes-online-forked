@@ -31,6 +31,11 @@ models:
         data_type: number
         description: "The USD amount of money spent"
 
+    data_tests:
+      - elementary.schema_changes:
+          description: Checks for schema changes against an existing baseline
+          config:
+            severity: error
   - name: attribution_touches
     description: "This is a table that contains all the touch points, by session, with the utm_source, utm_medium and utm_campaign"
     meta:
