@@ -23,10 +23,16 @@ models:
         description: "The advertising or marketing medium. The medium can be social media, banners, CPC, third-party blogs,
           etc."
 
+        data_tests:
+          - not_null:
+              description: The column should not contain null values
       - name: utm_campain
         data_type: varchar
         description: "The name of the advertising campaign"
 
+        data_tests:
+          - not_null:
+              description: The column should not contain null values
       - name: spend
         data_type: number
         description: "The USD amount of money spent"
