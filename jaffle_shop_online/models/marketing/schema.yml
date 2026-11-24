@@ -14,6 +14,12 @@ models:
         data_type: date
         description: "Day (UTC) of the ad spend"
 
+        data_tests:
+          - not_null:
+              config:
+                tags:
+                  - quality_dimension:completeness
+                where: day >= dateadd(day, -1, current_date)
       - name: utm_source
         data_type: varchar
         description: "Source where the ad was displayed. For example, Google, Facebook, Twitter, Newsletter, etc."
@@ -31,6 +37,31 @@ models:
         data_type: number
         description: "The USD amount of money spent"
 
+        data_tests:
+          - not_null:
+              config:
+                tags:
+                  - quality_dimension:completeness
+                where: day >= dateadd(day, -1, current_date)
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+              config:
+                tags:
+                  - quality_dimension:validity
+                where: day >= dateadd(day, -1, current_date)
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - day
+              - utm_source
+              - utm_medium
+              - utm_campain
+          config:
+            tags:
+              - quality_dimension:uniqueness
+            where: day >= dateadd(day, -1, current_date)
   - name: attribution_touches
     description: "This is a table that contains all the touch points, by session, with the utm_source, utm_medium and utm_campaign"
     meta:
