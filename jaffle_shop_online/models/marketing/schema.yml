@@ -31,6 +31,14 @@ models:
         data_type: number
         description: "The USD amount of money spent"
 
+    data_tests:
+      - dbt_utils.equal_rowcount:
+          arguments:
+            compare_model: ref('other_table_name')
+            group_by_columns: # Optional, Columns to group by before executing the test
+              - group_id
+          config:
+            severity: error
   - name: attribution_touches
     description: "This is a table that contains all the touch points, by session, with the utm_source, utm_medium and utm_campaign"
     meta:
