@@ -27,6 +27,9 @@ models:
         data_type: varchar
         description: "The name of the advertising campaign"
 
+        data_tests:
+          - unique:
+              description: The utm_campain column in the ads_spend table should contain only unique values
       - name: spend
         data_type: number
         description: "The USD amount of money spent"
